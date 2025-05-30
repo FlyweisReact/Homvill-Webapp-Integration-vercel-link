@@ -153,9 +153,9 @@ const Navbar = () => {
                     <div style={{ fontFamily: 'Roboto' }} className="w-1/3">
                       <h4 className="font-semibold mb-2 text-[20px]">Resources</h4>
                       <ul className="text-[16px] space-y-4">
-                        <li><a href="#" className="hover:text-[#8A1538]">Home purchase guide</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Foreclosure information center</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Financial assistance for down payments</a></li>
+                        <li><Link to={'/purchase'} className="hover:text-[#8A1538]">Home purchase guide</Link></li>
+                        <li><Link to={'/foreclosureinform'} className="hover:text-[#8A1538]">Foreclosure information center</Link></li>
+                        <li><Link to={'/financial'} className="hover:text-[#8A1538]">Financial assistance for down payments</Link></li>
                       </ul>
                     </div>
                   </div>

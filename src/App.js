@@ -10,6 +10,11 @@ import Newly from './components/Buy/Newly'
 import Properties from './components/Buy/Properties'
 import Recently from './components/Buy/Recently'
 import Listed from './components/Buy/Listed'
+import Purchase from './components/Buy/Purchase';
+import Tour from './components/Buy/Tour';
+import Foreclosureinform from './components/Buy/ForeclosureInform'
+import Findforeclosure from './components/Buy/Findforeclosure'
+import Financial from './components/Buy/Financial';
 const App = () => {
   return (
     <>
@@ -24,6 +29,11 @@ const App = () => {
         <Route path="/properties" element={<Properties />} />
         <Route path="/recently" element={<Recently />} />
         <Route path="/listed" element={<Listed />} />
+        <Route path="/purchase" element={<Purchase />} />
+        <Route path="/tour" element={<Tour />} />
+        <Route path="/foreclosureinform" element={<Foreclosureinform />} />
+        <Route path="/findforeclosure" element={<Findforeclosure />} />
+        <Route path="/financial" element={<Financial />} />
     </Routes>
     </>
   )
