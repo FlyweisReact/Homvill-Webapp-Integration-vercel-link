@@ -79,6 +79,7 @@ import Navbar from '../Navbar';
 import finance from '../assets/finance.svg';
 import Footer from '../Footer';
 import money from '../assets/money.svg';
+import { useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
 
 const Financial = () => {
@@ -135,7 +136,7 @@ const Financial = () => {
         "Education",
         "Fire Fighter",
     ];
-
+    const navigate = useNavigate();
     const householdOptions = ["1", "2", "3", "4", "5", "6", "7", "8+"];
 
     return (
@@ -471,25 +472,26 @@ const Financial = () => {
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                        <button
-                                            className="w-1/2 border border-[#8A1538] text-[#8A1538] py-2 font-semibold rounded"
-                                            onClick={() => {
-                                                setShowModal3(true);
-                                                setShowModal4(false);
-                                            }}
-                                        >
-                                            Back
-                                        </button>
-                                        <button
-                                            className="w-1/2 bg-[#8A1538] hover:bg-[#72152e] text-white py-2 font-semibold rounded"
-                                            onClick={() => {
-                                                setShowModal4(false);
-                                                // setShowModal3(false);
-                                            }}
-                                        >
-                                            View Result
-                                        </button>
-                                    </div>
+                                    <button
+                                        className="w-1/2 border border-[#8A1538] text-[#8A1538] py-2 font-semibold rounded"
+                                        onClick={() => {
+                                            setShowModal3(true);
+                                            setShowModal4(false);
+                                        }}
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        className="w-1/2 bg-[#8A1538] hover:bg-[#72152e] text-white py-2 font-semibold rounded"
+                                        onClick={() => {
+                                            // setShowModal4(false);
+                                            // setShowModal3(false);
+                                            navigate('/eligibility')
+                                        }}
+                                    >
+                                        View Result
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )}

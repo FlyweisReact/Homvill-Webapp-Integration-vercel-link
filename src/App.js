@@ -15,6 +15,10 @@ import Tour from './components/Buy/Tour';
 import Foreclosureinform from './components/Buy/ForeclosureInform'
 import Findforeclosure from './components/Buy/Findforeclosure'
 import Financial from './components/Buy/Financial';
+import Eligibility from './components/Buy/Eligibility';
+import Review from './components/Sell/Review';
+import Market from  './components/Sell/Market';
+import Homeguide from  './components/Sell/Homeguide';
 const App = () => {
   return (
     <>
@@ -34,6 +38,10 @@ const App = () => {
         <Route path="/foreclosureinform" element={<Foreclosureinform />} />
         <Route path="/findforeclosure" element={<Findforeclosure />} />
         <Route path="/financial" element={<Financial />} />
+        <Route path="/eligibility" element={<Eligibility />} />
+        <Route path="/review" element={<Review />} />
+        <Route path="/market" element={<Market />} />
+        <Route path="/homeguide" element={<Homeguide />} />
     </Routes>
     </>
   )

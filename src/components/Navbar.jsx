@@ -63,7 +63,7 @@ const Navbar = () => {
   };
 
   return (
-    <div style={{zIndex:'20000'}} className="w-full font-sans">
+    <div style={{ zIndex: '20000' }} className="w-full font-sans">
       {/* Custom CSS for 850px breakpoint */}
       <style>
         {`
@@ -178,10 +178,10 @@ const Navbar = () => {
                     <div style={{ fontFamily: 'Roboto' }} className="">
                       <h4 className="font-semibold font-roboto mb-3 text-[20px]">Seller Resources</h4>
                       <ul className="text-[16px] font-roboto space-y-4">
-                        <li><a href="#" className="hover:text-[#8A1538]">Review available selling strategies</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">See your home’s HomVill Estimate</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Market property values</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Home seller's guide</a></li>
+                        <li><Link to={'/review'} className="hover:text-[#8A1538]">Review available selling strategies</Link></li>
+                        <li><Link to={'/review'} className="hover:text-[#8A1538]">See your home’s HomVill Estimate</Link></li>
+                        <li><Link to={'/market'} className="hover:text-[#8A1538]">Market property values</Link></li>
+                        <li><Link to={'/homeguide'} className="hover:text-[#8A1538]">Home seller's guide</Link></li>
                       </ul>
                     </div>
                     <div className="border-l border-gray-300 mx-10"></div>
@@ -330,20 +330,22 @@ const Navbar = () => {
                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                   <h4 className="font-semibold mb-2 text-[20px]">Homes for sale</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes for sale</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosures</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>For sale by owner</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Open house</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Newly constructed homes</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Properties coming to market</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Recently sold properties</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>All listed properties</a></li>
+                    <li><Link to={'/homeforsale'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes for sale</Link></li>
+                    <li><Link to={'/forclosure'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosures</Link></li>
+                    <li><Link to={'/forowner'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>For sale by owner</Link></li>
+                    <li><Link to={'/open'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Open house</Link></li>
+                    <li><Link to={'/newly'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Newly constructed homes</Link></li>
+                    <li><Link to={'/properties'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Properties coming to market</Link></li>
+                    <li><Link to={'/recently'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Recently sold properties</Link></li>
+                    <li><Link to={'/listed'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>All listed properties</Link></li>
+
                   </ul>
                   <h4 className="font-semibold mb-2 mt-4 text-[20px]">Resources</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home purchase guide</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosure information center</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Financial assistance for down payments</a></li>
+                     <li><Link to={'/purchase'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home purchase guide</Link></li>
+                        <li><Link to={'/foreclosureinform'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosure information center</Link></li>
+                        <li><Link to={'/financial'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Financial assistance for down payments</Link></li>
+                  
                   </ul>
                 </div>
               )}
@@ -360,10 +362,11 @@ const Navbar = () => {
                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                   <h4 className="font-semibold mb-3 text-[20px]">Seller Resources</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Review available selling strategies</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>See your home’s HomVill Estimate</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Market property values</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home seller's guide</a></li>
+                     <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Review available selling strategies</Link></li>
+                        <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>See your home’s HomVill Estimate</Link></li>
+                        <li><Link to={'/market'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Market property values</Link></li>
+                        <li><Link to={'/homeguide'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home seller's guide</Link></li>
+                   
                   </ul>
                   <h4 className="font-semibold mb-3 mt-4 text-[20px]">Property sale methods</h4>
                   <ul className="space-y-2">
