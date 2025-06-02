@@ -211,9 +211,9 @@ const Navbar = () => {
                     <div style={{ fontFamily: 'Roboto' }} className="">
                       <h4 className="font-semibold font-roboto mb-3 text-[20px]">Find a place to rent</h4>
                       <ul className="text-[16px] font-roboto space-y-4">
-                        <li><a href="#" className="hover:text-[#8A1538]">Apartments you can rent</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Homes available to rent</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Browse all rentals</a></li>
+                        <li><Link to={'/rent'} className="hover:text-[#8A1538]">Apartments you can rent</Link></li>
+                        <li><Link to={'/homeavailable'} className="hover:text-[#8A1538]">Homes available to rent</Link></li>
+                        <li><Link to={'/rent'} className="hover:text-[#8A1538]">Browse all rentals</Link></li>
                         <li><a href="#" className="hover:text-[#8A1538]">View all rental buildings</a></li>
                       </ul>
                     </div>
@@ -250,9 +250,9 @@ const Navbar = () => {
                       <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
                         <h4 className="font-semibold font-roboto mb-2 text-[20px]">Find your contractors</h4>
                         <ul className="text-[16px] font-roboto space-y-4">
-                          <li><a href="#" className="hover:text-[#8A1538]">Builders</a></li>
-                          <li><a href="#" className="hover:text-[#8A1538]">Renovation</a></li>
-                          <li><a href="#" className="hover:text-[#8A1538]">Contractors</a></li>
+                          <li><Link to={'/build'} className="hover:text-[#8A1538]">Builders</Link></li>
+                          <li><Link to={'/renovation'} className="hover:text-[#8A1538]">Renovation</Link></li>
+                          <li><Link to={'/build'} className="hover:text-[#8A1538]">Contractors</Link></li>
                           <li><a href="#" className="hover:text-[#8A1538]">Designers</a></li>
                         </ul>
                       </div>

@@ -19,6 +19,12 @@ import Eligibility from './components/Buy/Eligibility';
 import Review from './components/Sell/Review';
 import Market from  './components/Sell/Market';
 import Homeguide from  './components/Sell/Homeguide';
+import Sellersguide from  './components/Sell/Sellersguide';
+import Build from  './components/Contractors/Build';
+import Rent from './components/Rent/Rent'
+import HomeAvailable from './components/Rent/HomeAva'
+import Renovation from './components/Contractors/Renovation'
+
 const App = () => {
   return (
     <>
@@ -42,6 +48,11 @@ const App = () => {
         <Route path="/review" element={<Review />} />
         <Route path="/market" element={<Market />} />
         <Route path="/homeguide" element={<Homeguide />} />
+        <Route path="/sellersguide" element={<Sellersguide />} />
+        <Route path="/build" element={<Build />} />
+        <Route path="/rent" element={<Rent />} />
+        <Route path="/homeavailable" element={<HomeAvailable />} />
+        <Route path="/renovation" element={<Renovation />} />
     </Routes>
     </>
   )

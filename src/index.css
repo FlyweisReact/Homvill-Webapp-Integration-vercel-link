@@ -19,6 +19,16 @@
 
 
 
+/* Hide scrollbar but allow scrolling */
+.custom-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 .mulish-font {
   font-family: "Mulish", sans-serif;
   font-weight: 800;

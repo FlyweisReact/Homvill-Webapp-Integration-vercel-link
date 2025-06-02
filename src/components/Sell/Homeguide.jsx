@@ -21,7 +21,7 @@ const Purchase = () => {
             img: home1,
             label: 'FSBO',
             title: 'When to Lower the Price of Your House',
-            link: '/'
+            link: '/sellersguide'
         },
         {
             img: home2,
