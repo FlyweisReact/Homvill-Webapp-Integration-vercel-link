@@ -432,16 +432,13 @@ const Home = () => {
                     </div>
 
                     <div className="grid lg:grid-cols-2 gap-6 md:gap-4 sm:gap-3 xs:grid-cols-1">
-                        {/* Left Large Card */}
                         <div className="relative rounded-2xl overflow-hidden w-full">
-                            {/* Background Image */}
                             <img
                                 src={property}
                                 alt="Property"
                                 className="w-full h-full object-cover"
                             />
 
-                            {/* Badges */}
                             <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
                                 <span className="bg-[#1F4B43] text-white text-[10px] font-semibold px-3 py-1.5 rounded-full sm:text-[13px] sm:px-3 sm:py-2">
                                     FOR SALE

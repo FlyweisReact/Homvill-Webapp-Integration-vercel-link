@@ -1,6 +1,7 @@
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import logo from './assets/logo.svg'
+import { Link } from "react-router-dom";
 import arrow from './assets/arrow2.svg'
 const Footer = () => {
   return (
@@ -26,8 +27,8 @@ const Footer = () => {
         <div>
           <h3 className="font-bold text-lg mb-3 text-[#8A1538]">HomVill</h3>
           <ul className="space-y-2">
-            <li>About</li>
-            <li>Privacy Policy</li>
+            <li><Link to={'/about'}>About</Link></li>
+            <li><Link to={'/privacy'}>Privacy Policy</Link></li>
             <li>Terms and Conditions</li>
             <li>FAQ</li>
             <li>Careers</li>
@@ -39,7 +40,7 @@ const Footer = () => {
           <h3 className="font-bold text-lg mb-3 text-[#8A1538]">Quick Links</h3>
           <ul className="space-y-2">
             <li>Favorites</li>
-            <li>Subscriptions</li>
+            <li><Link to={'/subscriptions'}>Subscriptions</Link></li>
             <li>Seller's Dashboard</li>
             <li>Partner with HomVill</li>
             <li>Build Home</li>

@@ -24,6 +24,9 @@ import Build from  './components/Contractors/Build';
 import Rent from './components/Rent/Rent'
 import HomeAvailable from './components/Rent/HomeAva'
 import Renovation from './components/Contractors/Renovation'
+import About from './components/About/About';
+import Privacy from './components/Privacy'
+import Subscriptions from './components/Subscriptions'
 
 const App = () => {
   return (
@@ -53,6 +56,9 @@ const App = () => {
         <Route path="/rent" element={<Rent />} />
         <Route path="/homeavailable" element={<HomeAvailable />} />
         <Route path="/renovation" element={<Renovation />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/subscriptions" element={<Subscriptions />} />
     </Routes>
     </>
   )
