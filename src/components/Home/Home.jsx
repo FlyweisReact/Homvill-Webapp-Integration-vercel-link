@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import Navbar from '../Navbar'
 import Install from '../Install'
 import { FaSearch } from "react-icons/fa";
+import { useAuth } from '../Authprovider/AuthContext';
 import { FiHeart, FiArrowRight } from "react-icons/fi";
 import { BsPlayFill } from "react-icons/bs";
+import Navbar2 from '../Navbar2';
+import Install2 from '../Install2'
 import back from '../assets/back.jpg'
 import buy from '../assets/buy.svg'
 import sell from '../assets/sell.svg'
@@ -94,94 +97,25 @@ const Home = () => {
                 "We offer you free consultancy to get a loan for your new home.",
         },
     ];
+    const { isLoggedIn } = useAuth();
+
     return (
         <>
             {/* <Navbar />
             <Install /> */}
              <div className="fixed top-0 left-0 w-full z-50">
-    <Navbar />
-    <Install />
+    {/* <Navbar /> */}
+     {isLoggedIn ? <Navbar2 /> : <Navbar />}
+    {/* <Install /> */}
+     {/* {!isLoggedIn && <Install />} */}
+      {isLoggedIn ? <Install2 /> : <Install />}
   </div>
 
-  {/* Spacer: occupies the same height as fixed Navbar + Install */}
-  <div className="h-[320px] md:h-[220px]" /> {/* Adjust height accordingly */}
-            {/* <div
-                className="flex flex-col justify-between h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${back})` }}
-            >
-              
-                <div style={{ fontFamily: "Poppins" }} className="px-4 md:px-10 py-8">
-                    <h1 className="text-3xl md:text-[50px] font-semibold text-white leading-[1.2] ">
-                        The <span className="text-[#E7C873]">#1</span> site real estate <br className="hidden md:block" />
-                        professionals trust*
-                    </h1>
-                    <p className="text-white text-sm md:text-base mt-8">
-                        From as low as <span className="text-yellow-400 font-semibold">$10</span> per day with limited time offer discounts.
-                    </p>
+  
+  {/* <div className="h-[320px] md:h-[220px]" />  */}
+        <div className={`${isLoggedIn ? 'h-[100px]' : 'h-[320px] md:h-[220px]'}`} />
 
-              
-                    <a href="#" className="text-sm text-[#E7C873]  mt-8 inline-block">
-                        Browse More Properties
-                    </a>
-
-                    <div className="mt-8 flex flex-col w-full md:w-[540px]">
-                        <div className="flex items-end">
-                            {tabs.map((item) => (
-                                <button
-                                    key={item}
-                                    onClick={() => setActiveTab(item)}
-                                    className={`px-4 text-sm font-medium rounded-t-md transition-all duration-200 ${activeTab === item
-                                        ? "bg-red-800 text-white py-2"
-                                        : "bg-white text-black border border-gray-300 py-0"
-                                        }`}
-                                >
-                                    {item}
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className="w-[540px] bg-white border border-t-0 border-gray-300 rounded-b-xl flex items-center px-2 py-2">
-                            <input
-                                type="text"
-                                placeholder="Enter your location"
-                                className="w-full px-3 py-2 text-sm outline-none text-gray-700 placeholder-gray-400"
-                            />
-                            <button className="bg-red-800 p-2 rounded-md">
-                                <svg
-                                    className="w-5 h-5 text-white"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div style={{ fontFamily: "Poppins" }} className="bg-[#8A1538] rounded-tr-3xl px-6 py-4 w-full max-w-3xl text-white text-left flex flex-col md:flex-row justify-between">
-                    <div className="mb-4 md:mb-0 md:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">680</h2>
-                        <p className="text-xs md:text-sm font-light">Award Winning</p>
-                    </div>
-                    <div className="mb-4 md:mb-0 md:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">8K+</h2>
-                        <p className="text-xs md:text-sm font-light">Happy Customer</p>
-                    </div>
-                    <div className="md:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">500+</h2>
-                        <p className="text-xs md:text-sm font-light">Property Ready</p>
-                    </div>
-                </div>
-
-            </div> */}
+          
             <div
                 className="flex flex-col justify-between h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${back})` }}
@@ -217,7 +151,7 @@ const Home = () => {
                             ))}
                         </div>
 
-                        <div className="w-full md:w-[540px] bg-white border border-t-0 border-gray-300 rounded-b-xl flex flex-col sm:flex-row items-stretch sm:items-center px-2 py-2">
+                        <div className="w-full md:w-[540px] bg-white border border-t-0 border-gray-300 rounded-b-xl flex flex-row sm:flex-row items-stretch sm:items-center px-2 py-2">
                             <input
                                 type="text"
                                 placeholder="Enter your location"

@@ -27,7 +27,11 @@ import Renovation from './components/Contractors/Renovation'
 import About from './components/About/About';
 import Privacy from './components/Privacy'
 import Subscriptions from './components/Subscriptions'
-
+import Signin from './components/Signin/Signin';
+import Password from './components/Signin/Password';
+import Signup from './components/Signup/Signup';
+import Forgot from './components/Signin/Forgot'
+import Terms from './components/Terms'
 const App = () => {
   return (
     <>
@@ -59,6 +63,11 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/subscriptions" element={<Subscriptions />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/password" element={<Password />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot" element={<Forgot />} />
+        <Route path="/terms" element={<Terms />} />
     </Routes>
     </>
   )

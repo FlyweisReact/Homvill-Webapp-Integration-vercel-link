@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaClock, FaBars, FaTimes } from 'react-icons/fa';
 import logo from './assets/logo.svg';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [showBuyDropdown, setShowBuyDropdown] = useState(false);
@@ -61,7 +61,7 @@ const Navbar = () => {
     setShowRentDropdown(false);
     setIsOpen(false);
   };
-
+ const navigate = useNavigate();
   return (
     <div style={{ zIndex: '20000' }} className="w-full font-sans">
       {/* Custom CSS for 850px breakpoint */}
@@ -308,7 +308,9 @@ const Navbar = () => {
                 )}
               </div>
             </div>
-            <button className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b]">
+            <button onClick={() => {
+                    navigate('/signin');
+                  }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b]">
               Login
             </button>
           </div>
@@ -456,7 +458,10 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <button className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b] mx-4 text-sm w-fit" onClick={toggleMobileMenu}>
+            <button  onClick={() => {
+    toggleMobileMenu();
+    navigate('/signup');
+  }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b] mx-4 text-sm w-fit">
               Login
             </button>
           </div>

@@ -1,44 +1,4 @@
-// import React from "react";
-// import scrollIcon from "./assets/scroll.svg"; 
-// import bg from './assets/bg7.svg'
-// import Navbar from "./Navbar";
-// const HeroSection = () => {
-//     return (
-//         <>
-//             <Navbar />
-//             <div
-//                 className="w-full bg-cover bg-center text-white h-[500px] px-4 relative"
-//                 style={{ backgroundImage: `url(${bg})`, fontFamily: 'Poppins' }}
-//             >
-//                 <div className="absolute inset-0 bg-[#00386166] bg-opacity-60"></div>
-//                 <div className=" mx-auto text-center space-y-6">
-//                     <div className='relative z-10 text-start pt-10 ps-4 md:ps-8'>
-//                         <h2 className="text-2xl md:text-[48px] font-semibold leading-[1.2] mulish-font">
-//                             Learn how we collect, use, and protect your <br /> personal information to ensure your privacy.
-//                         </h2>
-//                         <p className="mt-4 md:text-[28px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 
-//                         {/* Search Input */}
-
-//                     </div>
-
-
-//                     <div className="relative z-10 text-center space-y-6 pt-24">
-//                         <div className="text-3xl md:text-[18px] font-bold mulish-font">
-//                             Scroll Down
-//                         </div>
-//                         <img src={scrollIcon} className="inline-flex items-center text-white text-sm font-semibold px-3 py-1 rounded-full mx-auto">
-
-//                         </img>
-//                     </div>
-
-//                 </div>
-//             </div>
-//         </>
-//     );
-// };
-
-// export default HeroSection;
 import React from "react";
 import scrollIcon from "./assets/scroll.svg";
 import bg from './assets/bg7.svg';
