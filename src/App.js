@@ -32,6 +32,8 @@ import Password from './components/Signin/Password';
 import Signup from './components/Signup/Signup';
 import Forgot from './components/Signin/Forgot'
 import Terms from './components/Terms'
+import Furniture from './components/Furniture/Furniture';
+import SellFurniture from './components/Furniture/SellFurniture'
 const App = () => {
   return (
     <>
@@ -68,6 +70,8 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/furniture" element={<Furniture />} />
+        <Route path="/sellfurniture" element={<SellFurniture />} />
     </Routes>
     </>
   )

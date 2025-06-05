@@ -848,7 +848,7 @@ const Navbar = () => {
                             )}
                         </div>
 
-                        <a style={{ fontFamily: 'Poppins' }} href="#">Furniture</a>
+                        <Link to={'/furniture'} style={{ fontFamily: 'Poppins' }} >Furniture</Link>
                         <a style={{ fontFamily: 'Poppins' }} href="#">Partner with HomeVill</a>
                     </div>
 
