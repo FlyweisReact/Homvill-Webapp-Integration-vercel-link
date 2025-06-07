@@ -48,7 +48,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 const Furniture = () => {
     const categories = [
-        { icon: LivingRoomIcon, label: "Living Room" },
+        { icon: LivingRoomIcon, label: "Living Room",link:'/living' },
         { icon: BedroomIcon, label: "Bedroom" },
         { icon: DiningIcon, label: "Dining & Kitchen" },
         { icon: KidsIcon, label: "Kids & Teens" },
@@ -193,6 +193,29 @@ const Furniture = () => {
     ];
     return (
         <>
+            <style>
+                {`
+          .swiper-button-next,
+          .swiper-button-prev {
+            color: red !important;
+            background-color: white;
+            padding: 12px;
+            border-radius: 9999px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
+            height: auto;
+          }
+
+          .swiper-button-next::after,
+          .swiper-button-prev::after {
+            font-size: 16px !important;
+            font-weight: bold;
+          }
+
+        
+          }
+        `}
+            </style>
             <Navbar2 />
             <div className="font-[Poppins] ">
                 {/* Top Content */}
@@ -208,8 +231,8 @@ const Furniture = () => {
                             ahead of the style game
                         </p>
                         <button onClick={() => {
-                    navigate('/sellfurniture');
-                  }} className="mt-6 w-full sm:w-auto px-6 sm:px-10 md:px-20 py-2 sm:py-3 bg-[#8A1538] text-white text-base sm:text-lg md:text-[22px] rounded-md transition-all lg:mt-24">
+                            navigate('/sellfurniture');
+                        }} className="mt-6 w-full sm:w-auto px-6 sm:px-10 md:px-20 py-2 sm:py-3 bg-[#8A1538] text-white text-base sm:text-lg md:text-[22px] rounded-md transition-all lg:mt-24">
                             Click Here To Sell Your Furniture
                         </button>
                     </div>
@@ -269,7 +292,7 @@ const Furniture = () => {
                 </div>
 
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+                {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
                     {categories.map((item, index) => (
                         <div
                             key={index}
@@ -281,10 +304,28 @@ const Furniture = () => {
                             </p>
                         </div>
                     ))}
+                </div> */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+                    {categories.map((item, index) => (
+                        <Link to={item.link}
+                            key={index}
+                            className="group w-full max-w-[170px] h-[195px] sm:max-w-[170px] flex flex-col items-center p-2 pt-4 border border-[#00000059] border-[3px] rounded transition bg-white hover:bg-[#8A1538] hover:border-transparent hover:shadow-md"
+                        >
+                            <img
+                                src={item.icon}
+                                alt={item.label}
+                                className="w-auto h-[101px] mb-8 transition duration-300 group-hover:brightness-0 group-hover:invert"
+                            />
+                            <p className="text-center text-[14px] lg:text-[18px] font-medium text-gray-700 group-hover:text-white transition">
+                                {item.label}
+                            </p>
+                        </Link>
+                    ))}
                 </div>
+
             </div>
             <FurnitureSlider />
-            <div className="max-w-7xl mx-auto px-4 py-12">
+            <div className=" mx-10 px-4 py-12">
                 <h2 className="text-2xl md:text-[36px] mulish-font font-bold text-gray-800 mb-1">
                     Our trusted Furniture Partners
                 </h2>
@@ -337,7 +378,7 @@ const Furniture = () => {
             </div>
             <Sellers />
             <ShopSlider />
-            <div className="max-w-7xl mx-auto px-4 pb-12">
+            <div className=" mx-12 px-4 pb-12">
                 <h2 className="text-xl md:text-[36px] mulish-font font-semibold text-[#1A1A1A] mb-6">
                     Trending Categories
                 </h2>
@@ -362,51 +403,51 @@ const Furniture = () => {
                     ))}
                 </div>
             </div>
-             <div className="px-4 md:px-10 py-8  mx-auto">
-                        <h2 className="text-xl md:text-[36px] mulish-font text-[#211E22] font-semibold text-gray-800 mb-4">Exclusive deals</h2>
-                        <Swiper
-                            modules={[Navigation]}
-                            navigation
-                            spaceBetween={16}
-                            slidesPerView={1.5}
-                            breakpoints={{
-                                640: { slidesPerView: 2.5 },
-                                768: { slidesPerView: 3.5 },
-                                1024: { slidesPerView: 4.5 },
-                                1280: { slidesPerView: 5.5 },
-                            }}
-                        >
-                            {products.map((item) => (
-                                <SwiperSlide key={item.id}>
-                                    <div className=" overflow-hidden bg-white">
-                                        <div className="relative">
-                                            <img src={item.img} alt={item.title} className="w-full h-40 rounded-lg object-cover" />
-                                            <div style={{fontFamily:'Poppins'}} className="absolute bottom-0 left-0 bg-[#7a0e2e] underline text-white text-xs px-2 py-[2px] rounded">
-                                                {item.tag}
-                                            </div>
-                                            <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
-                                                <img src={heart} className="w-5 h-5" />
-                                            </div>
-                                            <div className=" z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-12">
-                                                <img src={arrow} className="w-5 h-5" />
-                                            </div>
-            
-                                        </div>
-                                        <div style={{fontFamily:'Poppins'}} className="pt-2">
-                                            <p className="text-sm text-[#211E22] line-clamp-2 h-10">{item.title}</p>
-                                            <div className="mt-2">
-                                                <span className="text-[#990E35] font-semibold mr-2">{item.price}</span>
-                                                {item.oldPrice && (
-                                                    <span className="line-through text-sm text-gray-500">{item.oldPrice}</span>
-                                                )}
-                                            </div>
-                                        </div>
+            <div className="px-4 md:px-10 py-8 mx-6">
+                <h2 className="text-xl md:text-[36px] mulish-font text-[#211E22] font-semibold text-gray-800 mb-4">Exclusive deals</h2>
+                <Swiper
+                    modules={[Navigation]}
+                    navigation
+                    spaceBetween={16}
+                    slidesPerView={1.5}
+                    breakpoints={{
+                        640: { slidesPerView: 2.5 },
+                        768: { slidesPerView: 3.5 },
+                        1024: { slidesPerView: 4.5 },
+                        1280: { slidesPerView: 5.5 },
+                    }}
+                >
+                    {products.map((item) => (
+                        <SwiperSlide key={item.id}>
+                            <div className=" overflow-hidden bg-white">
+                                <div className="relative">
+                                    <img src={item.img} alt={item.title} className="w-full h-40 rounded-lg object-cover" />
+                                    <div style={{ fontFamily: 'Poppins' }} className="absolute bottom-0 left-0 bg-[#7a0e2e] underline text-white text-xs px-2 py-[2px] rounded">
+                                        {item.tag}
                                     </div>
-                                </SwiperSlide>
-                            ))}
-                        </Swiper>
-                    </div>
-                    <Footer/>
+                                    <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
+                                        <img src={heart} className="w-5 h-5" />
+                                    </div>
+                                    <div className=" z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-12">
+                                        <img src={arrow} className="w-5 h-5" />
+                                    </div>
+
+                                </div>
+                                <div style={{ fontFamily: 'Poppins' }} className="pt-2">
+                                    <p className="text-sm text-[#211E22] line-clamp-2 h-10">{item.title}</p>
+                                    <div className="mt-2">
+                                        <span className="text-[#990E35] font-semibold mr-2">{item.price}</span>
+                                        {item.oldPrice && (
+                                            <span className="line-through text-sm text-gray-500">{item.oldPrice}</span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
+            <Footer />
         </>
     )
 }

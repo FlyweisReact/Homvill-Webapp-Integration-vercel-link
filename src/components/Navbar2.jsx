@@ -849,7 +849,7 @@ const Navbar = () => {
                         </div>
 
                         <Link to={'/furniture'} style={{ fontFamily: 'Poppins' }} >Furniture</Link>
-                        <a style={{ fontFamily: 'Poppins' }} href="#">Partner with HomeVill</a>
+                         <Link to={'/partner'}  style={{ fontFamily: 'Poppins' }} >Partner with HomeVill</Link>
                     </div>
 
                     {/* Right-side: Language & Login - Desktop */}

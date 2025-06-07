@@ -34,6 +34,8 @@ import Forgot from './components/Signin/Forgot'
 import Terms from './components/Terms'
 import Furniture from './components/Furniture/Furniture';
 import SellFurniture from './components/Furniture/SellFurniture'
+import LivingRoom from './components/Furniture/LivingRoom/LivingRoom';
+import Partner from './components/Partner/Partner';
 const App = () => {
   return (
     <>
@@ -72,6 +74,8 @@ const App = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/furniture" element={<Furniture />} />
         <Route path="/sellfurniture" element={<SellFurniture />} />
+        <Route path="/living" element={<LivingRoom />} />
+        <Route path="/partner" element={<Partner />} />
     </Routes>
     </>
   )

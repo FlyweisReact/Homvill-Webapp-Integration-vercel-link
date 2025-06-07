@@ -35,7 +35,9 @@ const Midpage = () => {
   return (
     <div style={{fontFamily: 'Poppins'}} className="flex flex-col items-center  py-8  w-full min-h-[500px]">
 
-      <div className="relative w-[1200px] max-w-[95vw] h-96 rounded-lg overflow-hidden shadow-lg lg:h-96 md:h-80 sm:h-64 xs:h-56">
+      {/* <div className="relative w-[1200px] max-w-[95vw] h-96 rounded-lg overflow-hidden shadow-lg lg:h-96 md:h-80 sm:h-64 xs:h-56"> */}
+<div className="relative w-[91%] h-96 rounded-lg overflow-hidden shadow-lg mx-auto">
+
         {/* Background Slider */}
         <div className="absolute inset-0">
           {images.map((image, index) => (

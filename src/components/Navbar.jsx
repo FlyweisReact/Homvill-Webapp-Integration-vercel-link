@@ -271,7 +271,7 @@ const Navbar = () => {
             </div>
 
             <Link to={'/signin'} style={{ fontFamily: 'Poppins' }}>Furniture</Link>
-            <a style={{ fontFamily: 'Poppins' }} href="#">Partner with HomeVill</a>
+             <Link to={'/signin'}    style={{ fontFamily: 'Poppins' }} >Partner with HomeVill</Link>
           </div>
 
           {/* Right-side: Language & Login - Desktop */}

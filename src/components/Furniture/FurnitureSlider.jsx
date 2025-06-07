@@ -66,6 +66,30 @@ const products = [
 
 const RecommendedSlider = () => {
     return (
+        <>
+        <style>
+        {`
+          .swiper-button-next,
+          .swiper-button-prev {
+            color: red !important;
+            background-color: white;
+            padding: 12px;
+            border-radius: 9999px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: auto;
+            height: auto;
+          }
+
+          .swiper-button-next::after,
+          .swiper-button-prev::after {
+            font-size: 16px !important;
+            font-weight: bold;
+          }
+
+        
+          }
+        `}
+      </style>
         <div className="px-4 md:px-10 py-8  mx-auto">
             <h2 className="text-xl md:text-[36px] mulish-font text-[#211E22] font-semibold text-gray-800 mb-4">Recommended for you</h2>
             <Swiper
@@ -109,7 +133,10 @@ const RecommendedSlider = () => {
                     </SwiperSlide>
                 ))}
             </Swiper>
+          
+
         </div>
+        </>
     );
 };
 
