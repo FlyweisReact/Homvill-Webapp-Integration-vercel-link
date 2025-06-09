@@ -368,7 +368,9 @@ const Furniture = () => {
                                 <p className="text-[20px] text-[#000000]">
                                     Established in {partner.established}
                                 </p>
-                                <button className="mt-3 px-6 py-2 text-[22px] font-medium text-white bg-[#7a0e2e] rounded-md">
+                                <button onClick={() => {
+                    navigate('/viewshop');
+                  }} className="mt-3 px-6 py-2 text-[22px] font-medium text-white bg-[#7a0e2e] rounded-md">
                                     View Shop
                                 </button>
                             </div>

@@ -94,11 +94,13 @@ import partner3 from '../assets/partner5.svg'
 import partner4 from '../assets/partner6.svg'
 import partner5 from '../assets/partner7.svg'
 import Footer from '../Footer'
+import { Link } from 'react-router-dom'
 const Partner = () => {
     const industries = [
         {
             title: "I am a seller",
             image: guy, 
+            link: '/sell'
         },
         {
             title: "I'm a property manager",
@@ -145,7 +147,7 @@ const Partner = () => {
 
                 <div className="grid grid-cols-1 px-4 xs:px-6 sm:px-12 md:px-12 lg:px-12 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-6">
                     {industries.map((industry, index) => (
-                        <div key={index} className="border rounded-xl overflow-hidden shadow-sm bg-white flex flex-col">
+                        <Link to={industry.link} key={index} className="border rounded-xl overflow-hidden shadow-sm bg-white flex flex-col">
                             <img 
                                 src={industry.image} 
                                 alt={industry.title} 
@@ -162,7 +164,7 @@ const Partner = () => {
                                     Get Started
                                 </button>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>

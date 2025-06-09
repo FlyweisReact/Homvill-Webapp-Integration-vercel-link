@@ -4,6 +4,7 @@ import bg from '../../assets/bg8.svg'
 import { FaArrowLeft } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 import heart from '../../assets/heart.svg'
+import { Link } from 'react-router-dom';
 import arrow from '../../assets/arrow.svg'
 import { FaHeart, FaEye } from 'react-icons/fa';
 import sofa from '../../assets/sofa.svg'
@@ -43,7 +44,8 @@ const LivingRoom = () => {
             image: sofa,
             price: '$70.00',
             rating: 4,
-            originalPrice: 100.0
+            originalPrice: 100.0,
+            link : '/viewfurniture'
         },
         {
             id: 2,
@@ -369,7 +371,7 @@ const LivingRoom = () => {
             </div> */}
             <div className="p-3 min-[450px]:p-4  sm:p-6 grid grid-cols-1 min-[450px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 md:grid-cols-2 gap-6 min-[450px]:gap-8 sm:gap-12 px-9">
                 {products.map((product) => (
-                    <div key={product.id} className="bg-white rounded-2xl transition-all duration-300 relative overflow-hidden">
+                    <Link to={product.link} key={product.id} className="bg-white rounded-2xl transition-all duration-300 relative overflow-hidden">
                         <div className="relative">
                             <img src={product.image} alt={product.title} className="w-full h-32 min-[450px]:h-40 sm:h-[176px] object-cover p-2 rounded-3xl" />
                             <div className="z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
@@ -406,7 +408,7 @@ const LivingRoom = () => {
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
             <div className="flex items-center justify-center pb-4 space-x-4 text-sm text-black">
@@ -443,30 +445,30 @@ const LivingRoom = () => {
                     <FiChevronRight />
                 </button>
             </div>
-              <div className="p-6 md:p-12  mx-2 text-[#1A1A1A]" style={{ fontFamily: 'Poppins' }}>
-      {/* Main Heading */}
-      <h2 className="text-2xl md:text-3xl font-semibold mb-4">
-        Lorem Ipsum is simply dummy text
-      </h2>
+            <div className="p-6 md:p-12  mx-2 text-[#1A1A1A]" style={{ fontFamily: 'Poppins' }}>
+                {/* Main Heading */}
+                <h2 className="text-2xl md:text-3xl font-semibold mb-4">
+                    Lorem Ipsum is simply dummy text
+                </h2>
 
-      {/* Main Paragraph */}
-      <p className="text-gray-600 text-sm md:text-base mb-8 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
+                {/* Main Paragraph */}
+                <p className="text-gray-600 text-sm md:text-base mb-8 leading-relaxed">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
 
-      {/* Numbered Sections */}
-      {[1, 2, 3].map((num) => (
-        <div key={num} className="mb-6">
-          <h3 className="font-semibold text-sm md:text-base mb-1">
-            <span className="font-bold">{num}. </span>Lorem Ipsum is simply dummy text
-          </h3>
-          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
-          </p>
-        </div>
-      ))}
-    </div>
-    <Footer/>
+                {/* Numbered Sections */}
+                {[1, 2, 3].map((num) => (
+                    <div key={num} className="mb-6">
+                        <h3 className="font-semibold text-sm md:text-base mb-1">
+                            <span className="font-bold">{num}. </span>Lorem Ipsum is simply dummy text
+                        </h3>
+                        <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                        </p>
+                    </div>
+                ))}
+            </div>
+            <Footer />
 
         </>
     )

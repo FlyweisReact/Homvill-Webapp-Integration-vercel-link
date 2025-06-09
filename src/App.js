@@ -36,6 +36,11 @@ import Furniture from './components/Furniture/Furniture';
 import SellFurniture from './components/Furniture/SellFurniture'
 import LivingRoom from './components/Furniture/LivingRoom/LivingRoom';
 import Partner from './components/Partner/Partner';
+import ViewFurniture from './components/Furniture/ViewFurniture'
+import BuyFurniture from './components/Furniture/BuyFurniture'
+import Change from './components/Furniture/Change'
+import ViewShop from './components/Furniture/ViewShop';
+import Seller2 from './components/Partner/Seller2';
 const App = () => {
   return (
     <>
@@ -76,6 +81,11 @@ const App = () => {
         <Route path="/sellfurniture" element={<SellFurniture />} />
         <Route path="/living" element={<LivingRoom />} />
         <Route path="/partner" element={<Partner />} />
+        <Route path="/viewfurniture" element={<ViewFurniture />} />
+        <Route path="/buyfurniture" element={<BuyFurniture />} />
+        <Route path="/change" element={<Change />} />
+        <Route path="/viewshop" element={<ViewShop />} />
+        <Route path="/sell" element={<Seller2 />} />
     </Routes>
     </>
   )

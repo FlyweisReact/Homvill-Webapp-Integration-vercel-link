@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import heart from '../assets/heart.svg'
 import arrow from '../assets/arrow.svg'
+import { Link } from 'react-router-dom';
 import comfort from '../assets/comfort.png'
 import comfort2 from '../assets/comfort.jpg'
 import comfort3 from '../assets/comfort2.png'
@@ -21,6 +22,7 @@ const products = [
         title: "ComforPedic Loft from the Beautyrest 14'' Firm Gel...",
         price: "$449.99",
         oldPrice: "$1,683.99",
+        link:'/viewfurniture'
     },
     {
         id: 2,
@@ -105,7 +107,8 @@ const RecommendedSlider = () => {
                 }}
             >
                 {products.map((item) => (
-                    <SwiperSlide key={item.id}>
+                    <SwiperSlide  key={item.id}>
+                        <Link to={item.link}>
                         <div className=" overflow-hidden bg-white">
                             <div className="relative">
                                 <img src={item.img} alt={item.title} className="w-full h-40 rounded-lg object-cover" />
@@ -130,6 +133,7 @@ const RecommendedSlider = () => {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     </SwiperSlide>
                 ))}
             </Swiper>
