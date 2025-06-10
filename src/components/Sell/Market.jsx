@@ -1,14 +1,18 @@
 import React from 'react';
 import bgImage from '../assets/bg4.svg'
 import { FaSearch, FaArrowUp } from 'react-icons/fa';
+import { useAuth } from '../Authprovider/AuthContext';
 import Navbar from '../Navbar';
+import Navbar2 from '../Navbar2';
 import Map from '../assets/map.svg'; // Adjust path if needed
 import Footer from '../Footer'
 
 const HousingMarket = () => {
+    const { isLoggedIn } = useAuth();
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
+            {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 className="w-full bg-cover bg-center text-white h-[500px] px-4"
                 style={{ backgroundImage: `url(${bgImage})`, fontFamily: 'Poppins' }}

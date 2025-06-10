@@ -41,6 +41,15 @@ import BuyFurniture from './components/Furniture/BuyFurniture'
 import Change from './components/Furniture/Change'
 import ViewShop from './components/Furniture/ViewShop';
 import Seller2 from './components/Partner/Seller2';
+import Manager from './components/Partner/Manager';
+import Landlord from './components/Partner/Landlord';
+import Detail from './components/Partner/Detail';
+import Homefeature from './components/Partner/Homefeature';
+import Improvement from './components/Partner/Improvement';
+import Listing from './components/Partner/Listing';
+import Description from './components/Partner/Description';
+import Photos from './components/Partner/Photos';
+import Video from './components/Partner/Video';
 const App = () => {
   return (
     <>
@@ -86,6 +95,15 @@ const App = () => {
         <Route path="/change" element={<Change />} />
         <Route path="/viewshop" element={<ViewShop />} />
         <Route path="/sell" element={<Seller2 />} />
+        <Route path="/manager" element={<Manager />} />
+        <Route path="/land" element={<Landlord />} />
+        <Route path="/details" element={<Detail />} />
+        <Route path="/homefeature" element={<Homefeature />} />
+        <Route path="/improvement" element={<Improvement />} />
+        <Route path="/listing" element={<Listing />} />
+        <Route path="/description" element={<Description />} />
+        <Route path="/photos" element={<Photos />} />
+        <Route path="/video" element={<Video />} />
     </Routes>
     </>
   )

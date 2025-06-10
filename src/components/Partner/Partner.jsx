@@ -105,10 +105,12 @@ const Partner = () => {
         {
             title: "I'm a property manager",
             image: partner,
+            link: '/manager'
         },
         {
             title: "I'm a landlord",
             image: partner2,
+            link: '/land'
         },
         {
             title: "I'm a lender or loan officer",

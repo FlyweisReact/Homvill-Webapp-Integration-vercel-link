@@ -1,6 +1,7 @@
 import React from 'react'
 import bgImage from '../assets/sell2.svg'
 import { FaSearch } from "react-icons/fa";
+import { useAuth } from '../Authprovider/AuthContext';
 import Footer from '../Footer';
 import woman from '../assets/woman.svg'
 import saving from '../assets/saving.svg'
@@ -10,6 +11,7 @@ import right from '../assets/right.jpg'
 import left from '../assets/left1.jpg'
 import PropertiesSlider from './PropertiesSlider'
 import Navbar from '../Navbar'
+import Navbar2 from '../Navbar2'
 const Review = () => {
   const cards = [
     {
@@ -28,9 +30,11 @@ const Review = () => {
       desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     }
   ];
+   const { isLoggedIn } = useAuth();
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+       {isLoggedIn ? <Navbar2 /> : <Navbar />}
       <div
         className="w-full h-[400px] bg-cover bg-center flex items-center px-6 sm:px-12"
         style={{

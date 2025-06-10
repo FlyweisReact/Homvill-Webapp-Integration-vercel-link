@@ -6,6 +6,7 @@ import { FaSearch } from 'react-icons/fa';
 import heart from '../../assets/heart.svg'
 import { Link } from 'react-router-dom';
 import arrow from '../../assets/arrow.svg'
+import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaEye } from 'react-icons/fa';
 import sofa from '../../assets/sofa.svg'
 import sofa1 from '../../assets/sofa1.jpg'
@@ -30,6 +31,7 @@ const LivingRoom = () => {
         'Recliners & Chairs',
         'Cabinets & Storage',
     ];
+     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 10;
     const handleClick = (page) => {
@@ -252,7 +254,7 @@ const LivingRoom = () => {
                 </div>
             </div>
             <div style={{ fontFamily: 'Poppins' }} className="flex items-center gap-6 bg-[#ffe9f0] py-3 px-6 md:px-12 overflow-x-auto whitespace-nowrap">
-                <button className="text-[#8A1538] text-lg p-2">
+                <button  onClick={() => navigate(-1)}  className="text-[#8A1538] text-lg p-2">
                     <FaArrowLeft />
                 </button>
                 {tabs.map((tab, index) => (
