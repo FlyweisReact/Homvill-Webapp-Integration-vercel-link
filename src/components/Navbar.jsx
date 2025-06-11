@@ -188,7 +188,7 @@ const Navbar = () => {
                     <div style={{ fontFamily: 'Roboto' }} className="w-1/3">
                       <h4 className="font-semibold mb-3 text-[20px]">Property sale methods</h4>
                       <ul className="text-[16px] space-y-2">
-                        <li><a href="#" className="hover:text-[#8A1538]">Post for sale</a></li>
+                        <li><Link to={'/signin'} href="#" className="hover:text-[#8A1538]">Post for sale</Link></li>
                       </ul>
                     </div>
                   </div>
@@ -232,7 +232,7 @@ const Navbar = () => {
               )}
             </div>
 
-            <a style={{ fontFamily: 'Poppins' }} href="#">List for Rent</a>
+            <Link to={'/listrent'} style={{ fontFamily: 'Poppins' }} >List for Rent</Link>
 
             {/* Contractors with dropdown */}
             <div

@@ -1,9 +1,20 @@
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import logo from './assets/logo.svg'
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import arrow from './assets/arrow2.svg'
+import { useAuth } from "./Authprovider/AuthContext";
 const Footer = () => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+   const handleClick = (targetPath) => {
+    if (isLoggedIn) {
+      navigate(targetPath); // Go to target path
+    } else {
+      navigate('/signin'); // Redirect to sign-in
+    }
+  };
   return (
     <footer className="bg-[#FFF5F8] text-sm text-gray-800">
       <div style={{fontFamily:'Poppins'}} className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -30,8 +41,8 @@ const Footer = () => {
             <li><Link to={'/about'}>About</Link></li>
             <li><Link to={'/privacy'}>Privacy Policy</Link></li>
             <li><Link to={'/terms'}>Terms and Conditions</Link></li>
-            <li>FAQ</li>
-            <li>Careers</li>
+            <li><Link to={'/faq'}>FAQ</Link></li>
+            <li><Link to={'/career'}>Career</Link></li>
           </ul>
         </div>
 
@@ -39,11 +50,24 @@ const Footer = () => {
         <div>
           <h3 className="font-bold text-lg mb-3 text-[#8A1538]">Quick Links</h3>
           <ul className="space-y-2">
-            <li>Favorites</li>
+            <li><Link to={'/fav'}>Favorites</Link></li>
             <li><Link to={'/subscriptions'}>Subscriptions</Link></li>
-            <li>Seller's Dashboard</li>
-            <li>Partner with HomVill</li>
-            <li>Build Home</li>
+            <li><Link to={'/selldash'}>Seller's Dashboard</Link></li>
+            {/* <li>Partner with HomVill</li>
+            <li>Build Home</li> */}
+            <li
+        className="cursor-pointer"
+        onClick={() => handleClick('/partner')}
+      >
+        Partner with HomVill
+      </li>
+      <li
+        className="cursor-pointer"
+        onClick={() => handleClick('/contract')}
+      >
+        Build Home
+      </li>
+    
           </ul>
         </div>
 

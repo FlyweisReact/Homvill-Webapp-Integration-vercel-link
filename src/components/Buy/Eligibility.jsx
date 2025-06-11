@@ -162,6 +162,8 @@ import React, { useState } from 'react';
 import eligible from '../assets/eligibility.svg';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 const data = [
   {
     program: 'City Of Dallas Homebuyer Assistance Program (DHAP)',
@@ -237,10 +239,11 @@ const ProgramTable = () => {
   const startIndex = (page - 1) * rowsPerPage;
   const currentData = data.slice(startIndex, startIndex + rowsPerPage);
   const totalPages = Math.ceil(data.length / rowsPerPage);
-
+ const { isLoggedIn } = useAuth();
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+       {isLoggedIn ? <Navbar2 /> : <Navbar />}
       <div
         className="w-full bg-cover bg-center text-white py-4 px-4 sm:py-8 sm:px-8 lg:py-12 lg:px-12 text-start relative"
         style={{ backgroundImage: `url(${eligible})` }}

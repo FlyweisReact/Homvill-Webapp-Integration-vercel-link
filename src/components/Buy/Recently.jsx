@@ -3,6 +3,8 @@ import { FaSearch } from "react-icons/fa";
 import Navbar from '../Navbar';
 import Map from './Map';
 import Cards from './Cards';
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
 
@@ -85,11 +87,12 @@ const HomeForSale = () => {
         }
         return "bg-white text-black border border-gray-300";
     };
-
+const { isLoggedIn } = useAuth();
     return (
         <> 
         
-            <Navbar />
+            {/* <Navbar /> */}
+             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-4 bg-white shadow-sm rounded-md border w-full mx-auto"

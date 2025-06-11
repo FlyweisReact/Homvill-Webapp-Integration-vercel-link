@@ -115,14 +115,17 @@ const Partner = () => {
         {
             title: "I'm a lender or loan officer",
             image: partner3,
+            link: '/lenderloan'
         },
         {
             title: "I am a Remodeling Company",
             image: partner4,
+            link: '/remodeling'
         },
         {
             title: "I am a brand or local advertiser",
             image: partner5,
+            link: '/brand'
         },
     ];
     return (

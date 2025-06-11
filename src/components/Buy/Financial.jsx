@@ -81,7 +81,8 @@ import Footer from '../Footer';
 import money from '../assets/money.svg';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
-
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 const Financial = () => {
     const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
@@ -92,7 +93,7 @@ const Financial = () => {
     const [homeOwnership3, setHomeOwnership3] = useState('');
     const [householdSize, setHouseholdSize] = useState('');
     const [selectedOption, setSelectedOption] = useState(null);
-
+ const { isLoggedIn } = useAuth();
     const handleOptionClick = (option) => {
         setSelectedOption(option);
     };
@@ -141,7 +142,8 @@ const Financial = () => {
 
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
+             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 className="w-full bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-12 lg:px-12 text-start relative"
                 style={{ backgroundImage: `url(${finance})` }}

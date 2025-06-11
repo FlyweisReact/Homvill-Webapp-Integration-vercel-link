@@ -4,6 +4,7 @@ import Navbar from '../Navbar';
 import Navbar2 from '../Navbar2';
 import Map from './Map';
 import Cards from './Cards';
+
 import { useAuth } from '../Authprovider/AuthContext';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';

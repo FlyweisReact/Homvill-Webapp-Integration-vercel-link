@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
+import { useAuth } from '../Authprovider/AuthContext';
 import Navbar from '../Navbar';
+import Navbar2 from '../Navbar2';
 import { Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Footer from '../Footer';
@@ -16,6 +18,7 @@ import home8 from '../assets/sells7.svg';
 import home9 from '../assets/sells9.svg';
 
 const Purchase = () => {
+      const { isLoggedIn } = useAuth();
     const cards = [
         {
             img: home1,
@@ -76,7 +79,8 @@ const Purchase = () => {
 
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
+            {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 className="bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-10 lg:px-12"
                 style={{ backgroundImage: `url(${bgImage})` }}

@@ -3,6 +3,8 @@ import { FaSearch } from "react-icons/fa";
 import Navbar from '../Navbar';
 import Map from './Map';
 import Cards from './Cards';
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
 
@@ -71,7 +73,7 @@ const HomeForSale = () => {
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-
+  const { isLoggedIn } = useAuth();
     const bedBathOptions = ["Any", "1+", "2+", "3+", "4+", "5+"];
     const homeTypes = [
         "Houses", "Townhomes", "Multi-family", "Condos", "Co-ops", "Lots/Land", "Apartments", "Manufactured"
@@ -89,7 +91,8 @@ const HomeForSale = () => {
     return (
         <> 
         
-            <Navbar />
+            {/* <Navbar /> */}
+             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-4 bg-white shadow-sm rounded-md border w-full mx-auto"

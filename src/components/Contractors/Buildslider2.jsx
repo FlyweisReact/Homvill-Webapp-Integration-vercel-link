@@ -8,6 +8,7 @@ import recent3 from '../assets/recent3.jpg';
 import recent4 from '../assets/recent4.jpg';
 import address from '../assets/entypo_address.svg';
 import 'swiper/css';
+import { useNavigate } from 'react-router-dom';
 import money from '../assets/Vector (71).svg';
 import 'swiper/css/navigation';
 import { FaMapMarkerAlt, FaMoneyBillWave } from 'react-icons/fa';
@@ -16,7 +17,7 @@ const RecentWorks = () => {
     const swiperRef = useRef(null);
     const [isBeginning, setIsBeginning] = useState(true);
     const [isEnd, setIsEnd] = useState(false);
-
+const navigate = useNavigate();
     const handleSwiper = (swiper) => {
         swiperRef.current = swiper;
         setIsBeginning(swiper.isBeginning);
@@ -155,7 +156,7 @@ const RecentWorks = () => {
                     <p style={{ fontFamily: 'Poppins' }} className="text-xs sm:text-sm mt-1 text-[#000000] max-[768px]:text-sm">
                         Experience: 10 years
                     </p>
-                    <button
+                    <button onClick={() => navigate('/signin')}
                         style={{ fontFamily: 'Poppins' }}
                         className="mt-2 sm:mt-3 md:mt-4 bg-[#8A1538] text-white text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4 rounded max-[768px]:mt-3 max-[768px]:text-sm"
                     >

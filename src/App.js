@@ -50,6 +50,21 @@ import Listing from './components/Partner/Listing';
 import Description from './components/Partner/Description';
 import Photos from './components/Partner/Photos';
 import Video from './components/Partner/Video';
+import Buyer from './components/Partner/Buyer';
+import Open2 from './components/Partner/Open';
+import ReviewDetail from './components/Partner/ReviewDetail'
+import Save from './components/Partner/Save'
+import Contract from './components/Contractors/Contract';
+import AboutCont from './components/Contractors/AboutCont';
+import Faq from './components/Faq'
+import Career from './components/Career'
+import Favoites from './components/Favoites'
+import SellDash from './components/SellDash'
+import ListForRent from './components/ListforRent/ListForRent'
+import Postforsale from './components/Postforsale'
+import LenderLoan from './components/Partner/LenderLoan'
+import Remodeling from './components/Partner/Remodeling'
+import Brand from './components/Partner/Brand'
 const App = () => {
   return (
     <>
@@ -104,6 +119,21 @@ const App = () => {
         <Route path="/description" element={<Description />} />
         <Route path="/photos" element={<Photos />} />
         <Route path="/video" element={<Video />} />
+        <Route path="/buyer" element={<Buyer />} />
+        <Route path="/open2" element={<Open2 />} />
+        <Route path="/reviewdetail" element={<ReviewDetail />} />
+        <Route path="/save" element={<Save />} />
+        <Route path="/contract" element={<Contract />} />
+        <Route path="/aboutbuild" element={<AboutCont />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/career" element={<Career />} />
+        <Route path="/fav" element={<Favoites />} />
+        <Route path="/selldash" element={<SellDash />} />
+        <Route path="/postforsale" element={<Postforsale />} />
+        <Route path="/listrent" element={<ListForRent />} />
+        <Route path="/lenderloan" element={<LenderLoan />} />
+        <Route path="/remodeling" element={<Remodeling />} />
+        <Route path="/brand" element={<Brand />} />
     </Routes>
     </>
   )

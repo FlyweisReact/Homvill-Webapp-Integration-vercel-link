@@ -54,7 +54,7 @@ const AddDetailsForm = () => {
                         <button onClick={() => navigate(-1)} className="w-full border border-[#8A1538] text-[#8A1538] py-2 rounded-md font-semibold hover:bg-gray-100">
                             Back
                         </button>
-                        <button onClick={() => navigate('/homefeature')} className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]">
+                        <button onClick={() => navigate('/buyer')} className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]">
                             Next
                         </button>
                     </div>

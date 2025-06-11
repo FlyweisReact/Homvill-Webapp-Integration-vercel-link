@@ -121,15 +121,19 @@
 
 import React from 'react';
 import Navbar from './Navbar';
+import Navbar2 from './Navbar2';
 import vector from './assets/vector.svg';
 import vector2 from './assets/Vector (73).svg';
 import vector3 from './assets/Vector (74).svg';
 import Footer from './Footer';
+import { useAuth } from './Authprovider/AuthContext';
 
 const PricingPlans = () => {
+    const { isLoggedIn } = useAuth();
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
+             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div style={{ fontFamily: 'Poppins' }} className="py-6 sm:py-8 md:py-12 px-4 sm:px-6 md:px-8 lg:px-4 bg-white text-center">
                 {/* Title */}
                 <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[48px] font-bold text-[#8A1538] mb-4">

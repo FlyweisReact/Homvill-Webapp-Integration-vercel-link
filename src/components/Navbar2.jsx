@@ -766,7 +766,7 @@ const Navbar = () => {
                                         <div style={{ fontFamily: 'Roboto' }} className="w-1/3">
                                             <h4 className="font-semibold mb-3 text-[20px]">Property sale methods</h4>
                                             <ul className="text-[16px] space-y-2">
-                                                <li><a href="#" className="hover:text-[#8A1538]">Post for sale</a></li>
+                                                <li><Link to={'/postforsale'} href="#" className="hover:text-[#8A1538]">Post for sale</Link></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -810,7 +810,7 @@ const Navbar = () => {
                             )}
                         </div>
 
-                        <a style={{ fontFamily: 'Poppins' }} href="#">List for Rent</a>
+                        <Link to={'/listrent'} style={{ fontFamily: 'Poppins' }} >List for Rent</Link>
 
                         {/* Contractors with dropdown */}
                         <div
@@ -828,9 +828,9 @@ const Navbar = () => {
                                             <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
                                                 <h4 className="font-semibold font-roboto mb-2 text-[20px]">Find your contractors</h4>
                                                 <ul className="text-[16px] font-roboto space-y-4">
-                                                    <li><Link to={'/build'} className="hover:text-[#8A1538]">Builders</Link></li>
-                                                    <li><Link to={'/renovation'} className="hover:text-[#8A1538]">Renovation</Link></li>
-                                                    <li><Link to={'/build'} className="hover:text-[#8A1538]">Contractors</Link></li>
+                                                    <li><Link to={'/contract'} className="hover:text-[#8A1538]">Builders</Link></li>
+                                                    <li><Link to={'/contract'} className="hover:text-[#8A1538]">Renovation</Link></li>
+                                                    <li><Link to={'/contract'} className="hover:text-[#8A1538]">Contractors</Link></li>
                                                     <li><a href="#" className="hover:text-[#8A1538]">Designers</a></li>
                                                 </ul>
                                             </div>

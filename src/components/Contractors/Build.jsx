@@ -4,10 +4,12 @@ import bgImage from '../assets/bg6.svg'
 import worker from '../assets/worker.svg'
 import build from '../assets/build.svg'
 import Buildslider from './Buildslider'
+import { useNavigate } from 'react-router-dom'
 import Buildslider2 from './Buildslider2'
 import Buildslider3 from './Buildslider3'
 import Footer from '../Footer'
 const Build = () => {
+    const navigate = useNavigate();
     return (
         <>
             <Navbar />
@@ -89,7 +91,7 @@ const Build = () => {
                         </p>
                     </div>
                 </div>
-                <button
+                <button  onClick={() => navigate('/signin')}
                     style={{ fontFamily: 'Poppins' }}
                     className="bg-[#8A1538] text-white w-full sm:w-[300px] md:w-[320px] lg:w-[364px] px-4 py-2 text-sm md:text-base lg:text-[15px] rounded-lg transition mt-4 lg:mt-0"
                 >

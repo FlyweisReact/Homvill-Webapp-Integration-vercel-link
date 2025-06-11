@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import Navbar from '../Navbar';
 import Map from './Map';
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 import Cards from './Cards';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
@@ -18,7 +20,7 @@ const HomeForSale = () => {
     const [bathrooms, setBathrooms] = useState("Any");
     const [exactMatch, setExactMatch] = useState(false);
     const [selectedHomeTypes, setSelectedHomeTypes] = useState([]);
-
+   const { isLoggedIn } = useAuth();
     const toggleSaleDropdown = () => {
         setSaleDropdownOpen(!saleDropdownOpen);
         setPriceDropdownOpen(false);
@@ -89,7 +91,8 @@ const HomeForSale = () => {
     return (
         <> 
         
-            <Navbar />
+            {/* <Navbar /> */}
+             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-4 bg-white shadow-sm rounded-md border w-full mx-auto"

@@ -4,11 +4,14 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import bgImage from '../assets/fore.svg';
 import tour from '../assets/buy1.svg';
-
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 const Tour = () => {
+   const { isLoggedIn } = useAuth();
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      {isLoggedIn ? <Navbar2 /> : <Navbar />}
       <div
         className="bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-12 lg:px-12"
         style={{ backgroundImage: `url(${bgImage})` }}

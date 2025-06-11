@@ -14,7 +14,8 @@ import home6 from '../assets/home6.svg';
 import home7 from '../assets/home7.svg';
 import home8 from '../assets/home8.svg';
 import home9 from '../assets/home9.svg';
-
+import Navbar2 from '../Navbar2';
+import { useAuth } from '../Authprovider/AuthContext';
 const Purchase = () => {
     const cards = [
         {
@@ -73,10 +74,11 @@ const Purchase = () => {
             setCurrentPage(page);
         }
     };
-
+const { isLoggedIn } = useAuth();
     return (
         <>
-            <Navbar />
+            {/* <Navbar /> */}
+               {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 className="bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-10 lg:px-12"
                 style={{ backgroundImage: `url(${bgImage})` }}

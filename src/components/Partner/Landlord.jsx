@@ -71,7 +71,9 @@ const Landlord = () => {
                                 >
                                     Post Your Listing
                                 </button>
-                                <button
+                                <button onClick={() => {
+    navigate('/selldash');
+  }}
                                     style={{ fontFamily: 'Poppins' }}
                                     className="bg-white text-[#8A1538] text-lg sm:text-xl md:text-2xl lg:text-[24px] font-medium py-2 px-4 rounded-lg self-start"
                                 >
