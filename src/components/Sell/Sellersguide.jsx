@@ -8,6 +8,7 @@ import Navbar2 from '../Navbar2';
 import Footer from '../Footer';
 import bgImage from '../assets/bg5.svg';
 import tour from '../assets/sell1.svg';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 
 const Tour = () => {
     const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
