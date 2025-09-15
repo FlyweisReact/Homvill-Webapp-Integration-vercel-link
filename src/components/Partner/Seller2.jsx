@@ -818,8 +818,8 @@ const Seller2 = () => {
             </div>
 
             {/* Premier Agent Section */}
-            <div className="flex justify-center items-center bg-gray-100 mt-6 sm:mt-8 md:mt-10 px-3 sm:px-4">
-                <div className="bg-pink-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 w-full max-w-7xl">
+            <div className="flex justify-center items-center mt-6 sm:mt-8 md:mt-10 px-3 sm:px-4">
+                <div className="bg-pink-100 rounded-lg shadow-lg p-4 sm:p-6 md:p-8 w-full">
                     <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-[36px] mulish-font font-bold mb-2 sm:mb-3">
                         Become a Premier Agent partner
                     </h1>

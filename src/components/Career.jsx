@@ -164,6 +164,13 @@ import group2 from './assets/group2.svg';
 import sell2 from './assets/link8.svg';
 import { useAuth } from './Authprovider/AuthContext';
 import Footer from './Footer';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import emp from './assets/zbra.jpg'
+import emp1 from './assets/emplo.jpg'
+import "swiper/css/pagination";
 import { Link } from 'react-router-dom';
 
 const Partner = () => {
@@ -176,16 +183,18 @@ const Partner = () => {
       image: car,
     },
     {
+      title: 'Benefits',
+      description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+      Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer 
+      took a galley of type and scrambled it to make a type specimen book...`,
+      image: emp,
+    },
+    {
       title: 'Flexible Working',
       description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
       Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer 
       took a galley of type and scrambled it to make a type specimen book...`,
-      image: car,
-    },
-    {
-      title: 'Growth',
-      description: `We believe in nurturing potential and empowering individuals to grow in their roles and careers.`,
-      image: car,
+      image: emp1,
     },
   ];
 
@@ -213,7 +222,7 @@ const Partner = () => {
         </h2>
         <p
           style={{ fontFamily: 'Poppins' }}
-          className="mt-3 text-base sm:text-lg md:text-xl lg:text-[32px] font-medium"
+          className="mt-3 text-base sm:text-lg md:text-xl lg:text-[32px] lg:leading-[1.1] font-medium"
         >
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
         </p>
@@ -223,16 +232,16 @@ const Partner = () => {
           A company where employees feels like home
         </h2>
 
-        <div className="relative p-4 sm:p-6">
-          {/* Left Arrow */}
+        {/* <div className="relative p-4 sm:p-6">
+        
           <button
             onClick={prevSlide}
             className="absolute left-[-16px] sm:left-[-40px] md:left-[-40px] top-1/2 transform -translate-y-1/2 bg-white border rounded-lg py-2 px-3 sm:px-4 shadow hover:bg-gray-100 z-10"
           >
-            <span className="text-xl sm:text-2xl md:text-[33px]">{'<'}</span>
+            <span style={{fontFamily:'Poppins'}} className="text-xl sm:text-2xl md:text-[33px]">{'<'}</span>
           </button>
 
-          {/* Slide Content */}
+
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 mb-6 md:mb-0 md:pr-4">
               <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] mulish-font font-bold mb-2">
@@ -246,7 +255,7 @@ const Partner = () => {
               </p>
             </div>
 
-            {/* Slide Image */}
+        
             <div className="w-full md:w-1/2">
               <img
                 src={slides[current].image}
@@ -256,16 +265,66 @@ const Partner = () => {
             </div>
           </div>
 
-          {/* Right Arrow */}
-          <button
+    
+          <button style={{fontFamily:'Poppins'}}
             onClick={nextSlide}
-            className="absolute right-[-16px] sm:right-[-40px] md:right-[20px] top-1/2 transform -translate-y-1/2 bg-white border rounded-lg py-2 px-3 sm:px-4 shadow hover:bg-gray-100 z-10"
+            className="absolute right-[-16px] sm:right-[-40px] md:right-[-40px] top-1/2 transform -translate-y-1/2 bg-white border rounded-lg py-2 px-3 sm:px-4 shadow hover:bg-gray-100 z-10"
           >
             <span className="text-xl sm:text-2xl md:text-[33px]">{'>'}</span>
           </button>
-        </div>
+        </div> */}
+        <div className="relative p-4 sm:p-6">
+  {/* Left Button */}
+  <button
+    onClick={prevSlide}
+    className="absolute left-[-13px] sm:left-[-40px] md:left-[-40px] top-1/2 transform -translate-y-1/2 bg-white border rounded-lg py-2 px-3 sm:px-4 shadow hover:bg-gray-100 z-10"
+  >
+    <span style={{ fontFamily: 'Poppins' }} className="text-xl sm:text-2xl md:text-[33px]">{'<'}</span>
+  </button>
 
-        {/* Dots */}
+  {/* Main Content */}
+  <div className={`flex flex-col md:flex-row items-center ${current === 1 ? 'md:flex-row-reverse' : ''}`}>
+    {/* Title + Description */}
+    <div className="w-full md:w-1/2 mb-6 md:mb-0 md:pr-4 md:pl-4">
+      <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] mulish-font font-bold mb-2">
+        {slides[current].title}
+      </h3>
+      <p
+        style={{ fontFamily: 'Poppins' }}
+        className="text-sm sm:text-base md:text-lg lg:text-[20px] text-[#1D1D1D] font-normal leading-relaxed"
+      >
+        {slides[current].description}
+      </p>
+    </div>
+
+    {/* Slide Image */}
+    <div className="w-full md:w-1/2">
+      {/* <img
+        src={slides[current].image}
+        alt="slide"
+        className="rounded-2xl w-full h-[200px] sm:h-[250px] md:h-[300px] object-cover"
+      /> */}
+      <img
+  src={slides[current].image}
+  alt="slide"
+  className="w-full h-[200px] sm:h-[250px] md:h-[380px] object-cover rounded-tl-[130px]"
+/>
+
+    </div>
+  </div>
+
+  {/* Right Button */}
+  <button
+    style={{ fontFamily: 'Poppins' }}
+    onClick={nextSlide}
+    className="absolute right-[-13px] sm:right-[-40px] md:right-[-40px] top-1/2 transform -translate-y-1/2 bg-white border rounded-lg py-2 px-3 sm:px-4 shadow hover:bg-gray-100 z-10"
+  >
+    <span className="text-xl sm:text-2xl md:text-[33px]">{'>'}</span>
+  </button>
+</div>
+
+
+  
         <div className="flex justify-center mt-4 gap-2">
           {slides.map((_, idx) => (
             <span

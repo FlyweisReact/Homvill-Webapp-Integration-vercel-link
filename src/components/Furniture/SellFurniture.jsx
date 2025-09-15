@@ -5,8 +5,9 @@ import { FaChevronDown, FaCloudUploadAlt } from "react-icons/fa";
 import Navbar2 from "../Navbar2";
 import bg from '../assets/bg7.jpg';
 import Footer from "../Footer";
-
+import { useNavigate } from "react-router-dom";
 const SellFurnitureForm = () => {
+    const navigate = useNavigate();
     return (
         <>
             <Navbar2 />
@@ -138,7 +139,7 @@ const SellFurnitureForm = () => {
 
                         {/* Submit button aligned bottom right */}
                         <div className="w-full md:w-auto flex items-end mulish-font">
-                            <button className="bg-[#870E36] hover:bg-[#6b0b2a] text-white text-lg sm:text-2xl md:text-[32px] font-semibold py-2 px-6 sm:px-8 md:px-12 rounded shadow w-full md:w-auto mt-4 sm:mt-6 md:mt-0">
+                            <button onClick={() => navigate('/')} className="bg-[#870E36] hover:bg-[#6b0b2a] text-white text-lg sm:text-2xl md:text-[32px] font-semibold py-2 px-6 sm:px-8 md:px-12 rounded shadow w-full md:w-auto mt-4 sm:mt-6 md:mt-0">
                                 Submit
                             </button>
                         </div>

@@ -52,8 +52,8 @@ const AdSlider = () => {
   return (
     <>
       <div
-        style={{ fontFamily: 'Poppins' }}
-        className="flex justify-center font-semibold pt-8 pb-4 text-2xl sm:text-3xl md:text-4xl lg:text-[40px]"
+        style={{ fontFamily: 'Poppins',fontWeight:'500' }}
+        className="flex justify-center pt-8 pb-4 text-2xl sm:text-3xl md:text-4xl lg:text-[40px]"
       >
         Advertisement goes here
       </div>

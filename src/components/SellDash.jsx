@@ -27,7 +27,7 @@ import link from './assets/link4.jpg';
 import links from './assets/links.jpg';
 import links2 from './assets/links2.jpg';
 import { FaEdit } from 'react-icons/fa';
-
+import { useNavigate } from 'react-router-dom';
 import { AiOutlineInfoCircle } from 'react-icons/ai'; // Using react-icons for the "i" icon
 
 // Categories data
@@ -118,6 +118,8 @@ const FavoriteProperties = () => {
         }
     };
     const { isLoggedIn } = useAuth();
+        const navigate = useNavigate();
+    
     return (
         <>
             {isLoggedIn ? <Navbar2 /> : <Navbar />}
@@ -209,7 +211,7 @@ const FavoriteProperties = () => {
                                     <img src={arrow} alt="Arrow Icon" className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                                 </div>
                                 <div className="absolute bottom-2 right-2 bg-[#1A1A1A]/20 p-2 rounded-full">
-                                    <button className="flex items-center bg-[#FFE5EC] text-[#7A0E2E] px-4 py-2 rounded-lg text-[19px] font-medium shadow-sm hover:bg-[#ffdbe4] transition">
+                                    <button onClick={() => navigate('/boost')} className="flex items-center bg-[#FFE5EC] text-[#7A0E2E] px-4 py-2 rounded-lg text-[19px] font-medium shadow-sm hover:bg-[#ffdbe4] transition">
                                         <img src={iv} className="mr-2 text-lg" />
                                         Boost
                                     </button>
@@ -244,7 +246,7 @@ const FavoriteProperties = () => {
                                     </p>
 
                                     {/* Right: Edit button */}
-                                    <button className="flex items-center gap-2 bg-[#7A0E2E] text-white text-xs sm:text-sm px-3 py-1.5 rounded-full hover:bg-[#5d0a22] transition">
+                                    <button onClick={() => navigate('/details')} className="flex items-center gap-2 bg-[#7A0E2E] text-white text-xs sm:text-sm px-3 py-1.5 rounded-full hover:bg-[#5d0a22] transition">
                                         <FaEdit className="text-sm" />
                                         Edit
                                     </button>

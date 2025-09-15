@@ -241,7 +241,7 @@ const Furniture = () => {
             <Navbar2 />
             <div className="font-[Poppins] ">
                 {/* Top Content */}
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 p-4 sm:p-6 lg:p-0 lg:ps-12 lg:pe-12">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 p-4 sm:p-6 lg:p-0 lg:ps-24 lg:pe-24">
                     {/* Left Section */}
                     <div className="max-w-xl w-full text-center lg:text-left">
                         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[50px] font-bold leading-tight sm:leading-snug md:leading-[1.8]">
@@ -301,7 +301,7 @@ const Furniture = () => {
                 </div>
 
                 {/* Search Box */}
-                <div className="mt-8 sm:mt-12 px-4 sm:px-6 md:px-8 lg:px-12 mb-8 sm:mb-12">
+                <div className="mt-8 sm:mt-12 px-4 sm:px-6 md:px-8 lg:px-24 mb-8 sm:mb-12">
                     <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-semibold mb-3 text-center sm:text-left">
                         Find your contractor
                     </h2>
@@ -341,49 +341,40 @@ const Furniture = () => {
                 </div>
 
 
-                {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
                     {categories.map((item, index) => (
                         <div
                             key={index}
-                            className="w-full max-w-[170px] h-[195px] sm:max-w-[170px] flex flex-col items-center p-2 pt-4 border border-[#00000059] border-[3px] rounded hover:shadow-md transition"
-                        >
-                            <img src={item.icon} alt={item.label} className="w-auto h-[101px] mb-8" />
-                            <p className="text-center text-[14px] lg:text-[18px] font-medium text-gray-700">
-                                {item.label}
-                            </p>
-                        </div>
-                    ))}
-                </div> */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-items-center">
-                    {categories.map((item, index) => (
-                        <Link to={item.link}
-                            key={index}
-                            className="w-full max-w-[170px] h-[195px] sm:max-w-[170px] flex flex-col items-center p-2 pt-4  transition bg-white"
+                            className="w-full cursor-pointer max-w-[170px] h-[195px] sm:max-w-[170px] flex flex-col items-center p-2 pt-4  transition bg-white"
+                             onClick={() => {
+      const section = document.getElementById('professional-section');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }}
                         >
                             <img
                                 src={item.icon}
                                 alt={item.label}
                                 className="w-auto h-[101px] mb-4 transition duration-300 "
                             />
-                            {/* <p className="text-center text-[14px] lg:text-[18px] font-medium text-gray-700  ">
-                                {item.label}
-                            </p> */}
+                           
                             <p className="text-center text-[14px] lg:text-[18px] font-medium text-gray-700 whitespace-pre-line">
                                 {item.label}
                             </p>
 
-                        </Link>
+                        </div>
                     ))}
                 </div>
 
             </div>
             {/* <FurnitureSlider /> */}
             <CoRecom/>
-            <div className=" mx-10 px-4 py-12">
+            <div id="professional-section"  className=" mx-24  py-12">
                 {/* <h2 className="text-2xl md:text-[36px] mulish-font font-bold text-gray-800 mb-1">
                     Our trusted Furniture Partners
                 </h2> */}
-                <div className="flex items-center gap-2 text-lg font-bold ">
+                <div  className="flex items-center gap-2 text-lg font-bold ">
                                 <span className="font-bold  mulish-font sm:text-2xl md:text-3xl lg:text-[36px]">Our Professional</span>
                                 <select className="border border-[#5b003b] text-black text-lg sm:text-xl md:text-2xl lg:text-[30px] font-bold px-2 py-1 lg:py-0 rounded focus:outline-none w-full sm:w-auto">
                                     <option>Maintenance personal</option>

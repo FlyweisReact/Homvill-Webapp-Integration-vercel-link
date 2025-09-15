@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Navbar from '../Navbar'
+import { useNavigate } from 'react-router-dom';
+
 import Install from '../Install'
 import { FaSearch } from "react-icons/fa";
 import { useAuth } from '../Authprovider/AuthContext';
 import { FiHeart, FiArrowRight } from "react-icons/fi";
 import { BsPlayFill } from "react-icons/bs";
+
 import Navbar2 from '../Navbar2';
 import Install2 from '../Install2'
 import back from '../assets/back.jpg'
@@ -32,6 +35,8 @@ import bgvid from '../assets/bgvid.svg'
 import previous from '../assets/previous.svg'
 import next from '../assets/next.svg'
 import Footer from '../Footer';
+import CountUp from "react-countup";
+
 import {
     FaMapMarkerAlt,
     FaBed,
@@ -43,40 +48,49 @@ import {
 import slider from '../assets/slider.svg'
 const Home = () => {
     const [activeTab, setActiveTab] = useState("Buy");
-
+    const [showBanner, setShowBanner] = useState(true);
+const { isLoggedIn } = useAuth();
     const tabs = ["Buy", "Sell", "Rent", "Contractor", "Furniture"];
     const services = [
         {
             title: 'Buy a home',
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Find homes',
-            icon: buy
+            icon: buy,
+            link:'/homeforsale'
         },
         {
             title: 'Sell a home',
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Sell Homes',
             icon: sell,
+            link:'/review'
         },
         {
             title: 'Rent a home',
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Rent Homes',
             icon: rent,
+             link:'/rent'
         },
         {
             title: 'Connect with Contractors',
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Find Contractor',
             icon: cont,
+                  link: isLoggedIn ? '/contract' : '/signin'
+
         },
         {
             title: 'Furniture',
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Find Furniture',
             icon: fur,
+            link: isLoggedIn ? '/furniture' : '/signin'
         },
     ];
+      
+       
     const features = [
         {
             icon: wide, // replace with your actual path
@@ -97,46 +111,71 @@ const Home = () => {
                 "We offer you free consultancy to get a loan for your new home.",
         },
     ];
-    const { isLoggedIn } = useAuth();
+    const [startCount, setStartCount] = useState(false);
+    const sectionRef = useRef(null);
+const navigate = useNavigate();
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setStartCount(true);
+                    observer.disconnect(); // Run only once
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
     return (
         <>
             {/* <Navbar />
             <Install /> */}
-             <div className="fixed top-0 left-0 w-full z-50">
-    {/* <Navbar /> */}
-     {isLoggedIn ? <Navbar2 /> : <Navbar />}
-    {/* <Install /> */}
-     {/* {!isLoggedIn && <Install />} */}
-      {isLoggedIn ? <Install2 /> : <Install />}
-  </div>
+            <div className="fixed top-0 left-0 w-full z-50">
+                {/* <Navbar /> */}
+                {isLoggedIn ? <Navbar2 /> : <Navbar />}
+                {/* <Install /> */}
+                {/* {!isLoggedIn && <Install />} */}
+                {/* {isLoggedIn ? <Install2 /> : <Install />} */}
+                <div className={`${showBanner ? 'h-[144px] md:h-[189px]' : 'h-[61px]'}`}>
+                    {showBanner && <Install onClose={() => setShowBanner(false)} />}
+                </div>
+            </div>
 
-  
-  {/* <div className="h-[320px] md:h-[220px]" />  */}
-        <div className={`${isLoggedIn ? 'h-[100px]' : 'h-[320px] md:h-[220px]'}`} />
 
-          
+            {/* <div className="h-[320px] md:h-[220px]" />  */}
+            {/* <div className={`${isLoggedIn ? 'h-[100px]' : 'h-[205px] md:h-[220px]'}`} /> */}
+            <div className={`${showBanner ? 'h-[144px] md:h-[189px]' : 'h-[61px]'}`}>
+                {/* {showBanner && <Install onClose={() => setShowBanner(false)} />} */}
+            </div>
+
+
             <div
                 className="flex flex-col justify-between h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${back})` }}
             >
                 {/* Top Content */}
-                <div style={{ fontFamily: "Poppins" }} className="px-4 md:px-10 py-8">
-                    <h1 className="text-3xl md:text-[50px] font-semibold text-white leading-[1.2]">
+                <div style={{ fontFamily: "Poppins" }} className="px-4 md:px-24 py-8">
+                    <h1 style={{ fontWeight: '500' }} className="text-3xl md:text-[50px] text-white mt-4 md:mt-4 leading-[1.2]">
                         The <span className="text-[#E7C873]">#1</span> site real estate <br className="hidden md:block" />
                         professionals trust*
                     </h1>
-                    <p className="text-white text-sm md:text-base mt-6 md:mt-8">
+                    <p className="text-white text-sm md:text-base mt-6 md:mt-4">
                         From as low as <span className="text-yellow-400 font-semibold">$10</span> per day with limited time offer discounts.
                     </p>
 
-                    <a href="#" className="text-sm text-[#E7C873] mt-6 md:mt-8 inline-block">
+                    <a href="#" className="text-sm text-[#E7C873] mt-6 md:mt-4 inline-block">
                         Browse More Properties
                     </a>
 
                     {/* Tabs and Input */}
-                    <div className="mt-6 md:mt-8 flex flex-col w-full md:w-[540px]">
-                        <div className="flex flex-wrap items-end">
+                    <div className="mt-6 md:mt-4 flex flex-col w-full md:w-[540px]">
+                        {/* <div className="flex flex-wrap items-end">
                             {tabs.map((item) => (
                                 <button
                                     key={item}
@@ -145,6 +184,21 @@ const Home = () => {
                                         ? "bg-red-800 text-white py-2"
                                         : "bg-white text-black border border-gray-300 py-0"
                                         }`}
+                                >
+                                    {item}
+                                </button>
+                            ))}
+                        </div> */}
+                        <div className="flex flex-wrap items-end" style={{ height: '36px', paddingBottom: '4px' }}>
+                            {tabs.map((item) => (
+                                <button
+                                    key={item}
+                                    onClick={() => setActiveTab(item)}
+                                    className={`px-3 text-sm font-medium rounded-t-md  ${activeTab === item
+                                            ? "bg-red-800 text-white py-2"
+                                            : "bg-white text-black border border-gray-300 py-0"
+                                        }`}
+                                    style={{ marginRight: '0px' }}
                                 >
                                     {item}
                                 </button>
@@ -178,53 +232,40 @@ const Home = () => {
                 </div>
 
                 {/* Stats Section */}
-                <div
+                <div ref={sectionRef}
                     style={{ fontFamily: "Poppins" }}
-                    className="bg-[#8A1538] rounded-tr-3xl px-6 py-4 w-full max-w-3xl text-white text-left flex flex-col sm:flex-row flex-wrap sm:justify-between"
+                    className="bg-[#8A1538] rounded-tr-3xl px-6 lg:px-20 py-4 w-full max-w-3xl text-white text-left flex flex-col sm:flex-row flex-wrap sm:justify-between"
                 >
                     <div className="mb-4 sm:mb-0 sm:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">680</h2>
+                        {/* <h2 className="text-xl md:text-2xl font-bold">680</h2> */}
+                        <h2 className="text-xl md:text-2xl font-bold">
+                            {startCount && <CountUp end={680} duration={3} />}
+                        </h2>
                         <p className="text-xs md:text-sm font-light">Award Winning</p>
                     </div>
                     <div className="mb-4 sm:mb-0 sm:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">8K+</h2>
+                        {/* <h2 className="text-xl md:text-2xl font-bold">8K+</h2> */}
+                        <h2 className="text-xl md:text-2xl font-bold">
+                            {startCount && <CountUp end={8000} duration={3} suffix="+" />}
+                        </h2>
                         <p className="text-xs md:text-sm font-light">Happy Customer</p>
                     </div>
                     <div className="sm:mx-4">
-                        <h2 className="text-xl md:text-2xl font-bold">500+</h2>
+                        {/* <h2 className="text-xl md:text-2xl font-bold">500+</h2> */}
+                        <h2 className="text-xl md:text-2xl font-bold">
+                            {startCount && <CountUp end={500} duration={3} suffix="+" />}
+                        </h2>
                         <p className="text-xs md:text-sm font-light">Property Ready</p>
                     </div>
                 </div>
             </div>
-            {/* <div className="flex flex-wrap justify-center gap-3 pe-2 ps-2 pt-8 pb-8  bg-white">
-                {services.map((service, index) => (
-                    <div style={{fontFamily:'Poppins'}}
-                        key={index}
-                        className="bg-[#FFE0E9] rounded-xl text-center p-6 w-[230px] h-[410px] shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
-                    >
-                        <div className="flex justify-center mb-4">
-                            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow">
-                                <img src={service.icon} alt={service.title} className="w-12 h-12" />
-                            </div>
-                        </div>
-                        <h3 className="text-[24px] font-semibold mb-2">{service.title}</h3>
-                        <p className="text-[15px] text-gray-600 mb-4">
-                            {service.description}
-                        </p>
-                        <div className="mt-auto">
-                            <button className="border border-[#6C0A17] text-[#6C0A17] px-4 py-2 rounded-md hover:bg-[#6C0A17] hover:text-white transition">
-                                {service.button}
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div> */}
+
             <div className="flex flex-wrap justify-center gap-4 px-4 py-10 bg-white">
                 {services.map((service, index) => (
                     <div
                         key={index}
                         style={{ fontFamily: 'Poppins' }}
-                        className="bg-[#FFE0E9] rounded-xl text-center p-6 w-full sm:w-[280px] md:w-[250px] lg:w-[230px] h-[410px] shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                        className="bg-[#FFE0E9] rounded-xl text-center p-6 w-full sm:w-[280px] md:w-[250px] lg:w-[230px]  shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
                     >
                         <div className="flex justify-center mb-4">
                             <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow">
@@ -234,7 +275,7 @@ const Home = () => {
                         <h3 className="text-[20px] sm:text-[22px] font-semibold mb-2">{service.title}</h3>
                         <p className="text-[14px] text-gray-600 mb-4">{service.description}</p>
                         <div className="mt-auto">
-                            <button className="border border-[#6C0A17] text-[#6C0A17] px-4 py-2 rounded-md hover:bg-[#6C0A17] hover:text-white transition">
+                            <button onClick={() => navigate(service.link)} className="border border-[#6C0A17] text-[#6C0A17] px-4 py-2 rounded-md hover:bg-[#6C0A17] hover:text-white transition">
                                 {service.button}
                             </button>
                         </div>
@@ -246,7 +287,7 @@ const Home = () => {
             <Exclusive />
             <Advertisement />
             <section style={{ fontFamily: 'Poppins' }} className="text-center py-16 px-4 bg-white">
-                <h2 className="text-2xl md:text-[40px] font-semibold mb-2">
+                <h2 style={{ fontWeight: '500' }} className="text-2xl md:text-[40px] mb-2">
                     Why You Should Work With Us
                 </h2>
                 <p className="text-gray-500 mb-10 md:text-[17px] mt-4">
@@ -257,7 +298,7 @@ const Home = () => {
                     {features.map((feature, index) => (
                         <div key={index} className="flex flex-col items-center text-center px-4">
                             <img src={feature.icon} alt={feature.title} className="w-10 h-10 mb-4" />
-                            <h3 className="font-semibold text-[21px] mb-2">{feature.title}</h3>
+                            <h3 style={{ fontWeight: '500' }} className=" text-[21px] mb-2">{feature.title}</h3>
                             <p className="text-[15px] text-gray-600">{feature.description}</p>
                         </div>
                     ))}
@@ -273,7 +314,7 @@ const Home = () => {
 
                 {/* Content */}
                 <div className="relative z-10 text-center text-white px-4 max-w-3xl">
-                    <h1 className="text-3xl md:text-[60px] font-semibold leading-tight mb-4">
+                    <h1 style={{ fontWeight: '500' }} className="text-3xl md:text-[60px] leading-tight mb-4">
                         Discover a place you'll <br /> love to live
                     </h1>
                     <p className="text-sm md:text-[16px] mb-6">
@@ -321,7 +362,7 @@ const Home = () => {
 
                 {/* Info */}
                 <div className="w-full lg:w-1/2 space-y-3 sm:space-y-4 text-center sm:text-left">
-                    <h2 className="text-[28px] sm:text-[40px] font-semibold">Villa One Hyde Park</h2>
+                    <h2 style={{ fontWeight: '500' }} className="text-[28px] sm:text-[40px]">Villa One Hyde Park</h2>
 
                     <div className="flex items-center justify-center sm:justify-start text-black text-[15px] sm:text-[16px] gap-2">
                         <FaMapMarkerAlt className="text-[#1A1A1A]" />
@@ -357,7 +398,7 @@ const Home = () => {
                 <div className="max-w-7xl mx-auto">
                     {/* Section Title */}
                     <div className="text-center mb-10">
-                        <h2 className="text-[40px] sm:text-[40px] font-semibold md:text-[40px] sm:text-2xl xs:text-xl">
+                        <h2 style={{ fontWeight: '500' }} className="text-[40px] sm:text-[40px] md:text-[40px] sm:text-2xl xs:text-xl">
                             Exclusive Properties
                         </h2>
                         <p className="text-gray-300 mt-3 md:text-sm sm:text-xs xs:text-xs">
@@ -388,7 +429,7 @@ const Home = () => {
                             {/* Action Icons */}
                             <div className="absolute top-4 right-4 flex gap-2">
                                 <button className="text-white bg-black/50 p-2 rounded-full sm:p-1.5">
-                                    <img src={arrow}  />
+                                    <img src={arrow} />
                                 </button>
                                 <button className="text-white bg-black/50 p-2 rounded-full sm:p-1.5">
                                     <img src={heart} />
@@ -437,7 +478,7 @@ const Home = () => {
                                 </button>
                                 {/* Right Arrow */}
                                 <button className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black/60 text-white p-2 rounded-full sm:p-1.5">
-                                      <img src={next}  />
+                                    <img src={next} />
                                 </button>
                             </div>
 
@@ -472,7 +513,7 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-            <Footer/>
+            <Footer />
         </>
     )
 }

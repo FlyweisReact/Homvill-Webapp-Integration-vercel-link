@@ -3,11 +3,14 @@ import React from "react";
 import scrollIcon from "./assets/scroll.svg";
 import bg from './assets/bg7.svg';
 import Navbar from "./Navbar";
+import Navbar2 from "./Navbar2";
+import { useAuth } from "./Authprovider/AuthContext";
 import Footer from "./Footer";
 const HeroSection = () => {
+    const { isLoggedIn } = useAuth();
     return (
         <>
-            <Navbar />
+            {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
                 className="w-full bg-cover bg-center text-white h-[500px] px-4 sm:px-6 md:px-8 relative"
                 style={{ backgroundImage: `url(${bg})`, fontFamily: 'Poppins' }}

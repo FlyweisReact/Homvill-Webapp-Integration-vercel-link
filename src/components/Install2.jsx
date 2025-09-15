@@ -17,13 +17,13 @@ const AppPromoBanner = () => {
       >
         <FaTimes />
       </button> */}
-       <button
-  className="absolute top-2 right-4  text-black border border-black rounded-full w-8 h-8 flex items-center justify-center  transition-colors"
-  onClick={() => setVisible(false)}
-  aria-label="Close"
->
-  <FaTimes className="w-4 h-4 font-bold" />
-</button>
+      <button
+        className="absolute top-2 right-4  text-black border border-black rounded-full w-8 h-8 flex items-center justify-center  transition-colors"
+        onClick={() => setVisible(false)}
+        aria-label="Close"
+      >
+        <FaTimes className="w-4 h-4 font-bold" />
+      </button>
 
       {/* Left Section */}
       <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-8 w-full sm:w-auto">

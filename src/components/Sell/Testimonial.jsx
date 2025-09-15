@@ -36,7 +36,7 @@ const TestimonialSection = () => {
   const { name, role, image, quote } = testimonials[current];
 
   return (
-    <div style={{fontFamily:'Poppins'}} className="w-full px-8 md:px-16 py-10 bg-white flex flex-col lg:flex-row justify-between items-start gap-8">
+    <div style={{fontFamily:'Poppins'}} className="w-full px-8 md:px-24 py-10 bg-white flex flex-col lg:flex-row justify-between items-start gap-8">
       {/* Left Side */}
       <div className="flex-1">
         <h2 className="text-2xl md:text-[40px] leading-[1.2] font-semibold mb-4">What our customers are saying us?</h2>

@@ -1,8 +1,8 @@
 
-import React from 'react'
+import React,{useState} from 'react'
 import Navbar2 from '../Navbar2'
 import { useNavigate, Link } from 'react-router-dom';
-
+import red from '../assets/RED.svg';
 import frame from '../assets/Frame 9.svg'
 import frame2 from '../assets/Frame 10.svg'
 import frame3 from '../assets/Frame 11 (1).svg'
@@ -191,6 +191,22 @@ const Furniture = () => {
             gradient: "from-[#F2E2C4] to-[#B18040]",
         },
     ];
+     const [favorites, setFavorites] = useState({});
+    
+        const toggleFavorite = (index) => {
+            setFavorites((prev) => ({
+                ...prev,
+                [index]: !prev[index],
+            }));
+        };
+     const [favorites2, setFavorites2] = useState({});
+    
+        const toggleFavorite2 = (index) => {
+            setFavorites2((prev) => ({
+                ...prev,
+                [index]: !prev[index],
+            }));
+        };
     return (
         <>
             <style>
@@ -336,7 +352,7 @@ const Furniture = () => {
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-24">
-                    {partners.map((partner) => (
+                    {partners.map((partner,index) => (
                         <div
                             key={partner.id}
                             className="bg-[#FFE0E9] rounded-xl shadow-md overflow-hidden"
@@ -350,9 +366,19 @@ const Furniture = () => {
                                 <div className="absolute bg-[#1A1A1A]/20 pt-1 rounded-lg bottom-4 right-4">
                                     <img className="w-auto h-auto" src={rating} alt="rating stars" />
                                 </div>
-                                <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-3 right-4">
+                                {/* <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-3 right-4">
                                     <img src={heart} className="w-5 h-5" />
-                                </div>
+                                </div> */}
+                                <div
+                                        onClick={() => toggleFavorite(index)}
+                                        className="absolute top-2 right-2 p-2 rounded-full cursor-pointer bg-[#1A1A1A]/20"
+                                    >
+                                        <img
+                                            src={favorites[index] ? red : heart}
+                                            alt="Heart Icon"
+                                            className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5"
+                                        />
+                                    </div>
                                 <div className=" z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-3 right-14">
                                     <img src={arrow} className="w-5 h-5" />
                                 </div>
@@ -387,7 +413,7 @@ const Furniture = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {categories2.map((cat, index) => (
-                        <div
+                        <Link to={'/viewfurniture'}
                             key={index}
                             className={`rounded-2xl overflow-hidden shadow-md relative group`}
                         >
@@ -401,7 +427,7 @@ const Furniture = () => {
                             >
                                 {cat.title}
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -419,16 +445,27 @@ const Furniture = () => {
                         1280: { slidesPerView: 5.5 },
                     }}
                 >
-                    {products.map((item) => (
+                    {products.map((item,index) => (
                         <SwiperSlide key={item.id}>
+                            <Link to={'/viewfurniture'}>
                             <div className=" overflow-hidden bg-white">
                                 <div className="relative">
                                     <img src={item.img} alt={item.title} className="w-full h-40 rounded-lg object-cover" />
                                     <div style={{ fontFamily: 'Poppins' }} className="absolute bottom-0 left-0 bg-[#7a0e2e] underline text-white text-xs px-2 py-[2px] rounded">
                                         {item.tag}
                                     </div>
-                                    <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
+                                    {/* <div className=" z-10  absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
                                         <img src={heart} className="w-5 h-5" />
+                                    </div> */}
+                                     <div
+                                        onClick={() => toggleFavorite2(index)}
+                                        className="absolute top-2 right-2 p-2 rounded-full cursor-pointer bg-[#1A1A1A]/20"
+                                    >
+                                        <img
+                                            src={favorites2[index] ? red : heart}
+                                            alt="Heart Icon"
+                                            className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5"
+                                        />
                                     </div>
                                     <div className=" z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-12">
                                         <img src={arrow} className="w-5 h-5" />
@@ -445,6 +482,7 @@ const Furniture = () => {
                                     </div>
                                 </div>
                             </div>
+                            </Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>

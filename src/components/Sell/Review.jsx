@@ -36,7 +36,7 @@ const Review = () => {
       {/* <Navbar /> */}
        {isLoggedIn ? <Navbar2 /> : <Navbar />}
       <div
-        className="w-full h-[400px] bg-cover bg-center flex items-center px-6 sm:px-12"
+        className="w-full h-[260px] bg-cover bg-center flex items-center px-6 sm:px-24"
         style={{
           backgroundImage: `url(${bgImage})`,
         }}
@@ -45,7 +45,7 @@ const Review = () => {
           {/* <h1 className="text-3xl sm:text-5xl font-semibold leading-snug">
           Sell your home with <br/> confidence
         </h1> */}
-          <h1 className="text-3xl sm:text-[45px] font-semibold leading-snug text-white">
+          <h1 className="text-3xl sm:text-[45px] font-semibold leading-[1.1] text-white">
             <span className="block mb-2">Sell your home with</span>
             <span className="block">confidence</span>
           </h1>
@@ -68,7 +68,7 @@ const Review = () => {
 
       <PropertiesSlider />
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6 px-4 py-10 place-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-6 px-12 py-10 place-items-center">
         {cards.map((card, index) => (
           <div
             key={index}
@@ -130,7 +130,7 @@ const Review = () => {
           />
         </div>
       </div> */}
-      <div style={{ fontFamily: 'Poppins' }} className="w-full bg-[#F7F7F7] px-4 md:px-8 lg:px-16 py-8 lg:py-12 space-y-12">
+      <div style={{ fontFamily: 'Poppins' }} className="w-full bg-[#F7F7F7] px-4 md:px-8 lg:px-24 py-8 lg:py-12 space-y-12">
        
         <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-10">
           <div className="w-full lg:w-1/2 text-center lg:text-left">

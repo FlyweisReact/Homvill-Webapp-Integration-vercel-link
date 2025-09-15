@@ -32,7 +32,7 @@ const Midpage = () => {
 
   return (
     <div style={{fontFamily: 'Poppins'}} className="flex flex-col items-center  py-8 bg-[#FFE0E9] w-full min-h-[500px]">
-      <h2 className="text-[40px] font-medium text-gray-800 text-center lg:text-[40px] md:text-3xl sm:text-2xl xs:text-xl px-4">
+      <h2 style={{fontWeight:'500'}} className="text-[40px]  text-gray-800 text-center lg:text-[40px] md:text-3xl sm:text-2xl xs:text-xl px-4">
         Mid Page Banner Headline Goes Here
       </h2>
       <p className="text-gray-600 mb-8 mt-4 text-center lg:text-base md:text-sm sm:text-xs xs:text-xs px-4">

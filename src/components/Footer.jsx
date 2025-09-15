@@ -4,6 +4,7 @@ import logo from './assets/logo.svg'
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import arrow from './assets/arrow2.svg'
+import icon from './assets/Icon (18).svg'
 import { useAuth } from "./Authprovider/AuthContext";
 const Footer = () => {
   const { isLoggedIn } = useAuth();
@@ -22,14 +23,15 @@ const Footer = () => {
         <div>
           <img src={logo} className="mb-8"/>
           <p className="text-[15px] mb-2">Connecting buyers with Sellers, Seamlessly</p>
-          <div className="flex border border-gray-300 rounded-xl overflow-hidden max-w-xs">
+          <div className="flex border border-gray-300 rounded-md overflow-hidden max-w-xs">
             <input
               type="email"
               placeholder="Enter Email"
               className="w-full px-3 py-2 outline-none"
             />
-            <button className="bg-[#8d153a] text-white px-4">
-              &gt;
+          
+            <button className="bg-[#8d153a] m-1 rounded-md text-white p-2 px-3">
+              <img src={icon}/>
             </button>
           </div>
         </div>

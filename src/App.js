@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './components/Home/Home'
@@ -65,7 +65,25 @@ import Postforsale from './components/Postforsale'
 import LenderLoan from './components/Partner/LenderLoan'
 import Remodeling from './components/Partner/Remodeling'
 import Brand from './components/Partner/Brand'
+import Savedsearch from './components/Savedsearch'
+import Rentals from './components/Rentals'
+import UserDashboard from './components/UserDashboard'
+import { useLocation } from "react-router-dom";
+import RecentActivity from './components/RecentActivity';
+import ManageSettings from './components/ManageSettings'
+import ProfileSettings from './components/ProfileSettings';
+import Notification from './components/Notification'
+import Document from './components/Documents'
+import Messages from './components/Messages'
+import Applications from './components/Applications';
+import Property2 from './components/Property2';
+import Boost from './components/Boost'
 const App = () => {
+   const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <>
     {/* <Home/> */}
@@ -134,6 +152,19 @@ const App = () => {
         <Route path="/lenderloan" element={<LenderLoan />} />
         <Route path="/remodeling" element={<Remodeling />} />
         <Route path="/brand" element={<Brand />} />
+        <Route path="/savesearches" element={<Savedsearch />} />
+        <Route path="/rentalsreached" element={<Rentals />} />
+                <Route path="/userdashboard" element={<UserDashboard />} />
+                <Route path="/recentactivity" element={<RecentActivity />} />
+                <Route path="/managesettings" element={<ManageSettings />} />
+                <Route path="/profilesettings" element={<ProfileSettings />} />
+                <Route path="/notification" element={<Notification />} />
+                <Route path="/document" element={<Document />} />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/applications" element={<Applications />} />
+                <Route path="/property1" element={<Property2 />} />
+                <Route path="/boost" element={<Boost />} />
+
     </Routes>
     </>
   )

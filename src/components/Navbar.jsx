@@ -61,7 +61,7 @@ const Navbar = () => {
     setShowRentDropdown(false);
     setIsOpen(false);
   };
- const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div style={{ zIndex: '20000' }} className="w-full font-sans">
       {/* Custom CSS for 850px breakpoint */}
@@ -87,7 +87,7 @@ const Navbar = () => {
       </style>
 
       {/* Top Bar */}
-      <div style={{ fontFamily: 'Poppins' }} className="bg-[#8A1538] text-white text-sm flex justify-between items-center px-12 py-1 md:flex-row flex-col space-y-2 md:space-y-0">
+      {/* <div style={{ fontFamily: 'Poppins' }} className="bg-[#8A1538] text-white text-sm flex justify-between items-center px:12 lg:px-28 py-1 md:flex-row flex-col space-y-2 md:space-y-0">
         <div className="flex items-center space-x-1">
           <FaMapMarkerAlt className="text-xs" />
           <span>47 W 13th St, New York, NY 10011, USA</span>
@@ -96,14 +96,14 @@ const Navbar = () => {
           <FaClock className="text-xs" />
           <span>9am - 6pm EST, Monday - Friday</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Nav */}
       <div className="relative bg-white shadow">
-        <div className="flex justify-between items-center px-8 md:px-12 py-4">
+        <div className="flex justify-between lg:justify-evenly items-center px-8 md:px-20 py-4">
           {/* Logo */}
-          <div className="text-2xl font-bold">
-            <img src={logo} alt="HomeVill Logo" />
+          <div className="text-2xl lg:mr-4 font-bold">
+            <Link to={'/'}><img src={logo} alt="HomeVill Logo" /></Link>
           </div>
 
           {/* Hamburger Menu for Mobile */}
@@ -114,7 +114,7 @@ const Navbar = () => {
           </div>
 
           {/* Links - Desktop */}
-          <div className="hidden show-above-850 space-x-6 text-[20px] font-medium relative">
+          <div className="hidden show-above-850 space-x-6 text-[18px] font-medium relative">
             <a style={{ fontFamily: 'Poppins' }} href="#">Home</a>
 
             {/* Buy with dropdown */}
@@ -127,7 +127,7 @@ const Navbar = () => {
                 Buy
               </a>
               {showBuyDropdown && (
-                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                <div className="fixed left-0 top-[46px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                   <div className="flex w-full">
                     {/* Homes for Sale - Split into two columns */}
                     <div className="w-1/3 flex">
@@ -173,7 +173,7 @@ const Navbar = () => {
                 Sell
               </a>
               {showSellDropdown && (
-                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                <div className="fixed left-0 top-[46px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                   <div className="flex w-full">
                     <div style={{ fontFamily: 'Roboto' }} className="">
                       <h4 className="font-semibold font-roboto mb-3 text-[20px]">Seller Resources</h4>
@@ -206,7 +206,7 @@ const Navbar = () => {
                 Rent
               </a>
               {showRentDropdown && (
-                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                <div className="fixed left-0 top-[46px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                   <div className="flex w-full">
                     <div style={{ fontFamily: 'Roboto' }} className="">
                       <h4 className="font-semibold font-roboto mb-3 text-[20px]">Find a place to rent</h4>
@@ -221,10 +221,10 @@ const Navbar = () => {
                     <div style={{ fontFamily: 'Roboto' }} className="w-1/3">
                       <h4 className="font-semibold mb-3 text-[20px]">Your rental activity</h4>
                       <ul className="text-[16px] space-y-2">
-                        <li><a href="#" className="hover:text-[#8A1538]">Your saved searches</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Your messages</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Rentals you’ve reached out to</a></li>
-                        <li><a href="#" className="hover:text-[#8A1538]">Your applications</a></li>
+                        <li><Link to={'/signin'} className="hover:text-[#8A1538]">Your saved searches</Link></li>
+                        <li><Link to={'signin'} className="hover:text-[#8A1538]">Your messages</Link></li>
+                        <li><Link to={'/signin'} className="hover:text-[#8A1538]">Rentals you’ve reached out to</Link></li>
+                        <li><Link to={'/signin'} className="hover:text-[#8A1538]">Your applications</Link></li>
                       </ul>
                     </div>
                   </div>
@@ -244,7 +244,7 @@ const Navbar = () => {
                 Contractors
               </a>
               {showContractDropdown && (
-                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                <div className="fixed left-0 top-[46px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                   <div className="flex w-full">
                     <div className="w-1/3 flex">
                       <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
@@ -258,7 +258,7 @@ const Navbar = () => {
                       </div>
                       <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
                         <ul className="text-[16px] font-roboto space-y-4 mt-8">
-                          <li><a href="#" className="hover:text-[#8A1538]">Architect</a></li>
+                          <li><Link to={'/build'} href="#" className="hover:text-[#8A1538]">Architect</Link></li>
                           <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
                           <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
                           <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
@@ -271,11 +271,7 @@ const Navbar = () => {
             </div>
 
             <Link to={'/signin'} style={{ fontFamily: 'Poppins' }}>Furniture</Link>
-             <Link to={'/signin'}    style={{ fontFamily: 'Poppins' }} >Partner with HomeVill</Link>
-          </div>
-
-          {/* Right-side: Language & Login - Desktop */}
-          <div style={{ fontFamily: 'Poppins' }} className="hidden show-above-850 items-center space-x-4 text-sm">
+            <Link to={'/signin'} style={{ fontFamily: 'Poppins' }} >Partner with HomVill</Link>
             <div className="flex items-center space-x-1 cursor-pointer">
               <div className="relative inline-block text-left">
                 <div
@@ -308,9 +304,14 @@ const Navbar = () => {
                 )}
               </div>
             </div>
+          </div>
+
+          {/* Right-side: Language & Login - Desktop */}
+          <div style={{ fontFamily: 'Poppins' }} className="hidden show-above-850 items-center space-x-4 text-sm">
+
             <button onClick={() => {
-                    navigate('/signin');
-                  }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b]">
+              navigate('/signin');
+            }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b]">
               Login
             </button>
           </div>
@@ -318,7 +319,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="fixed top-[100px] left-0 w-full h-[calc(100vh-100px)] bg-white z-50 flex flex-col pt-6 space-y-4 text-[20px] overflow-y-auto mobile-menu">
+          <div className="fixed top-[61px] left-0 w-full h-[calc(100vh-100px)] bg-white z-50 flex flex-col pt-6 space-y-4 text-[20px] overflow-y-auto mobile-menu">
             <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Home</a>
             <div className="w-full">
               <button
@@ -344,10 +345,10 @@ const Navbar = () => {
                   </ul>
                   <h4 className="font-semibold mb-2 mt-4 text-[20px]">Resources</h4>
                   <ul className="space-y-2">
-                     <li><Link to={'/purchase'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home purchase guide</Link></li>
-                        <li><Link to={'/foreclosureinform'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosure information center</Link></li>
-                        <li><Link to={'/financial'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Financial assistance for down payments</Link></li>
-                  
+                    <li><Link to={'/purchase'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home purchase guide</Link></li>
+                    <li><Link to={'/foreclosureinform'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Foreclosure information center</Link></li>
+                    <li><Link to={'/financial'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Financial assistance for down payments</Link></li>
+
                   </ul>
                 </div>
               )}
@@ -364,15 +365,15 @@ const Navbar = () => {
                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                   <h4 className="font-semibold mb-3 text-[20px]">Seller Resources</h4>
                   <ul className="space-y-2">
-                     <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Review available selling strategies</Link></li>
-                        <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>See your home’s HomVill Estimate</Link></li>
-                        <li><Link to={'/market'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Market property values</Link></li>
-                        <li><Link to={'/homeguide'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home seller's guide</Link></li>
-                   
+                    <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Review available selling strategies</Link></li>
+                    <li><Link to={'/review'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>See your home’s HomVill Estimate</Link></li>
+                    <li><Link to={'/market'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Market property values</Link></li>
+                    <li><Link to={'/homeguide'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Home seller's guide</Link></li>
+
                   </ul>
                   <h4 className="font-semibold mb-3 mt-4 text-[20px]">Property sale methods</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Post for sale</a></li>
+                    <li><Link to={'/signin'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Post for sale</Link></li>
                   </ul>
                 </div>
               )}
@@ -389,22 +390,22 @@ const Navbar = () => {
                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                   <h4 className="font-semibold mb-3 text-[20px]">Find a place to rent</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Apartments you can rent</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes available to rent</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Browse all rentals</a></li>
+                    <li><Link to={'/rent'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Apartments you can rent</Link></li>
+                    <li><Link to={'/homeavailable'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes available to rent</Link></li>
+                    <li><Link to={'/rent'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Browse all rentals</Link></li>
                     <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>View all rental buildings</a></li>
                   </ul>
                   <h4 className="font-semibold mb-3 mt-4 text-[20px]">Your rental activity</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your saved searches</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your messages</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Rentals you’ve reached out to</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your applications</a></li>
+                    <li><Link to={'/signin'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your saved searches</Link></li>
+                    <li><Link to={'/signin'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your messages</Link></li>
+                    <li><Link to={'/signin'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Rentals you’ve reached out to</Link></li>
+                    <li><Link to={'/signin'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your applications</Link></li>
                   </ul>
                 </div>
               )}
             </div>
-            <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">List for Rent</a>
+            <Link to={'/listrent'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">List for Rent</Link>
             <div className="w-full">
               <button
                 onClick={toggleContractDropdown}
@@ -417,9 +418,9 @@ const Navbar = () => {
                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                   <h4 className="font-semibold mb-2 text-[20px]">Find your contractors</h4>
                   <ul className="space-y-2">
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Builders</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Renovation</a></li>
-                    <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Contractors</a></li>
+                    <li><Link to={'/build'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Builders</Link></li>
+                    <li><Link to={'/renovation'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Renovation</Link></li>
+                    <li><Link to={'/build'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Contractors</Link></li>
                     <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Designers</a></li>
                     <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Architect</a></li>
                     <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Lorem Ipsum</a></li>
@@ -429,8 +430,8 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Furniture</a>
-            <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Partner with HomeVill</a>
+            <Link to={'/signin'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Furniture</Link>
+            <Link to={'/signin'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Partner with HomeVill</Link>
             <div className="w-full">
               <button
                 onClick={toggleDropdown}
@@ -458,10 +459,10 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-            <button  onClick={() => {
-    toggleMobileMenu();
-    navigate('/signup');
-  }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b] mx-4 text-sm w-fit">
+            <button onClick={() => {
+              toggleMobileMenu();
+              navigate('/signup');
+            }} className="bg-[#8A1538] text-white px-4 py-1 rounded-full hover:bg-[#6d112b] mx-4 text-sm w-fit">
               Login
             </button>
           </div>

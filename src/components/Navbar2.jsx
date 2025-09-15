@@ -639,6 +639,23 @@ const Navbar = () => {
         localStorage.removeItem("token");
         setIsLoggedIn(false); // update auth context
     };
+    const handleClick = (tabName) => {
+        localStorage.setItem('activeTab', tabName);
+        navigate('/recentactivity');
+    };
+    const menuItems = [
+        { label: "User Dashboard", path: "/userdashboard" },
+        { label: "Saved Homes", path: "/saved-homes" },
+        { label: "Saved Searches", path: "/saved-searches" },
+        { label: "Your Home", path: "/your-home" },
+        { label: "Renter Hub", path: "/renter-hub" },
+        { label: "Recently Viewed", path: "/recently-viewed" },
+        { label: "Manage tours", path: "/manage-tours" },
+        { label: "My properties", path: "/my-properties" },
+        { label: "Favorites", path: "/favorites" },
+        { label: "Subscriptions", path: "/subscriptions" },
+        { label: "Partner with HomVill", path: "/partner" },
+    ];
 
     return (
         <div style={{ zIndex: '20000' }} className="w-full font-sans">
@@ -665,7 +682,7 @@ const Navbar = () => {
             </style>
 
             {/* Top Bar */}
-            <div style={{ fontFamily: 'Poppins' }} className="bg-[#8A1538] text-white text-sm flex justify-between items-center px-12 py-1 md:flex-row flex-col space-y-2 md:space-y-0">
+            {/* <div style={{ fontFamily: 'Poppins' }} className="bg-[#8A1538] text-white text-sm flex justify-between items-center px:12 lg:px-28  py-1 md:flex-row flex-col space-y-2 md:space-y-0">
                 <div className="flex items-center space-x-1">
                     <FaMapMarkerAlt className="text-xs" />
                     <span>47 W 13th St, New York, NY 10011, USA</span>
@@ -674,14 +691,14 @@ const Navbar = () => {
                     <FaClock className="text-xs" />
                     <span>9am - 6pm EST, Monday - Friday</span>
                 </div>
-            </div>
+            </div> */}
 
             {/* Main Nav */}
             <div className="relative bg-white shadow">
-                <div className="flex justify-between items-center px-8 md:px-12 py-4">
+                <div className="flex justify-between lg:justify-evenly items-center px-8 md:px-12 py-4">
                     {/* Logo */}
-                    <div className="text-2xl font-bold">
-                        <img src={logo} alt="HomeVill Logo" />
+                    <div className="text-2xl lg:mr-4 font-bold">
+                        <Link to={'/'}><img src={logo} alt="HomeVill Logo" /></Link>
                     </div>
 
                     {/* Hamburger Menu for Mobile */}
@@ -692,7 +709,7 @@ const Navbar = () => {
                     </div>
 
                     {/* Links - Desktop */}
-                    <div className="hidden show-above-850 space-x-6 text-[20px] font-medium relative">
+                    <div className="hidden show-above-850 space-x-6 text-[18px] font-medium relative">
                         <a style={{ fontFamily: 'Poppins' }} href="#">Home</a>
 
                         {/* Buy with dropdown */}
@@ -705,7 +722,7 @@ const Navbar = () => {
                                 Buy
                             </a>
                             {showBuyDropdown && (
-                                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                                <div className="fixed left-0 top-[52px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                                     <div className="flex w-full">
                                         {/* Homes for Sale - Split into two columns */}
                                         <div className="w-1/3 flex">
@@ -751,7 +768,7 @@ const Navbar = () => {
                                 Sell
                             </a>
                             {showSellDropdown && (
-                                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                                <div className="fixed left-0 top-[52px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                                     <div className="flex w-full">
                                         <div style={{ fontFamily: 'Roboto' }} className="">
                                             <h4 className="font-semibold font-roboto mb-3 text-[20px]">Seller Resources</h4>
@@ -784,7 +801,7 @@ const Navbar = () => {
                                 Rent
                             </a>
                             {showRentDropdown && (
-                                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                                <div className="fixed left-0 top-[52px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                                     <div className="flex w-full">
                                         <div style={{ fontFamily: 'Roboto' }} className="">
                                             <h4 className="font-semibold font-roboto mb-3 text-[20px]">Find a place to rent</h4>
@@ -799,10 +816,10 @@ const Navbar = () => {
                                         <div style={{ fontFamily: 'Roboto' }} className="w-1/3">
                                             <h4 className="font-semibold mb-3 text-[20px]">Your rental activity</h4>
                                             <ul className="text-[16px] space-y-2">
-                                                <li><a href="#" className="hover:text-[#8A1538]">Your saved searches</a></li>
-                                                <li><a href="#" className="hover:text-[#8A1538]">Your messages</a></li>
-                                                <li><a href="#" className="hover:text-[#8A1538]">Rentals you’ve reached out to</a></li>
-                                                <li><a href="#" className="hover:text-[#8A1538]">Your applications</a></li>
+                                                <li><Link to={'/savesearches'} className="hover:text-[#8A1538]">Your saved searches</Link></li>
+                                                <li><Link to={'/messages'} href="#" className="hover:text-[#8A1538]">Your messages</Link></li>
+                                                <li><Link to={'/rentalsreached'} className="hover:text-[#8A1538]">Rentals you’ve reached out to</Link></li>
+                                                <li><Link to={'/applications'} className="hover:text-[#8A1538]">Your applications</Link></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -822,7 +839,7 @@ const Navbar = () => {
                                 Contractors
                             </a>
                             {showContractDropdown && (
-                                <div className="fixed left-0 top-[76px] w-[100vw] bg-white border-t border-gray-200 py-6 px-12 flex shadow-lg z-50">
+                                <div className="fixed left-0 top-[52px] w-[100vw] bg-white border-t border-gray-200 py-6 px-20 flex shadow-lg z-50">
                                     <div className="flex w-full">
                                         <div className="w-1/3 flex">
                                             <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
@@ -836,7 +853,7 @@ const Navbar = () => {
                                             </div>
                                             <div style={{ fontFamily: 'Roboto' }} className="w-1/2">
                                                 <ul className="text-[16px] font-roboto space-y-4 mt-8">
-                                                    <li><a href="#" className="hover:text-[#8A1538]">Architect</a></li>
+                                                    <li><Link to={'/contract'} className="hover:text-[#8A1538]">Architect</Link></li>
                                                     <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
                                                     <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
                                                     <li><a href="#" className="hover:text-[#8A1538]">Lorem Ipsum</a></li>
@@ -849,11 +866,7 @@ const Navbar = () => {
                         </div>
 
                         <Link to={'/furniture'} style={{ fontFamily: 'Poppins' }} >Furniture</Link>
-                         <Link to={'/partner'}  style={{ fontFamily: 'Poppins' }} >Partner with HomeVill</Link>
-                    </div>
-
-                    {/* Right-side: Language & Login - Desktop */}
-                    <div style={{ fontFamily: 'Poppins' }} className="hidden show-above-850 items-center space-x-4 text-sm">
+                        <Link to={'/partner'} style={{ fontFamily: 'Poppins' }} >Partner with HomVill</Link>
                         <div className="flex items-center space-x-1 cursor-pointer">
                             <div className="relative inline-block text-left">
                                 <div
@@ -886,6 +899,11 @@ const Navbar = () => {
                                 )}
                             </div>
                         </div>
+                    </div>
+
+                    {/* Right-side: Language & Login - Desktop */}
+                    <div style={{ fontFamily: 'Poppins' }} className="hidden show-above-850 items-center space-x-4 text-sm">
+
 
                         <div className="relative inline-block text-left" ref={menuRef}>
                             <img
@@ -897,37 +915,37 @@ const Navbar = () => {
 
                             {open && (
                                 <div className="absolute right-0 mt-3 w-[380px] bg-white border border-gray-200 rounded-lg shadow-xl z-50 p-4 flex flex-col justify-between">
-                                    {/* Top Section - Two Columns */}
+
                                     <div className="flex justify-between">
-                                        {/* My Homvill Column */}
+
                                         <div className="flex flex-col space-y-2">
                                             <h3 className="font-bold text-[#8A1538] underline mb-2">My Homvill</h3>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">User Dashboard</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Saved Homes</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Saved Searches</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Your Home</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Renter Hub</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Recently Viewed</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Manage tours</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">My properties</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Favorites</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Subscriptions</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Partner with HomVill</span>
+                                            <Link to={'/userdashboard'} className="text-[#8A1538] cursor-pointer font-semibold">User Dashboard</Link>
+                                            <span onClick={() => handleClick('Saved homes')} className="text-[#8A1538] cursor-pointer font-semibold">Saved Homes</span>
+
+                                            <span onClick={() => handleClick('Saved searches')} className="text-[#8A1538] cursor-pointer font-semibold">Saved Searches</span>
+                                            <span onClick={() => handleClick('Your home')} className="text-[#8A1538] cursor-pointer font-semibold">Your Home</span>
+                                            <span onClick={() => handleClick('Renter Hub')} className="text-[#8A1538] cursor-pointer font-semibold">Renter Hub</span>
+                                            <span onClick={() => handleClick('Recently Viewed')} className="text-[#8A1538] cursor-pointer font-semibold">Recently Viewed</span>
+                                            <span onClick={() => handleClick('Manage tours')} className="text-[#8A1538] cursor-pointer font-semibold">Manage Tours</span>
+                                            <Link to={'/selldash'} className="text-[#8A1538] cursor-pointer font-semibold">My properties</Link>
+                                            <Link to={'/fav'} className="text-[#8A1538] cursor-pointer font-semibold">Favorites</Link>
+                                            <Link to={'/subscriptions'} className="text-[#8A1538] cursor-pointer font-semibold">Subscriptions</Link>
+                                            <Link to={'/partner'} className="text-[#8A1538] cursor-pointer font-semibold">Partner with HomVill</Link>
                                         </div>
 
-                                        {/* Settings Column */}
+
                                         <div className="flex flex-col space-y-2">
                                             <h3 className="font-bold text-[#8A1538] mb-2">Settings</h3>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Manage All Settings</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Profile Settings</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Notification Settings</span>
-                                            <span className="text-[#8A1538] cursor-pointer font-semibold">Document Settings</span>
+                                            <Link to={'/managesettings'} className="text-[#8A1538] cursor-pointer font-semibold">Manage All Settings</Link>
+                                            <Link to={'/profilesettings'} className="text-[#8A1538] cursor-pointer font-semibold">Profile Settings</Link>
+                                            <Link to={'/notification'} className="text-[#8A1538] cursor-pointer font-semibold">Notification Settings</Link>
+                                            <Link to={'/document'} className="text-[#8A1538] cursor-pointer font-semibold">Document Settings</Link>
                                         </div>
                                     </div>
 
-                                    {/* Bottom Row - Aligned Cart & Log Out */}
                                     <div className="flex justify-between items-center pt-2 border-gray-200">
-                                        <span className="text-[#8A1538] cursor-pointer font-semibold">Cart</span>
+                                        <Link to={'/buyfurniture'} className="text-[#8A1538] cursor-pointer font-semibold">Cart</Link>
                                         <button onClick={handleLogout} className="flex items-center gap-2 text-[#8A1538] font-semibold">
                                             <FaSignOutAlt />
                                             Log Out
@@ -941,7 +959,7 @@ const Navbar = () => {
 
                 {/* Mobile Menu */}
                 {mobileMenuOpen && (
-                    <div className="fixed top-[100px] left-0 w-full h-[calc(100vh-100px)] bg-white z-50 flex flex-col pt-6 space-y-4 text-[20px] overflow-y-auto mobile-menu">
+                    <div className="fixed top-[61px] left-0 w-full h-[calc(100vh-100px)] bg-white z-50 flex flex-col pt-6 space-y-4 text-[20px] overflow-y-auto mobile-menu">
                         <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Home</a>
                         <div className="w-full">
                             <button
@@ -1009,22 +1027,22 @@ const Navbar = () => {
                                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                                     <h4 className="font-semibold mb-3 text-[20px]">Find a place to rent</h4>
                                     <ul className="space-y-2">
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Apartments you can rent</a></li>
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes available to rent</a></li>
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Browse all rentals</a></li>
+                                        <li><Link to={'/rent'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Apartments you can rent</Link></li>
+                                        <li><Link to={'/homeavailable'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Homes available to rent</Link></li>
+                                        <li><Link to={'/rent'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Browse all rentals</Link></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>View all rental buildings</a></li>
                                     </ul>
                                     <h4 className="font-semibold mb-3 mt-4 text-[20px]">Your rental activity</h4>
                                     <ul className="space-y-2">
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your saved searches</a></li>
+                                        <li><Link to={'/savesearches'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your saved searches</Link></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your messages</a></li>
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Rentals you’ve reached out to</a></li>
+                                        <li><Link to={'/rentalsreached'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Rentals you’ve reached out to</Link></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Your applications</a></li>
                                     </ul>
                                 </div>
                             )}
                         </div>
-                        <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">List for Rent</a>
+                        <Link to={'/listrent'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">List for Rent</Link>
                         <div className="w-full">
                             <button
                                 onClick={toggleContractDropdown}
@@ -1037,9 +1055,9 @@ const Navbar = () => {
                                 <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
                                     <h4 className="font-semibold mb-2 text-[20px]">Find your contractors</h4>
                                     <ul className="space-y-2">
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Builders</a></li>
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Renovation</a></li>
-                                        <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Contractors</a></li>
+                                        <li><Link to={'/contract'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Builders</Link></li>
+                                        <li><Link to={'/contract'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Renovation</Link></li>
+                                        <li><Link to={'/contract'} className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Contractors</Link></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Designers</a></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Architect</a></li>
                                         <li><a href="#" className="hover:text-[#8A1538]" onClick={toggleMobileMenu}>Lorem Ipsum</a></li>
@@ -1049,8 +1067,8 @@ const Navbar = () => {
                                 </div>
                             )}
                         </div>
-                        <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Furniture</a>
-                        <a style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Partner with HomeVill</a>
+                        <Link to={'/furniture'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Furniture</Link>
+                        <Link to={'/partner'} style={{ fontFamily: 'Poppins' }} href="#" onClick={toggleMobileMenu} className="px-4">Partner with HomeVill</Link>
                         <div className="w-full">
                             <button
                                 onClick={toggleDropdown}
@@ -1080,131 +1098,165 @@ const Navbar = () => {
                         </div>
                         {/* Avatar Dropdown for Mobile */}
                         <div className="w-full" ref={menuRef}>
+                            {/* Avatar Image (Optional: You can remove onClick handler if no longer needed) */}
                             <img
                                 src={avtar}
                                 alt="User Avatar"
-                                onClick={() => setOpen(!open)}
                                 className="w-10 h-10 mx-4 rounded-full cursor-pointer border-2 border-gray-300 hover:border-[#8A1538] transition-all duration-200"
                             />
-                            {open && (
-                                <div style={{ fontFamily: 'Roboto' }} className="pl-8 pt-2 space-y-2 text-[16px]">
-                                    <div className="flex flex-col space-y-2">
-                                        <h3 className="font-bold text-[#8A1538] underline mb-2 text-[20px]">My Homvill</h3>
+
+                            {/* Dropdown Menu: Always Visible */}
+                            {/* <div
+                                style={{ fontFamily: 'Roboto' }}
+                                className="pl-8 pt-2 space-y-2 pb-8 text-[16px]"
+                            >
+                                <div className="flex flex-col space-y-2">
+                                    <h3 className="font-bold text-[#8A1538] underline mb-2 text-[20px]">My Homvill</h3>
+                                    {[
+                                        "User Dashboard",
+                                        "Saved Homes",
+                                        "Saved Searches",
+                                        "Your Home",
+                                        "Renter Hub",
+                                        "Recently Viewed",
+                                        "Manage tours",
+                                        "My properties",
+                                        "Favorites",
+                                        "Subscriptions",
+                                        "Partner with HomVill",
+                                    ].map((item, i) => (
                                         <span
+                                            key={i}
                                             className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
                                             onClick={toggleMobileMenu}
                                         >
-                                            User Dashboard
+                                            {item}
                                         </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Saved Homes
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Saved Searches
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Your Home
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Renter Hub
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Recently Viewed
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Manage tours
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            My properties
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Favorites
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Subscriptions
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Partner with HomVill
-                                        </span>
-                                    </div>
-                                    <h3 className="font-bold text-[#8A1538] mb-2 mt-4 text-[20px]">Settings</h3>
-                                    <div className="flex flex-col space-y-2">
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Manage All Settings
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Profile Settings
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Notification Settings
-                                        </span>
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Document Settings
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-center pt-2">
-                                        <span
-                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
-                                            onClick={toggleMobileMenu}
-                                        >
-                                            Cart
-                                        </span>
-                                        <button
-                                            onClick={() => {
-                                                handleLogout();
-                                                toggleMobileMenu();
-                                            }}
-                                            className="flex items-center gap-2 mr-2 text-[#8A1538] font-semibold"
-                                        >
-                                            <FaSignOutAlt />
-                                            Log Out
-                                        </button>
-                                    </div>
+                                    ))}
                                 </div>
-                            )}
+
+
+                                <h3 className="font-bold text-[#8A1538] mb-2 mt-4 text-[20px]">Settings</h3>
+                                <div className="flex flex-col space-y-2">
+                                    {[
+                                        "Manage All Settings",
+                                        "Profile Settings",
+                                        "Notification Settings",
+                                        "Document Settings",
+                                    ].map((item, i) => (
+                                        <span
+                                            key={i}
+                                            className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
+                                            onClick={toggleMobileMenu}
+                                        >
+                                            {item}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <div className="flex justify-between  items-center pt-2">
+                                    <span
+                                        className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]"
+                                        onClick={toggleMobileMenu}
+                                    >
+                                        Cart
+                                    </span>
+                                    <button
+                                        onClick={() => {
+                                            handleLogout();
+                                            toggleMobileMenu();
+                                        }}
+                                        className="flex items-center gap-2 mr-2 text-[#8A1538] font-semibold"
+                                    >
+                                        <FaSignOutAlt />
+                                        Log Out
+                                    </button>
+                                </div>
+                            </div> */}
+                            <div
+  style={{ fontFamily: 'Roboto' }}
+  className="pl-8 pt-2 space-y-2 pb-8 text-[16px]"
+>
+  <div className="flex flex-col space-y-2">
+    <h3 className="font-bold text-[#8A1538] underline mb-2 text-[20px]">My Homvill</h3>
+
+    <Link to="/userdashboard" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      User Dashboard
+    </Link>
+<span onClick={() => { handleClick('Saved homes'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Saved homes
+    </span>
+    <span onClick={() => { handleClick('Saved searches'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Saved Searches
+    </span>
+
+    <span onClick={() => { handleClick('Your home'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Your Home
+    </span>
+
+    <span onClick={() => { handleClick('Renter Hub'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Renter Hub
+    </span>
+
+    <span onClick={() => { handleClick('Recently Viewed'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Recently Viewed
+    </span>
+
+    <span onClick={() => { handleClick('Manage tours'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Manage Tours
+    </span>
+
+    <Link to="/selldash" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      My Properties
+    </Link>
+
+    <Link to="/fav" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Favorites
+    </Link>
+
+    <Link to="/subscriptions" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Subscriptions
+    </Link>
+
+    <Link to="/partner" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Partner with HomVill
+    </Link>
+  </div>
+
+  <h3 className="font-bold text-[#8A1538] mb-2 mt-4 text-[20px]">Settings</h3>
+  <div className="flex flex-col space-y-2">
+    <Link to="/managesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Manage All Settings
+    </Link>
+    <Link to="/profilesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Profile Settings
+    </Link>
+    <Link to="/notification" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Notification Settings
+    </Link>
+    <Link to="/document" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Document Settings
+    </Link>
+  </div>
+
+  <div className="flex justify-between items-center pt-2">
+    <Link to="/buyfurniture" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+      Cart
+    </Link>
+    <button
+      onClick={() => {
+        handleLogout();
+        toggleMobileMenu();
+      }}
+      className="flex items-center gap-2 mr-2 text-[#8A1538] font-semibold"
+    >
+      <FaSignOutAlt />
+      Log Out
+    </button>
+  </div>
+</div>
                         </div>
+
                     </div>
                 )}
             </div>

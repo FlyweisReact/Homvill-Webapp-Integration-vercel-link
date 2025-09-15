@@ -14,7 +14,7 @@ const HousingMarket = () => {
             {/* <Navbar /> */}
             {isLoggedIn ? <Navbar2 /> : <Navbar />}
             <div
-                className="w-full bg-cover bg-center text-white h-[500px] px-4"
+                className="w-full bg-cover bg-center text-white h-[500px] px-14"
                 style={{ backgroundImage: `url(${bgImage})`, fontFamily: 'Poppins' }}
             >
                 <div className=" mx-auto text-center space-y-6">
@@ -71,7 +71,7 @@ const HousingMarket = () => {
                     <p className="text-[32px] text-[#1D1D1D80]">(Data through November 30, 2024)</p>
                 </div>
             </div> */}
-            <div className="flex flex-col lg:flex-row items-center justify-center bg-[#F7F7F7] mt-12 px-4 py-10 lg:p-10 rounded-lg shadow-md">
+            <div className="flex flex-col lg:flex-row items-center justify-center bg-[#F7F7F7] mt-12 px-4 py-10 lg:p-14 rounded-lg shadow-md">
                 {/* Left Side - Image */}
                 <div className="w-full lg:w-1/2 mb-6 lg:mb-0 lg:mr-8">
                     <img src={Map} alt="USA Map" className="w-full h-auto rounded-md" />

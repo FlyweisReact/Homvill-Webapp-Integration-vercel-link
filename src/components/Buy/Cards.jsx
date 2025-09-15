@@ -14,6 +14,8 @@ import previous from '../assets/previous.svg';
 import { useState } from "react";
 import next from '../assets/next.svg';
 import arrow from '../assets/arrow.svg';
+import { IoCloseCircle } from "react-icons/io5";
+
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import heart from '../assets/heart.svg';
 
@@ -110,6 +112,8 @@ const listings = [
 
 const PropertyHeader = () => {
   const [currentPage, setCurrentPage] = useState(1);
+    const [showModal, setShowModal] = useState(false);
+
   const totalPages = 10;
   const handleClick = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -122,7 +126,7 @@ const PropertyHeader = () => {
         {/* Sticky Section */}
         <div
           style={{ fontFamily: 'Poppins' }}
-          className="sticky top-0 z-10 bg-white flex items-center justify-center px-2 py-2 border-b"
+          className="sticky top-0 z-10 bg-white flex items-center justify-center px-2 py-1 border-b"
         >
           {/* Left Side */}
           <div className="flex items-center gap-6 flex-wrap">
@@ -158,7 +162,7 @@ const PropertyHeader = () => {
         </div>
 
         {/* Scrollable Listings Section */}
-        <div className="grid grid-cols-2 gap-4 p-4 px-10 mx-auto">
+        <div className="grid grid-cols-2 gap-6  px-24 ">
           {listings.map((listing, index) => (
             <div
               key={index}
@@ -228,21 +232,173 @@ const PropertyHeader = () => {
                   <span className="text-gray-600 text-[16px] ml-1 font-medium">Entire home</span>
                 </div>
 
-                <div className="flex items-center justify-between mt-2">
+                <div className="flex items-center justify-between  mt-2">
                   <p className="text-lg font-bold text-gray-800">{listing.price}</p>
                   {listing.deal && (
                     <div className="flex items-center space-x-1">
-                      {listing.deal === "Great Deal" && (
-                        <span className="flex items-center gap-1 text-green-600 text-sm font-semibold">
+                      {/* {listing.deal === "Great Deal" && (
+                        <span  onClick={() => setShowModal(true)} className="flex items-center gap-1 text-green-600 text-sm font-semibold">
                           <div className="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center">
                             <img src={vect2} alt="arrow" className="w-3 h-3" />
                           </div>
                           Great Deal
-                          <svg className="w-4 h-4 ml-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 ml-1 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm.93-11.412l-.858 3.429a.5.5 0 01-.972 0l-.858-3.43A.5.5 0 018.715 6h2.57a.5.5 0 01.485.588zM10 14a.75.75 0 110-1.5.75.75 0 010 1.5z" />
                           </svg>
                         </span>
-                      )}
+                        
+                        
+                      )} */}
+                      {listing.deal === "Great Deal" && (
+        <span
+          onClick={() => setShowModal(true)}
+          className="flex items-center gap-1 text-green-600 text-sm font-semibold cursor-pointer"
+        >
+          <div className="w-5 h-5 rounded-full bg-green-600 flex items-center justify-center">
+            <img src={vect2} alt="arrow" className="w-3 h-3" />
+          </div>
+          Great Deal
+          <svg
+            className="w-4 h-4 ml-1 text-green-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm.93-11.412l-.858 3.429a.5.5 0 01-.972 0l-.858-3.43A.5.5 0 018.715 6h2.57a.5.5 0 01.485.588zM10 14a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+          </svg>
+        </span>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        // <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 px-4">
+        //   <div className="bg-white w-full max-w-3xl rounded-lg shadow-lg p-6 relative max-h-[90vh] overflow-y-auto">
+          
+        //     <button
+        //       className="absolute top-4 right-4 text-red-600"
+        //       onClick={() => setShowModal(false)}
+        //     >
+        //       <IoCloseCircle size={26} />
+        //     </button>
+
+          
+        //     <h2 className="text-xl mulish-font font-bold text-[#1D1D1D] mb-4">
+        //       Why this property is a great deal
+        //     </h2>
+
+        //     <hr className="border-t border-[#8A1538] mb-4" />
+
+            
+        //     <h3 className="text-center font-semibold text-[16px] mb-6">Information</h3>
+
+  
+        //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        //       <div>
+        //         <p className="text-sm text-gray-500">Market Price</p>
+        //         <input
+        //           readOnly
+        //           value="$8,999,000"
+        //           className="w-full mt-1 p-2 rounded-md bg-gray-100 border text-sm"
+        //         />
+        //       </div>
+        //       <div>
+        //         <p className="text-sm text-gray-500">This Property Price</p>
+        //         <input
+        //           readOnly
+        //           value="$4,955,000"
+        //           className="w-full mt-1 p-2 rounded-md bg-gray-100 border text-sm"
+        //         />
+        //       </div>
+        //     </div>
+
+          
+        //     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        //       {[1, 2, 3, 4].map((_, idx) => (
+        //         <div key={idx}>
+        //           <input
+        //             placeholder="Headline Here"
+        //             className="w-full p-2 mb-2 border rounded-md text-sm"
+        //           />
+        //           <textarea
+        //             placeholder="Body"
+        //             rows={2}
+        //             className="w-full p-2 border rounded-md text-sm"
+        //           />
+        //         </div>
+        //       ))}
+        //     </div>
+        //   </div>
+        // </div>
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
+      <div className="bg-white w-full max-w-4xl rounded-lg shadow-lg overflow-hidden">
+        {/* Header */}
+        <div className="flex justify-between items-center px-6 py-4 border-b-[1.5px] border-[#8A1538]">
+          <h2 className="text-xl md:text-2xl font-bold text-black">
+            Why this property is a great deal
+          </h2>
+          <button
+            onClick={() => setShowModal(false)}
+            className="text-red-600 text-2xl hover:text-red-800"
+          >
+             <IoCloseCircle size={26} />
+          </button>
+        </div>
+
+        {/* Subheading */}
+        <div className="text-center font-semibold text-lg mt-4">Information</div>
+
+        {/* Body */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-6">
+          {/* Left Column */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Market Price</label>
+            <input
+              type="text"
+              defaultValue="$8,999,000"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F9F9F9] rounded-md"
+            />
+
+            <label className="block text-sm font-medium mt-4 mb-1">Headline Here</label>
+            <input
+              
+              placeholder="Body"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F9F9F9] rounded-md  resize-none"
+            ></input>
+
+            <label className="block text-sm font-medium mt-4 mb-1">Headline Here</label>
+            <input
+              
+              placeholder="Body"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F7F7F7] rounded-md resize-none"
+            ></input>
+          </div>
+
+          {/* Right Column */}
+          <div>
+            <label className="block text-sm font-medium mb-1">This Property Price</label>
+            <input
+              type="text"
+              defaultValue="$4,955,000"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F7F7F7] rounded-md "
+            />
+
+            <label className="block text-sm font-medium mt-4 mb-1">Headline Here</label>
+            <input
+              
+              placeholder="Body"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F7F7F7] rounded-md  resize-none"
+            ></input>
+
+            <label className="block text-sm font-medium mt-4 mb-1">Headline Here</label>
+            <input
+              
+              placeholder="Body"
+              className="w-full px-4 py-3 border shadow-md border-gray-200 bg-[#F7F7F7] rounded-md  resize-none"
+            ></input>
+          </div>
+        </div>
+      </div>
+    </div>
+      )}
                       {listing.deal === "Fair Deal" && (
                         <span className="flex items-center gap-1 text-yellow-500 text-sm font-semibold">
                           <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center">
@@ -252,13 +408,14 @@ const PropertyHeader = () => {
                         </span>
                       )}
                     </div>
-                  )}
+                  )} 
+                  
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-center pb-4 space-x-4 text-sm text-black">
+        <div className="flex items-center justify-center pb-4 mt-6 mb-4 space-x-4 text-sm text-black">
           <button
             onClick={() => handleClick(currentPage - 1)}
             disabled={currentPage === 1}

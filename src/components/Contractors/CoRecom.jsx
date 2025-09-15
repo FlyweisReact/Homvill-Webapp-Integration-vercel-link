@@ -93,7 +93,7 @@ const RecommendedSlider = () => {
           }
         `}
       </style>
-        <div className="px-4 md:px-10 py-8  mx-auto">
+        <div className="px-4 md:px-24 py-8  mx-auto">
             <h2 className="text-xl md:text-[36px] mulish-font text-[#211E22] font-semibold text-gray-800 mb-4">Recommended for you</h2>
             <Swiper
                 modules={[Navigation]}

@@ -106,13 +106,13 @@ const FavoriteProperties = () => {
             [index]: !prev[index],
         }));
     };
-     const [currentPage, setCurrentPage] = useState(1);
-      const totalPages = 10;
-      const handleClick = (page) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = 10;
+    const handleClick = (page) => {
         if (page >= 1 && page <= totalPages) {
-          setCurrentPage(page);
+            setCurrentPage(page);
         }
-      };
+    };
     const { isLoggedIn } = useAuth();
     return (
         <>
@@ -238,42 +238,42 @@ const FavoriteProperties = () => {
                         </div>
                     ))}
                 </div>
-                 <div className="flex items-center mt-8 justify-center pb-4 space-x-4 text-sm text-black">
-                      <button
+                <div className="flex items-center mt-8 justify-center pb-4 space-x-4 text-sm text-black">
+                    <button
                         onClick={() => handleClick(currentPage - 1)}
                         disabled={currentPage === 1}
                         className="disabled:text-gray-300"
-                      >
+                    >
                         <FiChevronLeft />
-                      </button>
-            
-                      {[...Array(totalPages)].map((_, index) => {
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => {
                         const page = index + 1;
                         const isActive = page === currentPage;
                         return (
-                          <button
-                            key={page}
-                            onClick={() => handleClick(page)}
-                            className={`w-7 h-7 rounded-full flex items-center justify-center transition-all
+                            <button
+                                key={page}
+                                onClick={() => handleClick(page)}
+                                className={`w-7 h-7 rounded-full flex items-center justify-center transition-all
                               ${isActive
-                                ? 'bg-pink-100 border border-[#832333] text-black'
-                                : 'hover:bg-gray-100'}`}
-                          >
-                            {page}
-                          </button>
+                                        ? 'bg-pink-100 border border-[#832333] text-black'
+                                        : 'hover:bg-gray-100'}`}
+                            >
+                                {page}
+                            </button>
                         );
-                      })}
-            
-                      <button
+                    })}
+
+                    <button
                         onClick={() => handleClick(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className="disabled:text-gray-300"
-                      >
+                    >
                         <FiChevronRight />
-                      </button>
-                    </div>
+                    </button>
+                </div>
             </div>
-           
+
             <Footer />
 
         </>

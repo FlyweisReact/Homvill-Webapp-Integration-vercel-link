@@ -1,8 +1,9 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import frame from '../assets/Frame 9.svg'
 import frame2 from '../assets/Frame 10.svg'
 import frame3 from '../assets/Frame 11 (1).svg'
 import { useNavigate, Link } from 'react-router-dom';
+import red from '../assets/RED.svg';
 import Navbar2 from '../Navbar2';
 import heart from '../assets/heart.svg'
 import arrow from '../assets/arrow.svg'
@@ -23,11 +24,11 @@ import modern4 from '../assets/modern4.svg'
 import location from '../assets/location2.svg'
 const ViewShop = () => {
     const navigate = useNavigate();
-      const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      const toggleSidebar = () => {
+    const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
-      };
+    };
     const products = [
         {
             id: 1,
@@ -223,6 +224,14 @@ const ViewShop = () => {
             originalPrice: 100.0
         },
     ];
+    const [favorites2, setFavorites2] = useState({});
+
+    const toggleFavorite2 = (index) => {
+        setFavorites2((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
     return (
         <>
             <Navbar2 />
@@ -369,79 +378,88 @@ const ViewShop = () => {
                     </div>
                 </div>
             </div> */}
-              <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-4 bg-white text-gray-800 font-semibold flex items-center justify-between"
-            onClick={toggleSidebar}
-          >
-            Shop By
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          </button>
+            <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden p-4 bg-white text-gray-800 font-semibold flex items-center justify-between"
+                    onClick={toggleSidebar}
+                >
+                    Shop By
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
 
-          {/* Sidebar */}
-          <div
-            className={`${
-              isSidebarOpen ? 'block' : 'hidden'
-            } md:block w-full md:w-1/4 bg-white p-6 lg:ps-12 md:pt-12 lg:pe-6 sticky top-0 h-auto md:h-screen overflow-y-auto`}
-          >
-            <h2 className="text-2xl md:text-[32px] font-bold mb-4 sansation-bold">Shop By</h2>
+                {/* Sidebar */}
+                <div
+                    className={`${isSidebarOpen ? 'block' : 'hidden'
+                        } md:block w-full md:w-1/4 bg-white p-6 lg:ps-12 md:pt-12 lg:pe-6 sticky top-0 h-auto md:h-screen overflow-y-auto`}
+                >
+                    <h2 className="text-2xl md:text-[32px] font-bold mb-4 sansation-bold">Shop By</h2>
 
-            <div className="mb-6">
-              <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
-                Categories
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </h3>
-              <ul className="mt-2 space-y-2 text-base md:text-[20px] text-gray-600">
-                <li>Wardrobes</li>
-                <li>Beds</li>
-                <li>Mattresses</li>
-                <li>Bedroom Ensemble</li>
-                <li>Wardrobes</li>
-              </ul>
-            </div>
+                    <div className="mb-6">
+                        <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
+                            Categories
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </h3>
+                        <ul className="mt-2 space-y-2 text-base md:text-[20px] text-gray-600">
+                            <li>Wardrobes</li>
+                            <li>Beds</li>
+                            <li>Mattresses</li>
+                            <li>Bedroom Ensemble</li>
+                            <li>Wardrobes</li>
+                        </ul>
+                    </div>
 
-            <div className="mb-6">
-              <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
-                Color Family
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </h3>
-            </div>
+                    <div className="mb-6">
+                        <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
+                            Color Family
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </h3>
+                    </div>
 
-            <div>
-              <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
-                Discount Range
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </h3>
-            </div>
-          </div>
+                    <div>
+                        <h3 className="text-xl md:text-[24px] font-semibold flex justify-between items-center">
+                            Discount Range
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </h3>
+                    </div>
+                </div>
 
-          {/* Product Grid */}
-          <div className="w-full md:w-3/4 p-4 md:p-6 bg-white">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {products.map((product) => (
-                <a
-                  href={product.link}
+                {/* Product Grid */}
+                <div className="w-full md:w-3/4 p-4 md:p-6 bg-white">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                        {products.map((product, index) => (
+               <div
                   key={product.id}
                   className="bg-white rounded-2xl transition-all duration-300 relative overflow-hidden"
                 >
                   <div className="relative">
+                     <Link to={'/viewfurniture'}>
                     <img
                       src={product.image}
                       alt={product.title}
                       className="w-full h-32 sm:h-40 md:h-[176px] object-cover p-2 rounded-3xl"
-                    />
-                    <div className="z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
+                    /></Link>
+                    {/* <div className="z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-2">
                       <img src={heart} className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
+                    </div> */}
+                     <div
+                                                            onClick={() => toggleFavorite2(index)}
+                                                            className="absolute top-2 right-2 p-2 rounded-full cursor-pointer bg-[#1A1A1A]/20"
+                                                        >
+                                                            <img
+                                                                src={favorites2[index] ? red : heart}
+                                                                alt="Heart Icon"
+                                                                className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5"
+                                                            />
+                                                        </div>
                     <div className="z-10 absolute bg-[#1A1A1A]/20 p-2 rounded-full top-2 right-12">
                       <img src={arrow} className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
@@ -473,11 +491,11 @@ const ViewShop = () => {
                       </button>
                     </div>
                   </div>
-                </a>
+                </div>
               ))}
+                </div>
             </div>
-          </div>
-        </div>
+        </div >
             <Footer />
 
         </>

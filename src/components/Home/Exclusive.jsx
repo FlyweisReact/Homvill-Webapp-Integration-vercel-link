@@ -108,11 +108,11 @@ const FeaturedCategories = () => {
     };
 
     return (
-        <div className="w-full px-4 sm:px-8 md:px-12 py-8 overflow-hidden">
+        <div className="w-full px-4 sm:px-8 md:px-24 py-8 overflow-hidden">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <div style={{ fontFamily: 'Poppins' }}>
-                    <h2 className="text-2xl sm:text-3xl md:text-2xl lg:text-[40px] font-semibold">
+                    <h2 style={{fontWeight:'500'}} className="text-2xl sm:text-3xl md:text-2xl lg:text-[40px]">
                         Exclusive Properties Only For You
                     </h2>
                     <p className="text-sm sm:text-base md:text-[17px] mt-4 text-gray-500">

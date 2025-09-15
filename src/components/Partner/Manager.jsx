@@ -122,8 +122,9 @@ import Navbar2 from '../Navbar2';
 import sell from '../assets/seller.svg';
 import { FaChevronDown } from "react-icons/fa";
 import Footer from '../Footer';
-
+import { useNavigate } from 'react-router-dom';
 const Manager = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Navbar2 />
@@ -294,8 +295,8 @@ const Manager = () => {
                 placeholder="+1 ( _ _ _ ) _ _ _ - _ _ _ _"
               />
             </div>
-            <div className="text-end mt-6 sm:mt-8 md:mt-10 lg:mt-8">
-              <button className="bg-[#7B1E3F] text-lg sm:text-xl md:text-2xl lg:text-[25px] w-full sm:w-[300px] lg:w-[360px] mulish-font text-white px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 rounded-md shadow hover:bg-[#641732] transition">
+            <div  className="text-end mt-6 sm:mt-8 md:mt-10 lg:mt-8">
+              <button onClick={() => navigate('/')} className="bg-[#7B1E3F] text-lg sm:text-xl md:text-2xl lg:text-[25px] w-full sm:w-[300px] lg:w-[360px] mulish-font text-white px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 rounded-md shadow hover:bg-[#641732] transition">
                 Submit
               </button>
             </div>
