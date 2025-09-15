@@ -29,6 +29,8 @@ import links2 from './assets/links2.jpg';
 import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineInfoCircle } from 'react-icons/ai'; // Using react-icons for the "i" icon
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../store/slices/authSlice';
 
 // Categories data
 const categories = [
@@ -117,12 +119,12 @@ const FavoriteProperties = () => {
             setCurrentPage(page);
         }
     };
-    const { isLoggedIn } = useAuth();
-        const navigate = useNavigate();
-    
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
+    const navigate = useNavigate();
+
     return (
         <>
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div className="flex flex-col md:flex-row items-center justify-between  mx-12 px-6 ">
                 {/* Text Section */}
                 <div className="md:w-1/2">

@@ -15,8 +15,10 @@ import home8 from '../assets/buy8.svg';
 import home9 from '../assets/home9.svg';
 import Navbar2 from '../Navbar2';
 import { useAuth } from '../Authprovider/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 const Purchase = () => {
-     const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     const cards = [
         {
             img: home1,
@@ -78,7 +80,7 @@ const Purchase = () => {
     return (
         <>
             {/* <Navbar /> */}
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 className="bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-10 lg:px-12"
                 style={{ backgroundImage: `url(${bgImage})` }}

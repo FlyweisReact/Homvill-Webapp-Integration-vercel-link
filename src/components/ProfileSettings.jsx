@@ -742,6 +742,8 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuth } from "./Authprovider/AuthContext";
 import { useNavigate, Link } from 'react-router-dom';
 import Footer from './Footer'
+import { useSelector } from 'react-redux'
+import { selectIsAuthenticated } from '../store/slices/authSlice'
 
 const ProfileSettings = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -759,7 +761,7 @@ const ProfileSettings = () => {
     const [isOpen5, setIsOpen5] = useState(false);
     const [selectedReason, setSelectedReason] = useState('');
     const [comment, setComment] = useState('');
-    const { setIsLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
 
     const handleLogout = () => {
         setIsOpen5(false);

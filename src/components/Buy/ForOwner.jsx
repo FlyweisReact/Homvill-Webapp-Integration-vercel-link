@@ -7,6 +7,8 @@ import { useAuth } from '../Authprovider/AuthContext';
 import Cards from './Cards';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 
 const HomeForSale = () => {
     const [saleDropdownOpen, setSaleDropdownOpen] = useState(false);
@@ -21,7 +23,7 @@ const HomeForSale = () => {
     const [exactMatch, setExactMatch] = useState(false);
      const [isOpen, setIsOpen] = useState(false);
     const [selectedHomeTypes, setSelectedHomeTypes] = useState([]);
-   const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     const toggleSaleDropdown = () => {
         setSaleDropdownOpen(!saleDropdownOpen);
         setPriceDropdownOpen(false);
@@ -93,7 +95,7 @@ const HomeForSale = () => {
         <> 
         
             {/* <Navbar /> */}
-             {isLoggedIn ? <Navbar2 /> : <Navbar />}
+             {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-2 bg-white shadow-sm rounded-md border w-full mx-auto"

@@ -1,10 +1,12 @@
+// src/components/Home/Home.js (updated with isAuthenticated)
 import React, { useState, useRef, useEffect } from 'react'
 import Navbar from '../Navbar'
 import { useNavigate } from 'react-router-dom';
 
 import Install from '../Install'
 import { FaSearch } from "react-icons/fa";
-import { useAuth } from '../Authprovider/AuthContext';
+import { useSelector, useDispatch } from 'react-redux'; // Replace AuthContext
+import { selectIsAuthenticated, logout } from '../../store/slices/authSlice'; // Adjust path
 import { FiHeart, FiArrowRight } from "react-icons/fi";
 import { BsPlayFill } from "react-icons/bs";
 
@@ -49,7 +51,9 @@ import slider from '../assets/slider.svg'
 const Home = () => {
     const [activeTab, setActiveTab] = useState("Buy");
     const [showBanner, setShowBanner] = useState(true);
-const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
+    const dispatch = useDispatch();
+
     const tabs = ["Buy", "Sell", "Rent", "Contractor", "Furniture"];
     const services = [
         {
@@ -78,7 +82,7 @@ const { isLoggedIn } = useAuth();
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Find Contractor',
             icon: cont,
-                  link: isLoggedIn ? '/contract' : '/signin'
+                  link: isAuthenticated ? '/contract' : '/signin' // Changed from isLoggedIn
 
         },
         {
@@ -86,7 +90,7 @@ const { isLoggedIn } = useAuth();
             description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
             button: 'Find Furniture',
             icon: fur,
-            link: isLoggedIn ? '/furniture' : '/signin'
+            link: isAuthenticated ? '/furniture' : '/signin' // Changed from isLoggedIn
         },
     ];
       
@@ -138,10 +142,10 @@ const navigate = useNavigate();
             <Install /> */}
             <div className="fixed top-0 left-0 w-full z-50">
                 {/* <Navbar /> */}
-                {isLoggedIn ? <Navbar2 /> : <Navbar />}
+                {isAuthenticated ? <Navbar2 /> : <Navbar />} {/* Changed from isLoggedIn */}
                 {/* <Install /> */}
                 {/* {!isLoggedIn && <Install />} */}
-                {/* {isLoggedIn ? <Install2 /> : <Install />} */}
+                {/* {isAuthenticated ? <Install2 /> : <Install />} */}
                 <div className={`${showBanner ? 'h-[144px] md:h-[189px]' : 'h-[61px]'}`}>
                     {showBanner && <Install onClose={() => setShowBanner(false)} />}
                 </div>

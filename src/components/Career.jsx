@@ -172,6 +172,8 @@ import emp from './assets/zbra.jpg'
 import emp1 from './assets/emplo.jpg'
 import "swiper/css/pagination";
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../store/slices/authSlice';
 
 const Partner = () => {
   const slides = [
@@ -208,11 +210,11 @@ const Partner = () => {
     setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
-  const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
 
   return (
     <>
-      {isLoggedIn ? <Navbar2 /> : <Navbar />}
+      {isAuthenticated ? <Navbar2 /> : <Navbar />}
       <div
         className="bg-cover bg-center text-white py-4 px-4 sm:py-6 sm:px-6 md:py-8 md:px-8 lg:py-10 lg:px-12"
         style={{ backgroundImage: `url(${bgImage})` }}

@@ -6,11 +6,13 @@ import Navbar from "./Navbar";
 import Navbar2 from "./Navbar2";
 import { useAuth } from "./Authprovider/AuthContext";
 import Footer from "./Footer";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../store/slices/authSlice";
 const HeroSection = () => {
-    const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     return (
         <>
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 className="w-full bg-cover bg-center text-white h-[500px] px-4 sm:px-6 md:px-8 relative"
                 style={{ backgroundImage: `url(${bg})`, fontFamily: 'Poppins' }}

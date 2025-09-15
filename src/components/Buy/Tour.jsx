@@ -6,12 +6,14 @@ import bgImage from '../assets/bg2.svg';
 import tour from '../assets/tour.jpg';
 import Navbar2 from '../Navbar2';
 import { useAuth } from '../Authprovider/AuthContext';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 const Tour = () => {
-  const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
   return (
     <>
       {/* <Navbar /> */}
-      {isLoggedIn ? <Navbar2 /> : <Navbar />}
+      {isAuthenticated ? <Navbar2 /> : <Navbar />}
       <div
         className="bg-cover bg-center text-white py-6 px-4 sm:py-8 sm:px-8 lg:py-12 lg:px-12"
         style={{ backgroundImage: `url(${bgImage})` }}

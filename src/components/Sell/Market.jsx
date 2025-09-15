@@ -6,13 +6,15 @@ import Navbar from '../Navbar';
 import Navbar2 from '../Navbar2';
 import Map from '../assets/map.svg'; // Adjust path if needed
 import Footer from '../Footer'
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 
 const HousingMarket = () => {
-    const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     return (
         <>
             {/* <Navbar /> */}
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 className="w-full bg-cover bg-center text-white h-[500px] px-14"
                 style={{ backgroundImage: `url(${bgImage})`, fontFamily: 'Poppins' }}

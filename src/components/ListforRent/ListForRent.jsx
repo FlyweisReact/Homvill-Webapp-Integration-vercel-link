@@ -12,6 +12,8 @@ import left from '../assets/left1.jpg'
 import PropertiesSlider from '../Sell/PropertiesSlider'
 import Navbar from '../Navbar'
 import Navbar2 from '../Navbar2'
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
 const Review = () => {
   const cards = [
     {
@@ -30,11 +32,11 @@ const Review = () => {
       desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     }
   ];
-   const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
   return (
     <>
       {/* <Navbar /> */}
-       {isLoggedIn ? <Navbar2 /> : <Navbar />}
+       {isAuthenticated ? <Navbar2 /> : <Navbar />}
       <div
         className="w-full h-[260px] bg-cover bg-center flex items-center px-6 sm:px-24"
         style={{

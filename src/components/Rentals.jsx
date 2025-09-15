@@ -30,6 +30,8 @@ import links2 from './assets/links2.jpg';
 import { FaEdit } from 'react-icons/fa';
 
 import { AiOutlineInfoCircle } from 'react-icons/ai'; // Using react-icons for the "i" icon
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../store/slices/authSlice';
 
 // Categories data
 const categories = [
@@ -118,10 +120,10 @@ const FavoriteProperties = () => {
             setCurrentPage(page);
         }
     };
-    const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     return (
         <>
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
              <div
                 className="bg-cover bg-center text-white py-4 px-3 sm:py-6 sm:px-6 md:py-8 md:px-8 lg:py-10 lg:px-12"
                 style={{ backgroundImage: `url(${sell})` }}

@@ -561,6 +561,9 @@ import logo from './assets/logo.svg';
 import { useAuth } from "./Authprovider/AuthContext";
 import avtar from './assets/avtar.png';
 import { useNavigate, Link } from 'react-router-dom';
+import { logout } from "../store/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { PURGE } from 'redux-persist';
 
 const Navbar = () => {
     const [showBuyDropdown, setShowBuyDropdown] = useState(false);
@@ -574,7 +577,7 @@ const Navbar = () => {
     const languages = ["English (US)", "English (UK)", "French", "Spanish"];
     const [open, setOpen] = useState(false);
     const menuRef = useRef();
-
+    const dispatch = useDispatch();
     // Close dropdown if clicked outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -632,12 +635,11 @@ const Navbar = () => {
         setIsOpen(false);
     };
     const navigate = useNavigate();
-    const { setIsLoggedIn } = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("token");
-        setIsLoggedIn(false); // update auth context
+        dispatch(logout());
+        dispatch({ type: PURGE, key: 'root', result: () => null });
+        navigate('/signin');
     };
     const handleClick = (tabName) => {
         localStorage.setItem('activeTab', tabName);
@@ -1174,87 +1176,87 @@ const Navbar = () => {
                                 </div>
                             </div> */}
                             <div
-  style={{ fontFamily: 'Roboto' }}
-  className="pl-8 pt-2 space-y-2 pb-8 text-[16px]"
->
-  <div className="flex flex-col space-y-2">
-    <h3 className="font-bold text-[#8A1538] underline mb-2 text-[20px]">My Homvill</h3>
+                                style={{ fontFamily: 'Roboto' }}
+                                className="pl-8 pt-2 space-y-2 pb-8 text-[16px]"
+                            >
+                                <div className="flex flex-col space-y-2">
+                                    <h3 className="font-bold text-[#8A1538] underline mb-2 text-[20px]">My Homvill</h3>
 
-    <Link to="/userdashboard" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      User Dashboard
-    </Link>
-<span onClick={() => { handleClick('Saved homes'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Saved homes
-    </span>
-    <span onClick={() => { handleClick('Saved searches'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Saved Searches
-    </span>
+                                    <Link to="/userdashboard" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        User Dashboard
+                                    </Link>
+                                    <span onClick={() => { handleClick('Saved homes'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Saved homes
+                                    </span>
+                                    <span onClick={() => { handleClick('Saved searches'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Saved Searches
+                                    </span>
 
-    <span onClick={() => { handleClick('Your home'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Your Home
-    </span>
+                                    <span onClick={() => { handleClick('Your home'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Your Home
+                                    </span>
 
-    <span onClick={() => { handleClick('Renter Hub'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Renter Hub
-    </span>
+                                    <span onClick={() => { handleClick('Renter Hub'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Renter Hub
+                                    </span>
 
-    <span onClick={() => { handleClick('Recently Viewed'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Recently Viewed
-    </span>
+                                    <span onClick={() => { handleClick('Recently Viewed'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Recently Viewed
+                                    </span>
 
-    <span onClick={() => { handleClick('Manage tours'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Manage Tours
-    </span>
+                                    <span onClick={() => { handleClick('Manage tours'); toggleMobileMenu(); }} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Manage Tours
+                                    </span>
 
-    <Link to="/selldash" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      My Properties
-    </Link>
+                                    <Link to="/selldash" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        My Properties
+                                    </Link>
 
-    <Link to="/fav" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Favorites
-    </Link>
+                                    <Link to="/fav" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Favorites
+                                    </Link>
 
-    <Link to="/subscriptions" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Subscriptions
-    </Link>
+                                    <Link to="/subscriptions" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Subscriptions
+                                    </Link>
 
-    <Link to="/partner" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Partner with HomVill
-    </Link>
-  </div>
+                                    <Link to="/partner" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Partner with HomVill
+                                    </Link>
+                                </div>
 
-  <h3 className="font-bold text-[#8A1538] mb-2 mt-4 text-[20px]">Settings</h3>
-  <div className="flex flex-col space-y-2">
-    <Link to="/managesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Manage All Settings
-    </Link>
-    <Link to="/profilesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Profile Settings
-    </Link>
-    <Link to="/notification" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Notification Settings
-    </Link>
-    <Link to="/document" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Document Settings
-    </Link>
-  </div>
+                                <h3 className="font-bold text-[#8A1538] mb-2 mt-4 text-[20px]">Settings</h3>
+                                <div className="flex flex-col space-y-2">
+                                    <Link to="/managesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Manage All Settings
+                                    </Link>
+                                    <Link to="/profilesettings" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Profile Settings
+                                    </Link>
+                                    <Link to="/notification" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Notification Settings
+                                    </Link>
+                                    <Link to="/document" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Document Settings
+                                    </Link>
+                                </div>
 
-  <div className="flex justify-between items-center pt-2">
-    <Link to="/buyfurniture" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
-      Cart
-    </Link>
-    <button
-      onClick={() => {
-        handleLogout();
-        toggleMobileMenu();
-      }}
-      className="flex items-center gap-2 mr-2 text-[#8A1538] font-semibold"
-    >
-      <FaSignOutAlt />
-      Log Out
-    </button>
-  </div>
-</div>
+                                <div className="flex justify-between items-center pt-2">
+                                    <Link to="/buyfurniture" onClick={toggleMobileMenu} className="text-[#8A1538] cursor-pointer font-semibold hover:text-[#8A1538]">
+                                        Cart
+                                    </Link>
+                                    <button
+                                        onClick={() => {
+                                            handleLogout();
+                                            toggleMobileMenu();
+                                        }}
+                                        className="flex items-center gap-2 mr-2 text-[#8A1538] font-semibold"
+                                    >
+                                        <FaSignOutAlt />
+                                        Log Out
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

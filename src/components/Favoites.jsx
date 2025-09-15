@@ -25,6 +25,8 @@ import square from './assets/Icon (13).svg';
 import link from './assets/link4.jpg';
 import links from './assets/links.jpg';
 import links2 from './assets/links2.jpg';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../store/slices/authSlice';
 
 // Categories data
 const categories = [
@@ -113,10 +115,10 @@ const FavoriteProperties = () => {
             setCurrentPage(page);
         }
     };
-    const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     return (
         <>
-            {isLoggedIn ? <Navbar2 /> : <Navbar />}
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div className="flex flex-col md:flex-row items-center justify-between  mx-12 px-6 ">
                 {/* Text Section */}
                 <div className="md:w-1/2 mb-8 md:mb-0">

@@ -7,6 +7,8 @@ import Navbar2 from '../Navbar2';
 import { useAuth } from '../Authprovider/AuthContext';
 import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
+import { selectIsAuthenticated } from '../../store/slices/authSlice';
+import { useSelector } from 'react-redux';
 
 const HomeForSale = () => {
     const [saleDropdownOpen, setSaleDropdownOpen] = useState(false);
@@ -73,7 +75,7 @@ const HomeForSale = () => {
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-  const { isLoggedIn } = useAuth();
+    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     const bedBathOptions = ["Any", "1+", "2+", "3+", "4+", "5+"];
     const homeTypes = [
         "Houses", "Townhomes", "Multi-family", "Condos", "Co-ops", "Lots/Land", "Apartments", "Manufactured"
@@ -92,7 +94,7 @@ const HomeForSale = () => {
         <> 
         
             {/* <Navbar /> */}
-             {isLoggedIn ? <Navbar2 /> : <Navbar />}
+             {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-2 bg-white shadow-sm rounded-md border w-full mx-auto"
