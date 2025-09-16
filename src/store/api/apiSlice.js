@@ -1,4 +1,3 @@
-// src/store/api/apiSlice.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { loginStart, loginSuccess, loginFailure } from '../slices/authSlice';
 
@@ -38,7 +37,41 @@ export const apiSlice = createApi({
         }
       },
     }),
+    signup: builder.mutation({
+      query: (userData) => ({
+        url: '/api/user/create',
+        method: 'POST',
+        body: userData,
+      }),
+    }),
+    getResponsibilities: builder.query({
+      query: () => '/api/responsibility/getall',
+    }),
+    getRoles: builder.query({
+      query: () => '/api/role/getall',
+    }),
+    getLanguages: builder.query({
+      query: () => '/api/language/getall',
+    }),
+    getCountries: builder.query({
+      query: () => '/api/country/getall',
+    }),
+    getStates: builder.query({
+      query: () => '/api/state/getall',
+    }),
+    getCities: builder.query({
+      query: () => '/api/city/getall',
+    }),
   }),
 });
 
-export const { useLoginMutation } = apiSlice;
+export const { 
+  useLoginMutation,
+  useSignupMutation,
+  useGetResponsibilitiesQuery,
+  useGetRolesQuery,
+  useGetLanguagesQuery,
+  useGetCountriesQuery,
+  useGetStatesQuery,
+  useGetCitiesQuery
+} = apiSlice;
