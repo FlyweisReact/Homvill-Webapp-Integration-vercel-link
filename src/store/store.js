@@ -1,12 +1,13 @@
-// src/store/store.js
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore, PURGE } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import { apiSlice } from './api/apiSlice';
+import { propertyApiSlice } from './api/propertyApiSlice';
 import authReducer from './slices/authSlice';
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
+  [propertyApiSlice.reducerPath]: propertyApiSlice.reducer,
   auth: authReducer,
 });
 
@@ -25,7 +26,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', PURGE],
       },
-    }).concat(apiSlice.middleware),
+    }).concat(apiSlice.middleware, propertyApiSlice.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
