@@ -5,6 +5,7 @@ import { apiSlice } from './api/apiSlice';
 import { propertyApiSlice } from './api/propertyApiSlice';
 import { legalApiSlice } from './api/legalApiSlice';
 import { subscriptionApiSlice } from './api/subscriptionApiSlice';
+import { documentPreferencesApiSlice } from './api/documentPreferencesApiSlice';
 import authReducer from './slices/authSlice';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   [propertyApiSlice.reducerPath]: propertyApiSlice.reducer,
   [legalApiSlice.reducerPath]: legalApiSlice.reducer,
   [subscriptionApiSlice.reducerPath]: subscriptionApiSlice.reducer,
+  [documentPreferencesApiSlice.reducerPath]: documentPreferencesApiSlice.reducer,
   auth: authReducer,
 });
 
@@ -30,7 +32,13 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', PURGE],
       },
-    }).concat(apiSlice.middleware, propertyApiSlice.middleware, legalApiSlice.middleware, subscriptionApiSlice.middleware),
+    }).concat(
+      apiSlice.middleware,
+      propertyApiSlice.middleware,
+      legalApiSlice.middleware,
+      subscriptionApiSlice.middleware,
+      documentPreferencesApiSlice.middleware
+    ),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

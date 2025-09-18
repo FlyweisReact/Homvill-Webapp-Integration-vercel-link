@@ -202,18 +202,168 @@
 //     </>
 //   );
 // }
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar2 from "./Navbar2";
 import { IoClose } from "react-icons/io5";
-import { FaUpload } from "react-icons/fa";
+import { FaUpload, FaSpinner } from "react-icons/fa";
 import bgImage from './assets/bgs.svg';
 import Footer from "./Footer";
+import { useGetAllDocumentPreferencesQuery, useUpdateDocumentPreferencesMutation } from "../store/api/documentPreferencesApiSlice";
 
 export default function DocumentPreferences() {
-  const [toggle1, setToggle1] = useState(true);
+  const [toggle1, setToggle1] = useState(false);
   const [toggle2, setToggle2] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
+  const [updatingToggle, setUpdatingToggle] = useState(null); // Track which toggle/button is updating
+  const { data: preferences, isLoading, isError, error } = useGetAllDocumentPreferencesQuery({ page: 1, limit: 10 });
+  const [updateDocumentPreferences, { isLoading: isUpdating }] = useUpdateDocumentPreferencesMutation();
+
+  // Static fallback data
+  const staticPreferences = {
+    Benefits_going_paperless: "Reduced paper usage, faster processing, secure digital storage, environmental benefits, and 24/7 access",
+    settings: [
+      {
+        "I agree to sending, and receiving documents electronically form HomVill, Inc.. with includes HomVill.com": false,
+        "I agree to sending, and receiving documents electronically form HomVill Closing Services.": true,
+      },
+    ],
+    Document_preferences_id: 1,
+  };
+
+  // Initialize toggles based on API data
+  useEffect(() => {
+    if (preferences?.success && preferences.data?.length > 0) {
+      const settings = preferences.data[0].settings[0];
+      setToggle1(settings["I agree to sending, and receiving documents electronically form HomVill, Inc"]?.[""]?.[" with includes HomVill"]?.["com"] || false);
+      setToggle2(settings["I agree to sending, and receiving documents electronically form HomVill Closing Services"]?.[""] || false);
+    }
+  }, [preferences]);
+
+  // Handle toggle changes and update API
+  const handleToggleChange = async (toggle, value) => {
+    setUpdatingToggle(toggle); // Set the specific toggle being updated
+    const newToggle1 = toggle === 1 ? value : toggle1;
+    const newToggle2 = toggle === 2 ? value : toggle2;
+
+    try {
+      await updateDocumentPreferences({
+        Document_preferences_id: preferences?.data[0]?.Document_preferences_id || staticPreferences.Document_preferences_id,
+        Benefits_going_paperless: preferences?.data[0]?.Benefits_going_paperless || staticPreferences.Benefits_going_paperless,
+        settings: [
+          {
+            "I agree to sending, and receiving documents electronically form HomVill, Inc.. with includes HomVill.com": newToggle1,
+            "I agree to sending, and receiving documents electronically form HomVill Closing Services.": newToggle2,
+          },
+        ],
+      }).unwrap();
+      if (toggle === 1) setToggle1(newToggle1);
+      if (toggle === 2) setToggle2(newToggle2);
+    } catch (err) {
+      console.error("Failed to update preferences:", err);
+    } finally {
+      setUpdatingToggle(null); // Clear updating state
+    }
+  };
+
+  // Handle Accept All / Reject All
+  const handleAcceptAll = async () => {
+    setUpdatingToggle("accept"); // Set for Accept All button
+    try {
+      await updateDocumentPreferences({
+        Document_preferences_id: preferences?.data[0]?.Document_preferences_id || staticPreferences.Document_preferences_id,
+        Benefits_going_paperless: preferences?.data[0]?.Benefits_going_paperless || staticPreferences.Benefits_going_paperless,
+        settings: [
+          {
+            "I agree to sending, and receiving documents electronically form HomVill, Inc.. with includes HomVill.com": true,
+            "I agree to sending, and receiving documents electronically form HomVill Closing Services.": true,
+          },
+        ],
+      }).unwrap();
+      setToggle1(true);
+      setToggle2(true);
+      setShowModal2(false);
+    } catch (err) {
+      console.error("Failed to accept all:", err);
+    } finally {
+      setUpdatingToggle(null); // Clear updating state
+    }
+  };
+
+  const handleRejectAll = async () => {
+    setUpdatingToggle("reject"); // Set for Reject All button
+    try {
+      await updateDocumentPreferences({
+        Document_preferences_id: preferences?.data[0]?.Document_preferences_id || staticPreferences.Document_preferences_id,
+        Benefits_going_paperless: preferences?.data[0]?.Benefits_going_paperless || staticPreferences.Benefits_going_paperless,
+        settings: [
+          {
+            "I agree to sending, and receiving documents electronically form HomVill, Inc.. with includes HomVill.com": false,
+            "I agree to sending, and receiving documents electronically form HomVill Closing Services.": false,
+          },
+        ],
+      }).unwrap();
+      setToggle1(false);
+      setToggle2(false);
+    } catch (err) {
+      console.error("Failed to reject all:", err);
+    } finally {
+      setUpdatingToggle(null); // Clear updating state
+    }
+  };
+
+  const renderBenefits = () => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center py-8">
+          <FaSpinner className="animate-spin text-[#8A1538] w-8 h-8" />
+          <span className="ml-2 text-gray-600">Loading Document Preferences...</span>
+        </div>
+      );
+    }
+    if (isError) {
+      return (
+        <div className="text-center text-red-600 py-8">
+          <p>Error loading preferences: {error?.data?.message || 'An error occurred'}</p>
+          <p>Displaying fallback data.</p>
+        </div>
+      );
+    }
+
+    const benefits = preferences?.success && preferences.data?.length > 0
+      ? preferences.data[0].Benefits_going_paperless
+      : staticPreferences.Benefits_going_paperless;
+
+    return (
+      <ul className="list-disc list-inside text-[#1D1D1D80] space-y-2 text-base sm:text-lg md:text-xl lg:text-[24px]">
+        {benefits.split(', ').map((benefit, index) => (
+          <li key={index}>{benefit}</li>
+        ))}
+        <li>
+          For further details, please review our information on electronic signatures.
+        </li>
+      </ul>
+    );
+  };
+
+  const renderModalContent = () => {
+    const benefits = preferences?.success && preferences.data?.length > 0
+      ? preferences.data[0].Benefits_going_paperless
+      : staticPreferences.Benefits_going_paperless;
+
+    return (
+      <div className="h-[250px] sm:h-[300px] overflow-y-auto pr-2">
+        <h3 className="font-semibold text-sm sm:text-[15px] mb-2">
+          Benefits of Going Paperless
+        </h3>
+        <ul className="text-xs sm:text-sm text-gray-700 font-normal leading-relaxed space-y-2">
+          {benefits.split(', ').map((benefit, index) => (
+            <li key={index}>{benefit}</li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -243,17 +393,8 @@ export default function DocumentPreferences() {
           <h3 className="text-xl sm:text-2xl md:text-[25px] lg:text-[32px] font-bold text-[#1D1D1D] mb-2">
             Benefits of Going Paperless
           </h3>
-          <ul className="list-disc list-inside text-[#1D1D1D80] space-y-2 text-base sm:text-lg md:text-xl lg:text-[24px]">
-            <li>
-              By agreeing, you will receive and sign documents electronically. Otherwise,
-              physical copies will be mailed to you.
-            </li>
-            <li>
-              For further details, please review our information on electronic signatures.
-            </li>
-          </ul>
+          {renderBenefits()}
 
-          {/* Add Signature Button */}
           <div className="mt-4 text-end">
             <button
               onClick={() => setShowModal(true)}
@@ -271,7 +412,7 @@ export default function DocumentPreferences() {
                     className="absolute top-2 sm:top-4 right-2 sm:right-4 text-black"
                     onClick={() => setShowModal(false)}
                   >
-                    <IoClose size={16}  />
+                    <IoClose size={16} />
                   </button>
                   <h2 className="text-base sm:text-lg md:text-[18px] font-bold text-[#1D1D1D] mb-4 text-start">
                     Add Your Signature
@@ -303,7 +444,6 @@ export default function DocumentPreferences() {
           </div>
         </div>
 
-        {/* Your Settings */}
         <div>
           <h3 className="text-xl sm:text-2xl md:text-[28px] lg:text-[32px] font-bold text-[#1D1D1D] mb-2">
             Your Settings
@@ -319,10 +459,12 @@ export default function DocumentPreferences() {
                   type="checkbox"
                   className="sr-only peer"
                   checked={toggle1}
-                  onChange={() => setToggle1(!toggle1)}
+                  onChange={() => handleToggleChange(1, !toggle1)}
+                  disabled={isUpdating}
                 />
                 <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all duration-300" />
                 <div className="absolute left-1 top-1 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full peer-checked:translate-x-6 sm:peer-checked:translate-x-full transition-transform duration-300" />
+                {isUpdating && updatingToggle === 1 && <FaSpinner className="ml-2 animate-spin text-green-500 w-4 h-4" />}
               </label>
             </div>
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -335,25 +477,45 @@ export default function DocumentPreferences() {
                   type="checkbox"
                   className="sr-only peer"
                   checked={toggle2}
-                  onChange={() => setToggle2(!toggle2)}
+                  onChange={() => handleToggleChange(2, !toggle2)}
+                  disabled={isUpdating}
                 />
                 <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all duration-300" />
                 <div className="absolute left-1 top-1 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full peer-checked:translate-x-6 sm:peer-checked:translate-x-full transition-transform duration-300" />
+                {isUpdating && updatingToggle === 2 && <FaSpinner className="ml-2 animate-spin text-green-500 w-4 h-4" />}
               </label>
             </div>
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end gap-2 sm:gap-4">
-          <button className="px-3 sm:px-5 py-1 sm:py-2 border border-[#8A1538] text-[#8A1538] rounded-md font-semibold text-base sm:text-lg md:text-xl lg:text-[24px] bg-[#FCE9F0]">
-            Reject All
+          <button
+            onClick={handleRejectAll}
+            className="px-3 sm:px-5 py-1 sm:py-2 border border-[#8A1538] text-[#8A1538] rounded-md font-semibold text-base sm:text-lg md:text-xl lg:text-[24px] bg-[#FCE9F0]"
+            disabled={isUpdating}
+          >
+            {isUpdating && updatingToggle === "reject" ? (
+              <>
+                <FaSpinner className="animate-spin mr-2 inline w-4 h-4" />
+                Rejecting...
+              </>
+            ) : (
+              'Reject All'
+            )}
           </button>
           <button
             onClick={() => setShowModal2(true)}
             className="px-3 sm:px-5 py-1 sm:py-2 bg-[#8A1538] text-white rounded-md font-semibold text-base sm:text-lg md:text-xl lg:text-[24px]"
+            disabled={isUpdating}
           >
-            Accept All
+            {isUpdating && updatingToggle === "accept" ? (
+              <>
+                <FaSpinner className="animate-spin mr-2 inline w-4 h-4" />
+                Processing...
+              </>
+            ) : (
+              'Accept All'
+            )}
           </button>
           {showModal2 && (
             <div
@@ -370,28 +532,7 @@ export default function DocumentPreferences() {
                 <h2 className="text-base sm:text-lg md:text-[18px] font-bold text-[#1D1D1D] mb-4">
                   Go Easy With Paperless
                 </h2>
-                <div className="h-[250px] sm:h-[300px] overflow-y-auto pr-2">
-                  <h3 className="font-semibold text-sm sm:text-[15px] mb-2">
-                    Terms & Conditions
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-700 font-normal leading-relaxed space-y-2">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the
-                    1500s, when an unknown printer took a galley of type and scrambled it to
-                    make a type specimen book. It has survived not only five centuries, but
-                    also the leap into electronic typesetting, remaining essentially unchanged.
-                    It was popularised in the 1960s with the release of Letraset sheets
-                    containing Lorem Ipsum passages, and more recently with desktop publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                  <br />
-                  <p className="text-xs sm:text-sm text-gray-700 font-normal leading-relaxed">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the
-                    1500s, when an unknown printer took a galley of type and scrambled it to
-                    make a type specimen book.
-                  </p>
-                </div>
+                {renderModalContent()}
                 <div className="mt-4 sm:mt-6 flex justify-center gap-2 sm:gap-4">
                   <button
                     onClick={() => setShowModal2(false)}
@@ -400,10 +541,18 @@ export default function DocumentPreferences() {
                     Cancel
                   </button>
                   <button
-                    onClick={() => setShowModal2(false)}
+                    onClick={handleAcceptAll}
                     className="px-4 sm:px-6 py-1 sm:py-2 bg-[#8A1538] text-white rounded-md text-xs sm:text-sm font-semibold"
+                    disabled={isUpdating}
                   >
-                    Submit
+                    {isUpdating && updatingToggle === "accept" ? (
+                      <>
+                        <FaSpinner className="animate-spin mr-2 inline w-4 h-4" />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit'
+                    )}
                   </button>
                 </div>
               </div>
