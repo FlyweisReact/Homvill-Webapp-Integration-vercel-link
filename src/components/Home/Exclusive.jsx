@@ -1,19 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
-import rental from '../assets/link.svg';
-import land from '../assets/link2.svg';
-import town from '../assets/link3.svg';
-import modern from '../assets/modern.svg';
-import apart from '../assets/apart.jpg';
-import re from '../assets/re.jpg';
-import office from '../assets/office.jpg';
-import contract from '../assets/contract.jpg';
-import home from '../assets/home.jpg';
-import builder from '../assets/builders.jpg';
 import heart from '../assets/heart.svg';
 import red from '../assets/RED.svg';
 import arrow from '../assets/arrow.svg';
@@ -21,84 +10,42 @@ import location from '../assets/location.svg';
 import bed from '../assets/bed.svg';
 import bath from '../assets/bath.svg';
 import square from '../assets/Icon (13).svg';
-import link from '../assets/link4.jpg';
-import links from '../assets/links.jpg';
-import links2 from '../assets/links2.jpg';
-
-// Categories data
-const categories = [
-    {
-        title: 'Skyper Pool Apartment',
-        price: '$280,000',
-        address: '1020 Bloomingdale AVE',
-        beds: 4,
-        baths: 2,
-        size: '450 sqft',
-        status: 'For Sale',
-        promoted: true,
-        image: rental,
-    },
-    {
-        title: 'North Dillard Street',
-        price: '$250/month',
-        address: '4330 Bell Shoals RD',
-        beds: 4,
-        baths: 2,
-        size: '400 sqft',
-        status: 'For Rent',
-        promoted: true,
-        image: land,
-    },
-    {
-        title: 'Eaton Garth Penthouse',
-        price: '$180,000',
-        address: '7722 18th AVE, Brooklyn',
-        beds: 4,
-        baths: 2,
-        size: '450 sqft',
-        status: 'For Sale',
-        promoted: false,
-        featured: true,
-        image: town,
-    },
-    {
-        title: 'Skyper Pool Apartment',
-        price: '$280,000',
-        address: '1020 Bloomingdale AVE',
-        beds: 4,
-        baths: 2,
-        size: '450 sqft',
-        status: 'For Sale',
-        promoted: false,
-        image: link,
-    },
-    {
-        title: 'North Dillard Street',
-        price: '$250/month',
-        address: '4330 Bell Shoals RD',
-        beds: 4,
-        baths: 2,
-        size: '400 sqft',
-        status: 'For Rent',
-        promoted: false,
-        image: links,
-    },
-    {
-        title: 'Eaton Garth Penthouse',
-        price: '$180,000',
-        address: '7722 18th AVE, Brooklyn',
-        beds: 4,
-        baths: 2,
-        size: '450 sqft',
-        status: 'For Sale',
-        promoted: false,
-        featured: true,
-        image: links2,
-    },
-];
+import { selectAuthToken } from '../../store/slices/authSlice';
+import { useSelector } from 'react-redux';
 
 const FeaturedCategories = () => {
     const [favorites, setFavorites] = useState({});
+    const [properties, setProperties] = useState([]);
+           const token = useSelector(selectAuthToken); // Changed from isLoggedIn
+
+    // Fetch API
+  useEffect(() => {
+    const fetchProperties = async () => {
+        try {
+
+            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/properties/getall`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`, // attach token
+                },
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setProperties(data.data || []);
+            } else {
+                console.error("API Error:", data.message);
+            }
+        } catch (error) {
+            console.error("Error fetching properties:", error);
+        }
+    };
+
+    fetchProperties();
+}, []);
+
 
     const toggleFavorite = (index) => {
         setFavorites((prev) => ({
@@ -112,7 +59,7 @@ const FeaturedCategories = () => {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <div style={{ fontFamily: 'Poppins' }}>
-                    <h2 style={{fontWeight:'500'}} className="text-2xl sm:text-3xl md:text-2xl lg:text-[40px]">
+                    <h2 style={{ fontWeight: '500' }} className="text-2xl sm:text-3xl md:text-2xl lg:text-[40px]">
                         Exclusive Properties Only For You
                     </h2>
                     <p className="text-sm sm:text-base md:text-[17px] mt-4 text-gray-500">
@@ -135,37 +82,26 @@ const FeaturedCategories = () => {
                     spaceBetween={10}
                     slidesPerView={1}
                     breakpoints={{
-                        320: {
-                            slidesPerView: 1,
-                            spaceBetween: 10,
-                        },
-                        640: {
-                            slidesPerView: 2,
-                            spaceBetween: 15,
-                        },
-                        768: {
-                            slidesPerView: 2.5,
-                            spaceBetween: 15,
-                        },
-                        1024: {
-                            slidesPerView: 2.5,
-                            spaceBetween: 20,
-                        },
+                        320: { slidesPerView: 1, spaceBetween: 10 },
+                        640: { slidesPerView: 2, spaceBetween: 15 },
+                        768: { slidesPerView: 2.5, spaceBetween: 15 },
+                        1024: { slidesPerView: 2.5, spaceBetween: 20 },
                     }}
                     scrollbar={{ draggable: true, hide: false, el: '.custom-featured-scrollbar' }}
                     className="pb-8 featured-swiper"
                 >
-                    {categories.map((item, index) => (
-                        <SwiperSlide key={index}>
+                    {properties.map((item, index) => (
+                        <SwiperSlide key={item._id || index}>
                             <div className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white">
                                 {/* Image Section */}
                                 <div className="relative">
                                     <img
-                                        src={item.image}
-                                        alt={item.title}
+                                        src={item?.Property_photos?.[0]?.image || ''}
+                                        alt={item?.Property_photos?.[0]?.Title || 'Property'}
                                         className="w-full h-[179px] sm:h-[98px] lg:h-[220px] object-cover"
                                     />
-                                    {item.promoted && (
+                                    {/* Promoted Label - dummy for now */}
+                                    {index % 2 === 0 && (
                                         <div
                                             style={{ fontFamily: 'Roboto' }}
                                             className="absolute top-4 left-[-30px] bg-orange-500 text-white text-[12px] sm:text-[11px] md:text-[12px] font-semibold px-8 py-1 rotate-[-45deg] shadow-md z-10"
@@ -188,52 +124,50 @@ const FeaturedCategories = () => {
                                         <img src={arrow} alt="Arrow Icon" className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                                     </div>
                                 </div>
+
                                 {/* Property Details */}
                                 <div style={{ fontFamily: 'Poppins' }} className="p-4 sm:p-3 md:p-4">
                                     <div className="flex justify-between items-center">
                                         <h3 className="text-[16px] sm:text-[14px] md:text-[15px] lg:text-[19px] font-semibold text-[#1A1A1A] truncate">
-                                            {item.title}
+                                            {item.Property_Listing_Description || 'No Title'}
                                         </h3>
                                         <p className="text-[18px] sm:text-[16px] md:text-[17px] lg:text-[22px] font-semibold text-[#EB664E]">
-                                            {item.price}
+                                            ${item.Property_Listing_Price}
                                         </p>
                                     </div>
                                     <p className="text-sm sm:text-[13px] md:text-[16px] text-[#1A1A1A] flex items-center gap-1 mt-1 truncate">
-                                        <span><img src={location} alt="Location Icon" className="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" /></span> {item.address}
+                                        <span>
+                                            <img src={location} alt="Location Icon" className="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                                        </span>{' '}
+                                        {item.Property_Address}, {item.Property_city}
                                     </p>
                                     <div className="flex justify-between items-center mt-3 sm:mt-2 md:mt-3">
                                         <div className="flex gap-3 sm:gap-2 md:gap-3 text-sm sm:text-[12px] md:text-[13px] lg:text-[16px] text-[#1A1A1A]">
                                             <span className="flex items-center gap-1">
                                                 <img src={bed} alt="Bed Icon" className="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                                                {item.beds} Beds
+                                                {item.Property_Bed_rooms} Beds
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <img src={bath} alt="Bath Icon" className="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                                                {item.baths} Baths
+                                                {item.Property_Full_Baths} Baths
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <img src={square} alt="Square Icon" className="w-4 h-4 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
-                                                {item.size}
+                                                {item.Property_finished_Sq_ft}
                                             </span>
                                         </div>
                                     </div>
-                                    {/* Status Label with Featured */}
+                                    {/* Status Label */}
                                     <div style={{ fontFamily: 'Poppins' }} className="mt-4 sm:mt-3 md:mt-4 flex items-center gap-2 flex-wrap">
                                         <span
                                             className={`text-[13px] sm:text-[12px] md:text-[14px] font-medium px-4 sm:px-3 md:px-4 py-2 sm:py-1.5 md:py-2 rounded-full ${
-                                                item.status === 'For Rent'
+                                                item.Properties_Status_id?.Pro_Status === 'RENT'
                                                     ? 'bg-[#00C6DB] text-black'
                                                     : 'bg-[#1F4B43] text-white'
                                             }`}
                                         >
-                                            {item.status.toUpperCase()}
+                                            {item.Properties_Status_id?.Pro_Status}
                                         </span>
-                                        {item.promoted && <span>🔥</span>}
-                                        {item.featured && (
-                                            <span className="text-[13px] sm:text-[12px] md:text-[13px] font-medium px-4 sm:px-3 md:px-4 py-2 sm:py-1.5 md:py-2 rounded-full bg-[#E7C873] text-black">
-                                                FEATURED
-                                            </span>
-                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -241,14 +175,14 @@ const FeaturedCategories = () => {
                     ))}
                 </Swiper>
 
-                {/* Custom Scrollbar Container */}
+                {/* Custom Scrollbar */}
                 <div className="flex justify-center">
                     <div className="custom-featured-scrollbar !mt-8"></div>
                 </div>
             </div>
 
-            {/* Custom Scrollbar Styling */}
-            <style jsx>{`
+            {/* Keep your styles untouched */}
+ <style jsx>{`
                 /* Hide the default Swiper scrollbar for this instance */
                 .featured-swiper .swiper-scrollbar:not(.custom-featured-scrollbar) {
                     display: none !important;
@@ -345,8 +279,7 @@ const FeaturedCategories = () => {
                 .featured-swiper .swiper-slide > div {
                     margin: 0 auto;
                 }
-            `}</style>
-        </div>
+            `}</style>        </div>
     );
 };
 
