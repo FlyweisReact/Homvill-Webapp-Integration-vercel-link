@@ -7,6 +7,7 @@ import { legalApiSlice } from './api/legalApiSlice';
 import { subscriptionApiSlice } from './api/subscriptionApiSlice';
 import { documentPreferencesApiSlice } from './api/documentPreferencesApiSlice';
 import { notificationActivityApiSlice } from './api/notificationActivityApiSlice';
+import { userApiSlice } from './api/userApiSlice';
 import authReducer from './slices/authSlice';
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   [subscriptionApiSlice.reducerPath]: subscriptionApiSlice.reducer,
   [documentPreferencesApiSlice.reducerPath]: documentPreferencesApiSlice.reducer,
   [notificationActivityApiSlice.reducerPath]: notificationActivityApiSlice.reducer,
+  [userApiSlice.reducerPath]: userApiSlice.reducer,
   auth: authReducer,
 });
 
@@ -40,7 +42,8 @@ export const store = configureStore({
       legalApiSlice.middleware,
       subscriptionApiSlice.middleware,
       documentPreferencesApiSlice.middleware,
-      notificationActivityApiSlice.middleware
+      notificationActivityApiSlice.middleware,
+      userApiSlice.middleware
     ),
   devTools: process.env.NODE_ENV !== 'production',
 });
