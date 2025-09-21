@@ -204,7 +204,7 @@
 
 // export default CheckoutPage;
 
-import { FaCcVisa, FaCcMastercard } from 'react-icons/fa';
+import { FaCcVisa, FaCcMastercard, FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar2 from '../Navbar2';
@@ -212,18 +212,39 @@ import Footer from '../Footer';
 import avtar from '../assets/avtar.png';
 import discover from '../assets/discover.png';
 import amex from '../assets/amex.png';
+import { useGetCartQuery } from '../../store/api/cartApiSlice';
+import StripePayment from '../StripePayment';
 
 const CheckoutPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: cartItems = [], isLoading } = useGetCartQuery();
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
-  const navigate = useNavigate();
+
   const handleCloseModal = () => {
     navigate('/');
   };
+
+  const handlePaymentSuccess = () => {
+    handleOpenModal();
+  };
+
+  const totalItems = cartItems.length;
+  const orderTotal = cartItems.reduce((acc, item) => acc + (item.Price * item.Quantity), 0).toFixed(2);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <FaSpinner className="animate-spin text-[#870A28] w-16 h-16" />
+        {/* <span className="ml-2 text-gray-600">Loading</span> */}
+      </div>
+    );
+  }
+
 
   return (
     <>
@@ -234,7 +255,6 @@ const CheckoutPage = () => {
       >
         {/* Left Content */}
         <div className="lg:col-span-2 space-y-4">
-          {/* Delivery Section */}
           <div className="bg-white rounded shadow p-4 flex flex-col sm:flex-row items-start gap-4">
             <img
               src={avtar}
@@ -252,21 +272,17 @@ const CheckoutPage = () => {
                 Add delivery instructions
               </a>
             </div>
-            <button  onClick={() => navigate('/change')} className="ml-auto text-sm sm:text-base md:text-lg text-[#8A1538] font-semibold">
+            <button onClick={() => navigate('/change')} className="ml-auto text-sm sm:text-base md:text-lg text-[#8A1538] font-semibold">
               Change
             </button>
           </div>
 
-          {/* Upsell Box */}
           <div className="bg-[#FFE0E9] h-24 sm:h-[100px] text-[#666666] text-sm sm:text-base md:text-lg font-bold p-4 rounded-lg flex items-start justify-start">
             SOME AMAZING UPSELL :)
           </div>
 
           <div className="bg-[#FFE0E9] p-4 rounded-lg space-y-4">
-            {/* Header */}
             <div className="font-semibold text-sm sm:text-base">Shipment details</div>
-
-            {/* Shipping Info */}
             <div className="flex items-start gap-2 text-sm sm:text-base">
               <input type="radio" checked readOnly className="mt-1" />
               <div>
@@ -274,29 +290,28 @@ const CheckoutPage = () => {
                   FREE SHIPPING
                 </span>
                 <div className="text-sm sm:text-base text-[#999999]">
-                  Estimated delivery: May 10 2025 – May 12 2025
+                  {cartItems.length > 0 ? `Estimated delivery: ${cartItems[0].Delivery_Date_range}` : 'Estimated delivery: May 10 2025 – May 12 2025'}
                 </div>
               </div>
             </div>
 
-            {/* Product Row */}
-            <div className="rounded p-4 flex flex-col sm:flex-row sm:items-center gap-4">
-              {/* Image Placeholder */}
-              <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center text-xs sm:text-sm text-gray-600 font-semibold">
-                PHOTO
+            {cartItems.map((item) => (
+              <div key={item._id} className="rounded p-4 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center text-xs sm:text-sm text-gray-600 font-semibold">
+                  PHOTO
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm sm:text-base font-medium text-[#999999]">
+                    Property ID: {item.Property_id}
+                  </p>
+                  <p className="text-xs sm:text-sm text-[#999999]">Quantity: {item.Quantity}</p>
+                  <p className="font-semibold mt-1 text-[#999999] text-sm sm:text-base">
+                    ${item.Price.toFixed(2)}
+                  </p>
+                </div>
               </div>
+            ))}
 
-              {/* Product Info */}
-              <div className="flex-1">
-                <p className="text-sm sm:text-base font-medium text-[#999999]">
-                  Some Awesome Long Product Title
-                </p>
-                <p className="text-xs sm:text-sm text-[#999999]">Some product choice</p>
-                <p className="font-semibold mt-1 text-[#999999] text-sm sm:text-base">
-                  $249.99
-                </p>
-              </div>
-            </div>
             <div className="mt-2 border rounded overflow-hidden inline-block">
               <div className="flex items-center text-[#4F4F4F]">
                 <span className="text-xs sm:text-sm px-2 py-1 border-r w-16 sm:w-[70px] bg-white text-[#4F4F4F]">
@@ -311,19 +326,17 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          {/* Payment Method */}
           <div className="bg-[#FFE0E9] p-4 rounded-lg space-y-3">
             <div className="font-semibold text-base sm:text-lg text-[#4F4F4F]">
               Payment method
             </div>
-
             <label className="flex items-center gap-2 text-sm sm:text-base">
               <input
                 type="radio"
                 checked={paymentMethod === 'card'}
                 onChange={() => setPaymentMethod('card')}
               />
-              Credit or debit card
+              Credit or debit card (via Stripe)
             </label>
             <div className="flex gap-2 ml-6 items-center flex-wrap">
               <FaCcVisa className="text-2xl sm:text-3xl text-blue-900" />
@@ -331,7 +344,11 @@ const CheckoutPage = () => {
               <img src={discover} className="h-6 sm:h-8 md:h-[35px] text-red-500" />
               <img src={amex} className="h-6 sm:h-8 md:h-[32px] text-red-500" />
             </div>
-
+            {paymentMethod === 'card' && (
+              <div className="ml-6 mt-4">
+                <StripePayment onSuccess={handlePaymentSuccess} total={orderTotal} />
+              </div>
+            )}
             <label className="flex items-center gap-2 text-sm sm:text-base">
               <input
                 type="radio"
@@ -350,26 +367,18 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          {/* Coupons */}
           <div className="bg-pink-100 text-base sm:text-lg p-4 text-[#4F4F4F] font-bold rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
             <span>Gift cards, coupons</span>
             <a href="#" className="text-[#0066CC] font-medium underline">Apply</a>
           </div>
         </div>
 
-        {/* Sticky Right Section */}
         <div className="lg:col-span-1 lg:sticky lg:top-6 h-fit">
           <div className="bg-white p-4 sm:p-6 rounded shadow-md border">
-            <button
-              onClick={handleOpenModal}
-              className="w-full bg-[#8A1538] hover:bg-pink-800 text-white font-semibold py-2 sm:py-3 rounded-full mb-4"
-            >
-              Use This payment method
-            </button>
             <div className="text-base sm:text-lg md:text-xl text-[#000000] space-y-1">
               <div className="flex justify-between">
                 <span>Items:</span>
-                <span>1</span>
+                <span>{totalItems}</span>
               </div>
               <div className="flex justify-between">
                 <span>Delivery:</span>
@@ -377,7 +386,7 @@ const CheckoutPage = () => {
               </div>
               <div className="flex justify-between">
                 <span>Total:</span>
-                <span>$70.00</span>
+                <span>${orderTotal}</span>
               </div>
               <div className="flex justify-between text-[#000000]">
                 <span>Promotion Applied:</span>
@@ -385,19 +394,16 @@ const CheckoutPage = () => {
               </div>
               <div className="border-t pt-2 mt-2 flex justify-between font-bold">
                 <span>Order Total:</span>
-                <span>$70.00</span>
+                <span>${orderTotal}</span>
               </div>
             </div>
           </div>
           {isModalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
-              {/* Backdrop */}
               <div
                 className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
                 onClick={handleCloseModal}
               ></div>
-
-              {/* Modal Content */}
               <div className="relative bg-white text-center rounded-xl shadow-lg p-4 sm:p-6 max-w-md w-full mx-4">
                 <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-4">
                   ALL TRACKING DETAILS HAVE BEEN SENT TO YOUR MOBILE NUMBER AND EMAIL
@@ -406,11 +412,7 @@ const CheckoutPage = () => {
                   Lorem ipsum is simply dummy text of the printing and typesetting
                   industry. Lorem ipsum has been the industry's standard dummy text
                   ever since the 1500s, when an unknown printer took a galley of type
-                  and scrambled it to make a type specimen book. It has survived not
-                  only five centuries, but also the leap into electronic typesetting,
-                  remaining essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem ipsum passages, and
-                  more recently
+                  and scrambled it to make a type specimen book.
                 </p>
                 <button
                   className="w-32 sm:w-36 mt-4 sm:mt-6 bg-[#8A1538] text-white font-semibold py-2 sm:py-3 rounded-lg"

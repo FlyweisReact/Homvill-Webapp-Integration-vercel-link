@@ -15,7 +15,7 @@ export const cartApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getCart: builder.query({
-      query: () => "/api/cart/getall",
+      query: () => "/api/cart/getall?page=1&limit=10",
       transformResponse: (response) => response.data, // Extract only data field
     }),
   }),

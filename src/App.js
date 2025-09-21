@@ -3,6 +3,7 @@ import React, { useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from './store/slices/authSlice';
+import { FaSpinner } from 'react-icons/fa';
 
 const Home = lazy(() => import('./components/Home/Home'));
 const HomeForSale = lazy(() => import('./components/Buy/HomeForSale'));
@@ -90,13 +91,16 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   const { pathname } = useLocation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-console.log(isAuthenticated,"auth in app")
+  console.log(isAuthenticated, "auth in app")
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="flex justify-center items-center h-screen">
+      <FaSpinner className="animate-spin text-[#870A28] w-16 h-16" />
+      {/* <span className="ml-2 text-gray-600">Loading</span> */}
+    </div>}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/homeforsale" element={<HomeForSale />} />
