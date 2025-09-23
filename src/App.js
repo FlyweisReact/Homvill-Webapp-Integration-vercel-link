@@ -1,4 +1,3 @@
-// src/App.js (with lazy loading and protected routes)
 import React, { useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -91,16 +90,19 @@ const ProtectedRoute = ({ children }) => {
 const App = () => {
   const { pathname } = useLocation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  console.log(isAuthenticated, "auth in app")
+  console.log(isAuthenticated, 'auth in app');
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-screen">
-      <FaSpinner className="animate-spin text-[#870A28] w-16 h-16" />
-      {/* <span className="ml-2 text-gray-600">Loading</span> */}
-    </div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center h-screen">
+          <FaSpinner className="animate-spin text-[#870A28] w-16 h-16" />
+        </div>
+      }
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/homeforsale" element={<HomeForSale />} />
@@ -227,7 +229,7 @@ const App = () => {
           element={<ProtectedRoute><Contract /></ProtectedRoute>}
         />
         <Route
-          path="/aboutbuild"
+          path="/aboutbuild/:id" // Updated to dynamic route
           element={<ProtectedRoute><AboutCont /></ProtectedRoute>}
         />
         <Route
