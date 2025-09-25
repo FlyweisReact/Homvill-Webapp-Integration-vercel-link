@@ -9,7 +9,8 @@ import { documentPreferencesApiSlice } from './api/documentPreferencesApiSlice';
 import { notificationActivityApiSlice } from './api/notificationActivityApiSlice';
 import { userApiSlice } from './api/userApiSlice';
 import { cartApiSlice } from './api/cartApiSlice';
-import { contractorsApiSlice } from './api/contractorsApiSlice'; // Import the new slice
+import { contractorsApiSlice } from './api/contractorsApiSlice';
+import { buyaHomeApiSlice } from './api/buyaHomeApiSlice'; // Import the new slice
 import authReducer from './slices/authSlice';
 
 const rootReducer = combineReducers({
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   [notificationActivityApiSlice.reducerPath]: notificationActivityApiSlice.reducer,
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [cartApiSlice.reducerPath]: cartApiSlice.reducer,
-  [contractorsApiSlice.reducerPath]: contractorsApiSlice.reducer, // Add contractorsApiSlice
+  [contractorsApiSlice.reducerPath]: contractorsApiSlice.reducer,
+  [buyaHomeApiSlice.reducerPath]: buyaHomeApiSlice.reducer, // Add buyaHomeApiSlice
   auth: authReducer,
 });
 
@@ -49,7 +51,8 @@ export const store = configureStore({
       notificationActivityApiSlice.middleware,
       userApiSlice.middleware,
       cartApiSlice.middleware,
-      contractorsApiSlice.middleware // Add contractorsApiSlice middleware
+      contractorsApiSlice.middleware,
+      buyaHomeApiSlice.middleware // Add buyaHomeApiSlice middleware
     ),
   devTools: process.env.NODE_ENV !== 'production',
 });
