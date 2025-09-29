@@ -1156,6 +1156,8 @@ import link from './assets/link4.jpg';
 import links from './assets/links.jpg';
 import links2 from './assets/links2.jpg';
 import location1 from './assets/location.svg';
+
+
 import {
   useGetAllSavedHomesQuery,
   useGetAllSavedSearchesQuery,
@@ -1332,6 +1334,7 @@ const RecentActivity = () => {
       return staticData;
     }
     return apiData.data.map((item, index) => ({
+      id: item.Properties_id || index,
       title: item.Properties?.Property_Listing_Description || staticData[index % staticData.length].title,
       price: item.Properties?.Property_Listing_Price
         ? `$${item.Properties.Property_Listing_Price.toLocaleString()}`
@@ -1405,9 +1408,9 @@ const RecentActivity = () => {
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </div>
-                <div className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
+                <Link to={`/property/${item?.id}`}  className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+                </Link>
               </div>
               <div style={{ fontFamily: 'Poppins' }} className="p-3 sm:p-4">
                 <div className="flex justify-between items-center">
@@ -1531,9 +1534,9 @@ const RecentActivity = () => {
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </div>
-                <div className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
+                <Link to={`/property/${item?.id}`} className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+                </Link>
               </div>
               <div style={{ fontFamily: 'Poppins' }} className="p-3 sm:p-4">
                 <div className="flex justify-between items-center">
@@ -1657,9 +1660,9 @@ const RecentActivity = () => {
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </div>
-                <div className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
+                <Link to={`/property/${item?.id}`} className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+                </Link>
                 <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <button
                     onClick={() => navigate('/boost')}
@@ -1799,9 +1802,9 @@ const RecentActivity = () => {
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </div>
-                <div className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
+                <Link to={`/property/${item?.id}`} className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+                </Link>
               </div>
               <div style={{ fontFamily: 'Poppins' }} className="p-3 sm:p-4">
                 <div className="flex justify-between items-center">
@@ -1925,9 +1928,9 @@ const RecentActivity = () => {
                     className="w-4 h-4 sm:w-5 sm:h-5"
                   />
                 </div>
-                <div className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
+                <Link to={`/property/${item?.id}`} className="absolute top-1 right-10 sm:top-2 sm:right-14 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+                </Link>
               </div>
               <div style={{ fontFamily: 'Poppins' }} className="p-3 sm:p-4">
                 <div className="flex justify-between items-center">

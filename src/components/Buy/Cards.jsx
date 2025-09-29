@@ -28,7 +28,7 @@ const PropertyHeader = ({ properties = [] }) => {
 
   // Map API properties to component format
   const listings = properties.map((property, index) => ({
-    id: property._id,
+    id: property.Properties_id,
     rating: 3.8, // Static as not provided in API
     name: `${property.Owner_Fist_name} ${property.Owner_Last_name}`,
     size: `${property.Property_finished_Sq_ft} sq ft`,
@@ -41,7 +41,6 @@ const PropertyHeader = ({ properties = [] }) => {
       ? `${process.env.REACT_APP_BASE_URL}/${property.Property_photos[0].image}`
       : fallbackImages[index % fallbackImages.length],
   }));
-
   // Pagination: 2 items per page for 2-column grid
   const itemsPerPage = 2;
   const totalPages = Math.ceil(listings.length / itemsPerPage) || 1;
