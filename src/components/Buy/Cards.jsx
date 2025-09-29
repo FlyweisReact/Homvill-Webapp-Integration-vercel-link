@@ -109,13 +109,15 @@ const PropertyHeader = ({ properties = [] }) => {
                     className="w-[263px] h-[195px] p-3 object-cover rounded-3xl"
                   />
                   <div className="absolute top-4 right-4 rounded-full p-1.5 shadow flex gap-2">
-                    <Link to={`/property/${listing.id}`} className="w-9 h-9 rounded-full flex items-center justify-center shadow">
+                    <Link to={`/property/${listing.id}`} className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1A1A1A]/20 ">
                       <img src={arrow} alt="Share" className="w-5 h-5" />
+
                     </Link>
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center shadow">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1A1A1A]/20 ">
                       <img src={heart} alt="Heart" className="w-5 h-5" />
                     </div>
                   </div>
+                  
                   <div className="absolute top-1/2 left-3 right-3 flex justify-between px-2 transform -translate-y-1/2">
                     <button><img className="w-12" src={previous} /></button>
                     <button><img className="w-12" src={next} /></button>
