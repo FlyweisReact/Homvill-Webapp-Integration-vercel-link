@@ -28,6 +28,7 @@ import links2 from './assets/links2.jpg';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../store/slices/authSlice';
 import { useGetAllFavoritePropertiesQuery } from '../store/api/propertyApiSlice';
+import { Link } from 'react-router-dom';
 
 const staticCategories = [
   {
@@ -130,6 +131,7 @@ const FavoriteProperties = () => {
       return staticCategories;
     }
     return apiData.data.map((item, index) => ({
+      id: item.Your_Favorite_Properties_id ,
       title: item.Properties?.Property_Listing_Description || staticCategories[index % staticCategories.length].title,
       price: item.Properties?.Property_Listing_Price
         ? `$${item.Properties.Property_Listing_Price.toLocaleString()}`
@@ -206,9 +208,9 @@ const FavoriteProperties = () => {
           {categories.map((item, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -232,9 +234,9 @@ const FavoriteProperties = () => {
                     className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5"
                   />
                 </div>
-                <div className="absolute top-2 right-14 bg-[#1A1A1A]/20 p-2 rounded-full">
+                <Link to={`/property/${item.id}`} className="absolute top-2 right-14 bg-[#1A1A1A]/20 p-2 rounded-full">
                   <img src={arrow} alt="Arrow Icon" className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                </div>
+                </Link>
               </div>
               <div style={{ fontFamily: 'Poppins' }} className="p-4 sm:p-3 md:p-4">
                 <div className="flex justify-between items-center">
