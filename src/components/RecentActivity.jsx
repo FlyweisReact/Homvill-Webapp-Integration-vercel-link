@@ -1377,14 +1377,14 @@ const RecentActivity = () => {
 
     return (
       <>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-4 sm:mx-8 ">
           {categories.map((item, index) => (
             <Link
               to={'/selldash'}
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white   mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -1393,7 +1393,7 @@ const RecentActivity = () => {
                 {item.promoted && (
                   <div
                     style={{ fontFamily: 'Roboto' }}
-                    className="absolute top-3 left-[-28px] sm:top-4 sm:left-[-30px] bg-orange-500 text-white text-[10px] sm:text-[11px] md:text-[12px] font-semibold px-6 sm:px-8 py-1 rotate-[-45deg] shadow-md z-10"
+                    className="absolute  top-3 left-[-28px] sm:top-4 sm:left-[-30px] bg-orange-500 text-white text-[10px] sm:text-[11px] md:text-[12px] font-semibold px-6 sm:px-8 py-1 rotate-[-45deg] shadow-md z-10"
                   >
                     PROMOTED
                   </div>
@@ -1508,9 +1508,9 @@ const RecentActivity = () => {
           {categories.map((item, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -1634,9 +1634,9 @@ const RecentActivity = () => {
           {categories.map((item, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -1776,9 +1776,9 @@ const RecentActivity = () => {
           {categories.map((item, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -1902,9 +1902,9 @@ const RecentActivity = () => {
           {categories.map((item, index) => (
             <div
               key={index}
-              className="rounded-xl overflow-hidden shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
+              className="rounded-xl  shadow-md w-full max-w-[447px] aspect-[447/408] bg-white mx-auto"
             >
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
