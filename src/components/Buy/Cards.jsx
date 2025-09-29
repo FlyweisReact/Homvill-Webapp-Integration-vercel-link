@@ -108,10 +108,10 @@ const PropertyHeader = ({ properties }) => {
                     // onError={(e) => (e.target.src = placeholderImage)}
                   />
                   <div className="absolute top-4 right-4 rounded-full p-1.5 shadow flex gap-2">
-                    <div className="w-9 h-9 rounded-full backdrop-blur-sm bg-white/30 flex items-center justify-center shadow">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center shadow">
                       <img src={arrow} alt="Share" className="w-5 h-5" />
                     </div>
-                    <div className="w-9 h-9 rounded-full backdrop-blur-sm bg-white/30 flex items-center justify-center shadow">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center shadow">
                       <img src={heart} alt="Heart" className="w-5 h-5" />
                     </div>
                   </div>

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaSearch, FaSpinner } from "react-icons/fa";
 import Navbar from '../Navbar';
 import Map from '../Buy/Map';
 import Cards from '../Buy/Cards';
-import vector from '../assets/Vector 312.svg';
 import vect from '../assets/Vector (69).svg';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated, selectAuthToken } from '../../store/slices/authSlice';
 
 const HomeForSale = () => {
     const [saleDropdownOpen, setSaleDropdownOpen] = useState(false);
@@ -19,6 +20,11 @@ const HomeForSale = () => {
     const [exactMatch, setExactMatch] = useState(false);
     const [selectedHomeTypes, setSelectedHomeTypes] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [properties, setProperties] = useState([]); // Initialize as empty array to prevent map error
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const token = useSelector(selectAuthToken); // Get token from Redux store
 
     const toggleSaleDropdown = () => {
         setSaleDropdownOpen(!saleDropdownOpen);
@@ -87,9 +93,67 @@ const HomeForSale = () => {
         return "bg-white text-black border border-gray-300";
     };
 
+    // Fetch properties from API
+    useEffect(() => {
+        const fetchProperties = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                // Construct query parameters from filter states
+                const queryParams = new URLSearchParams();
+                if (selectedOption !== 'For Sale') {
+                    queryParams.append('Properties_for', selectedOption);
+                }
+                if (minPrice) queryParams.append('minPrice', parseFloat(minPrice));
+                if (maxPrice) queryParams.append('maxPrice', parseFloat(maxPrice));
+                if (bedrooms !== 'Any') queryParams.append('bedrooms', bedrooms);
+                if (bathrooms !== 'Any') queryParams.append('bathrooms', bathrooms);
+                if (selectedHomeTypes.length > 0) {
+                    queryParams.append('homeTypes', selectedHomeTypes.join(','));
+                }
+                if (exactMatch) queryParams.append('exactMatch', exactMatch);
+
+                // Set up headers with token if available
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(
+                    `${process.env.REACT_APP_BASE_URL}/api/properties/getall?${queryParams.toString()}`,
+                    {
+                        method: 'GET',
+                        headers,
+                    }
+                );
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Unauthorized: Please log in again.');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                // Extract the 'data' field from the response, fallback to empty array
+                const propertiesArray = Array.isArray(data.data) ? data.data : [];
+                setProperties(propertiesArray);
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+                setError(error.message || 'Failed to load properties. Please try again.');
+                setProperties([]); // Fallback to empty array to prevent map error
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProperties();
+    }, [selectedOption, minPrice, maxPrice, bedrooms, bathrooms, selectedHomeTypes, exactMatch, token]);
+
     return (
         <>
-
             <Navbar />
             <div
                 style={{ fontFamily: 'Poppins' }}
@@ -255,19 +319,13 @@ const HomeForSale = () => {
                 </div>
 
                 {/* More Button */}
-                {/* <button className="border border-gray-300 rounded-md px-2 py-2 w-full sm:w-[149px] text-[16px] font-medium hover:bg-gray-100 flex justify-between items-center">
-                    More <span className="ml-1">▾</span>
-                </button> */}
                 <div className="relative inline-block text-left w-full sm:w-[149px]">
-                    {/* Button */}
                     <button
                         className="border border-gray-300 rounded-md px-2 py-2 w-full text-[16px] font-medium hover:bg-gray-100 flex justify-between items-center"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         More <span className="ml-1">▾</span>
                     </button>
-
-                    {/* Dropdown Panel */}
                     {isOpen && (
                         <div className="absolute z-50 mt-2 w-full md:w-[300px] max-h-[450px] overflow-y-auto custom-scroll rounded-md bg-white shadow-lg border border-gray-200 p-4 text-sm space-y-4">
                             <div>
@@ -282,7 +340,6 @@ const HomeForSale = () => {
                                     <option>$1000</option>
                                 </select>
                             </div>
-                            {/* Listing Type */}
                             <div>
                                 <p className="font-semibold mb-1">Listing Type</p>
                                 <div className="space-y-1">
@@ -294,8 +351,6 @@ const HomeForSale = () => {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Property Status */}
                             <div>
                                 <p className="font-semibold mb-1">Property Status</p>
                                 <div className="space-y-1">
@@ -307,8 +362,6 @@ const HomeForSale = () => {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Tours */}
                             <div>
                                 <p className="font-semibold mb-1">Tours</p>
                                 <label className="flex items-center space-x-2">
@@ -325,7 +378,6 @@ const HomeForSale = () => {
                                 </label>
                             </div>
                             <div className="space-y-2">
-                                {/* Parking Spots Dropdown */}
                                 <div>
                                     <label className="block text-gray-500 text-sm mb-1">Parking Spots</label>
                                     <div className="relative">
@@ -351,8 +403,6 @@ const HomeForSale = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Must Have Garage */}
                                 <div className="flex items-center space-x-2">
                                     <input
                                         type="checkbox"
@@ -364,7 +414,6 @@ const HomeForSale = () => {
                                     </label>
                                 </div>
                             </div>
-                            {/* Square Feet */}
                             <div>
                                 <p className="font-semibold mb-1">Square Feet</p>
                                 <div className="flex space-x-2">
@@ -372,8 +421,6 @@ const HomeForSale = () => {
                                     <input type="number" placeholder="Max" className="w-full border rounded px-2 py-1" />
                                 </div>
                             </div>
-
-                            {/* Lot Feet */}
                             <div>
                                 <p className="font-semibold mb-1">Lot feet</p>
                                 <div className="flex space-x-2">
@@ -381,8 +428,6 @@ const HomeForSale = () => {
                                     <input type="number" placeholder="Max" className="w-full border rounded px-2 py-1" />
                                 </div>
                             </div>
-
-                            {/* Year Built */}
                             <div>
                                 <p className="font-semibold mb-1">Year built</p>
                                 <div className="flex space-x-2">
@@ -391,8 +436,6 @@ const HomeForSale = () => {
                                 </div>
                             </div>
                             <div className="space-y-5 text-sm">
-
-                                {/* Basement */}
                                 <div>
                                     <p className="font-semibold mb-1">Basement</p>
                                     <label className="flex items-center space-x-2">
@@ -403,8 +446,6 @@ const HomeForSale = () => {
                                         <span>Has basement</span>
                                     </label>
                                 </div>
-
-                                {/* Number of stories */}
                                 <div>
                                     <p className="font-semibold mb-1">Number of stories</p>
                                     <label className="flex items-center space-x-2">
@@ -415,8 +456,6 @@ const HomeForSale = () => {
                                         <span>Single-story only</span>
                                     </label>
                                 </div>
-
-                                {/* Senior living */}
                                 <div>
                                     <p className="font-semibold mb-1">Senior living</p>
                                     <label className="flex items-center space-x-2">
@@ -427,8 +466,6 @@ const HomeForSale = () => {
                                         <span>Hide 55+ communities</span>
                                     </label>
                                 </div>
-
-                                {/* Other Amenities */}
                                 <div>
                                     <p className="font-semibold mb-1">Other Amenities</p>
                                     <div className="space-y-2">
@@ -443,8 +480,6 @@ const HomeForSale = () => {
                                         ))}
                                     </div>
                                 </div>
-
-                                {/* View */}
                                 <div>
                                     <p className="font-semibold mb-1">View</p>
                                     <div className="space-y-2">
@@ -460,30 +495,36 @@ const HomeForSale = () => {
                                     </div>
                                 </div>
                             </div>
-
-
-                            {/* Footer Buttons */}
                             <div className="flex gap-3 pt-4">
-                                <button  onClick={() => setIsOpen(false)} className="bg-gray-200 px-2 py-2 w-full md:w-[140px] rounded-md text-sm font-semibold">Reset all filters</button>
-                                <button  onClick={() => setIsOpen(false)} className="bg-[#890038] text-white w-full md:w-[140px] px-2 py-2 rounded-md text-sm font-semibold">Apply</button>
+                                <button onClick={() => setIsOpen(false)} className="bg-gray-200 px-2 py-2 w-full md:w-[140px] rounded-md text-sm font-semibold">Reset all filters</button>
+                                <button onClick={() => setIsOpen(false)} className="bg-[#890038] text-white w-full md:w-[140px] px-2 py-2 rounded-md text-sm font-semibold">Apply</button>
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Save Search */}
                 <button className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-auto text-sm bg-white hover:bg-gray-100">
                     Save search
                 </button>
             </div>
 
-            {/* Map and Cards with lower z-index */}
             <div className="relative z-0">
-                <Map />
-                <Cards />
+                {isLoading ? (
+                    (
+                        <div className="flex flex-col items-center justify-center py-8 text-center">
+                            <FaSpinner className="animate-spin text-[#8A1538] mb-2" size={32} />
+                            <p className="text-lg font-medium text-gray-700">Loading properties...</p>
+                        </div>
+                    )) : error ? (
+                        <div className="text-red-500">{error}</div>
+                    ) : (
+                    <>
+                        <Map properties={properties} />
+                        <Cards properties={properties} />
+                    </>
+                )}
             </div>
 
-            {/* Back to Top Button */}
             <button
                 onClick={scrollToTop}
                 className="fixed bottom-4 right-4 z-50 w-12 h-12 bg-[#8A1538] rounded-full flex items-center justify-center hover:bg-[#6B102B] transition-colors"

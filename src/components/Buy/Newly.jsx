@@ -1,30 +1,34 @@
-import React, { useState } from 'react';
-import { FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { FaSearch, FaSpinner } from 'react-icons/fa';
 import Navbar from '../Navbar';
 import Map from './Map';
 import Cards from './Cards';
 import Navbar2 from '../Navbar2';
-import { useAuth } from '../Authprovider/AuthContext';
-import vector from '../assets/Vector 312.svg';
-import vect from '../assets/Vector (69).svg';
 import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from '../../store/slices/authSlice';
+import { selectIsAuthenticated, selectAuthToken } from '../../store/slices/authSlice';
+import vect from '../assets/Vector (69).svg';
 
 const HomeForSale = () => {
+    // Filter-related state
     const [saleDropdownOpen, setSaleDropdownOpen] = useState(false);
     const [priceDropdownOpen, setPriceDropdownOpen] = useState(false);
     const [bedBathOpen, setBedBathOpen] = useState(false);
     const [homeTypeOpen, setHomeTypeOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState("For Sale");
+    const [selectedOption, setSelectedOption] = useState('For Sale');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
-    const [bedrooms, setBedrooms] = useState("Any");
-    const [bathrooms, setBathrooms] = useState("Any");
+    const [bedrooms, setBedrooms] = useState('Any');
+    const [bathrooms, setBathrooms] = useState('Any');
     const [exactMatch, setExactMatch] = useState(false);
     const [selectedHomeTypes, setSelectedHomeTypes] = useState([]);
-    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
-         const [isOpen, setIsOpen] = useState(false);
-    
+    const [properties, setProperties] = useState([]); // Initialize as empty array to prevent map error
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const token = useSelector(selectAuthToken); // Get token from Redux store
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Filter-related event handlers
     const toggleSaleDropdown = () => {
         setSaleDropdownOpen(!saleDropdownOpen);
         setPriceDropdownOpen(false);
@@ -59,7 +63,7 @@ const HomeForSale = () => {
     };
 
     const applyPriceFilter = () => {
-        console.log("Min:", minPrice, "Max:", maxPrice);
+        console.log('Min:', minPrice, 'Max:', maxPrice);
         setPriceDropdownOpen(false);
     };
 
@@ -70,7 +74,7 @@ const HomeForSale = () => {
     };
 
     const applyHomeTypeFilter = () => {
-        console.log("Selected Home Types:", selectedHomeTypes);
+        console.log('Selected Home Types:', selectedHomeTypes);
         setHomeTypeOpen(false);
     };
 
@@ -78,30 +82,93 @@ const HomeForSale = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const bedBathOptions = ["Any", "1+", "2+", "3+", "4+", "5+"];
+    const bedBathOptions = ['Any', '1+', '2+', '3+', '4+', '5+'];
     const homeTypes = [
-        "Houses", "Townhomes", "Multi-family", "Condos", "Co-ops", "Lots/Land", "Apartments", "Manufactured"
+        'Houses',
+        'Townhomes',
+        'Multi-family',
+        'Condos',
+        'Co-ops',
+        'Lots/Land',
+        'Apartments',
+        'Manufactured',
     ];
 
     const getButtonClass = (selected, current) => {
         if (selected === current) {
-            return "bg-[#8A1538] text-white border border-[#8A1538]";
-        } else if (current === "Any") {
-            return "bg-[#F8E0E7] text-[#8A1538] border border-[#8A1538]";
+            return 'bg-[#8A1538] text-white border border-[#8A1538]';
+        } else if (current === 'Any') {
+            return 'bg-[#F8E0E7] text-[#8A1538] border border-[#8A1538]';
         }
-        return "bg-white text-black border border-gray-300";
+        return 'bg-white text-black border border-gray-300';
     };
 
+    // Fetch properties
+    useEffect(() => {
+        const fetchProperties = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+                // Construct query parameters from filter states
+                const queryParams = new URLSearchParams();
+                if (selectedOption !== 'For Sale') {
+                    queryParams.append('Properties_for', selectedOption);
+                }
+                if (minPrice) queryParams.append('minPrice', parseFloat(minPrice));
+                if (maxPrice) queryParams.append('maxPrice', parseFloat(maxPrice));
+                if (bedrooms !== 'Any') queryParams.append('bedrooms', bedrooms);
+                if (bathrooms !== 'Any') queryParams.append('bathrooms', bathrooms);
+                if (selectedHomeTypes.length > 0) {
+                    queryParams.append('homeTypes', selectedHomeTypes.join(','));
+                }
+                if (exactMatch) queryParams.append('exactMatch', exactMatch);
+
+                // Set up headers with token if available
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(
+                    `${process.env.REACT_APP_BASE_URL}/api/properties/getall?${queryParams.toString()}`,
+                    {
+                        method: 'GET',
+                        headers,
+                    }
+                );
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        throw new Error('Unauthorized: Please log in again.');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                // Extract the 'data' field from the response, fallback to empty array
+                const propertiesArray = Array.isArray(data.data) ? data.data : [];
+                setProperties(propertiesArray);
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+                setError(error.message || 'Failed to load properties. Please try again.');
+                setProperties([]); // Fallback to empty array to prevent map error
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchProperties();
+    }, [selectedOption, minPrice, maxPrice, bedrooms, bathrooms, selectedHomeTypes, exactMatch, token]);
+
     return (
-        <> 
-        
-            {/* <Navbar /> */}
-               {isAuthenticated ? <Navbar2 /> : <Navbar />}
+        <>
+            {isAuthenticated ? <Navbar2 /> : <Navbar />}
             <div
                 style={{ fontFamily: 'Poppins' }}
                 className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-2 items-center justify-center p-2 bg-white shadow-sm rounded-md border w-full mx-auto"
             >
-                {/* Search input */}
                 <div className="flex items-center border border-gray-300 rounded-md px-3 py-2 w-full sm:w-[360px]">
                     <input
                         type="text"
@@ -111,7 +178,6 @@ const HomeForSale = () => {
                     <FaSearch className="text-gray-500 ml-2" />
                 </div>
 
-                {/* For Sale dropdown */}
                 <div className="relative w-full sm:w-[149px]">
                     <button
                         onClick={toggleSaleDropdown}
@@ -121,7 +187,7 @@ const HomeForSale = () => {
                     </button>
                     {saleDropdownOpen && (
                         <div className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-md">
-                            {["For Sale", "For Rent", "Sold"].map((option) => (
+                            {['For Sale', 'For Rent', 'Sold'].map((option) => (
                                 <div
                                     key={option}
                                     onClick={() => handleOptionClick(option)}
@@ -134,7 +200,6 @@ const HomeForSale = () => {
                     )}
                 </div>
 
-                {/* Price dropdown */}
                 <div className="relative w-full sm:w-[149px]">
                     <button
                         onClick={togglePriceDropdown}
@@ -170,7 +235,6 @@ const HomeForSale = () => {
                     )}
                 </div>
 
-                {/* Beds & Baths dropdown */}
                 <div className="relative w-full sm:w-[154px]">
                     <button
                         onClick={toggleBedBath}
@@ -227,7 +291,6 @@ const HomeForSale = () => {
                     )}
                 </div>
 
-                {/* Home Type Dropdown */}
                 <div className="relative w-full sm:w-[149px]">
                     <button
                         onClick={toggleHomeType}
@@ -260,20 +323,13 @@ const HomeForSale = () => {
                     )}
                 </div>
 
-                {/* More Button */}
-                {/* <button className="border border-gray-300 rounded-md px-2 py-2 w-full sm:w-[149px] text-[16px] font-medium hover:bg-gray-100 flex justify-between items-center">
-                    More <span className="ml-1">▾</span>
-                </button> */}
                 <div className="relative inline-block text-left w-full sm:w-[149px]">
-                    {/* Button */}
                     <button
                         className="border border-gray-300 rounded-md px-2 py-2 w-full text-[16px] font-medium hover:bg-gray-100 flex justify-between items-center"
                         onClick={() => setIsOpen(!isOpen)}
                     >
                         More <span className="ml-1">▾</span>
                     </button>
-
-                    {/* Dropdown Panel */}
                     {isOpen && (
                         <div className="absolute z-50 mt-2 w-full md:w-[300px] max-h-[450px] overflow-y-auto custom-scroll rounded-md bg-white shadow-lg border border-gray-200 p-4 text-sm space-y-4">
                             <div>
@@ -288,11 +344,10 @@ const HomeForSale = () => {
                                     <option>$1000</option>
                                 </select>
                             </div>
-                            {/* Listing Type */}
                             <div>
                                 <p className="font-semibold mb-1">Listing Type</p>
                                 <div className="space-y-1">
-                                    {["Agent listed", "New construction", "Foreclosures", "Auctions", "Foreclosed", "Pre-foreclosures"].map((type) => (
+                                    {['Agent listed', 'New construction', 'Foreclosures', 'Auctions', 'Foreclosed', 'Pre-foreclosures'].map((type) => (
                                         <label key={type} className="flex items-center space-x-2">
                                             <input type="checkbox" className="form-checkbox" />
                                             <span>{type}</span>
@@ -300,12 +355,10 @@ const HomeForSale = () => {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Property Status */}
                             <div>
                                 <p className="font-semibold mb-1">Property Status</p>
                                 <div className="space-y-1">
-                                    {["Coming soon", "Pending backup offers", "Pending & under contract"].map((status) => (
+                                    {['Coming soon', 'Pending backup offers', 'Pending & under contract'].map((status) => (
                                         <label key={status} className="flex items-center space-x-2">
                                             <input type="checkbox" className="form-checkbox" />
                                             <span>{status}</span>
@@ -313,8 +366,6 @@ const HomeForSale = () => {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Tours */}
                             <div>
                                 <p className="font-semibold mb-1">Tours</p>
                                 <label className="flex items-center space-x-2">
@@ -331,7 +382,6 @@ const HomeForSale = () => {
                                 </label>
                             </div>
                             <div className="space-y-2">
-                                {/* Parking Spots Dropdown */}
                                 <div>
                                     <label className="block text-gray-500 text-sm mb-1">Parking Spots</label>
                                     <div className="relative">
@@ -343,11 +393,7 @@ const HomeForSale = () => {
                                             <option>4+</option>
                                         </select>
                                         <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                                            <svg
-                                                className="w-4 h-4 text-black"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                            >
+                                            <svg className="w-4 h-4 text-black" viewBox="0 0 20 20" fill="currentColor">
                                                 <path
                                                     fillRule="evenodd"
                                                     d="M5.23 7.21a.75.75 0 011.06.02L10 11.584l3.71-4.354a.75.75 0 111.14.976l-4.25 5a.75.75 0 01-1.14 0l-4.25-5a.75.75 0 01.02-1.06z"
@@ -357,20 +403,15 @@ const HomeForSale = () => {
                                         </div>
                                     </div>
                                 </div>
-
-                                {/* Must Have Garage */}
                                 <div className="flex items-center space-x-2">
                                     <input
                                         type="checkbox"
                                         id="mustHaveGarage"
                                         className="form-checkbox text-[#890038] focus:ring-[#890038] border-gray-300"
                                     />
-                                    <label htmlFor="mustHaveGarage" className="text-sm">
-                                        Must have garage
-                                    </label>
+                                    <label htmlFor="mustHaveGarage" className="text-sm">Must have garage</label>
                                 </div>
                             </div>
-                            {/* Square Feet */}
                             <div>
                                 <p className="font-semibold mb-1">Square Feet</p>
                                 <div className="flex space-x-2">
@@ -378,8 +419,6 @@ const HomeForSale = () => {
                                     <input type="number" placeholder="Max" className="w-full border rounded px-2 py-1" />
                                 </div>
                             </div>
-
-                            {/* Lot Feet */}
                             <div>
                                 <p className="font-semibold mb-1">Lot feet</p>
                                 <div className="flex space-x-2">
@@ -387,8 +426,6 @@ const HomeForSale = () => {
                                     <input type="number" placeholder="Max" className="w-full border rounded px-2 py-1" />
                                 </div>
                             </div>
-
-                            {/* Year Built */}
                             <div>
                                 <p className="font-semibold mb-1">Year built</p>
                                 <div className="flex space-x-2">
@@ -397,8 +434,6 @@ const HomeForSale = () => {
                                 </div>
                             </div>
                             <div className="space-y-5 text-sm">
-
-                                {/* Basement */}
                                 <div>
                                     <p className="font-semibold mb-1">Basement</p>
                                     <label className="flex items-center space-x-2">
@@ -409,8 +444,6 @@ const HomeForSale = () => {
                                         <span>Has basement</span>
                                     </label>
                                 </div>
-
-                                {/* Number of stories */}
                                 <div>
                                     <p className="font-semibold mb-1">Number of stories</p>
                                     <label className="flex items-center space-x-2">
@@ -421,8 +454,6 @@ const HomeForSale = () => {
                                         <span>Single-story only</span>
                                     </label>
                                 </div>
-
-                                {/* Senior living */}
                                 <div>
                                     <p className="font-semibold mb-1">Senior living</p>
                                     <label className="flex items-center space-x-2">
@@ -433,12 +464,10 @@ const HomeForSale = () => {
                                         <span>Hide 55+ communities</span>
                                     </label>
                                 </div>
-
-                                {/* Other Amenities */}
                                 <div>
                                     <p className="font-semibold mb-1">Other Amenities</p>
                                     <div className="space-y-2">
-                                        {["Must have A/C", "Must have pool", "Waterfront"].map((item) => (
+                                        {['Must have A/C', 'Must have pool', 'Waterfront'].map((item) => (
                                             <label key={item} className="flex items-center space-x-2">
                                                 <input
                                                     type="checkbox"
@@ -449,12 +478,10 @@ const HomeForSale = () => {
                                         ))}
                                     </div>
                                 </div>
-
-                                {/* View */}
                                 <div>
                                     <p className="font-semibold mb-1">View</p>
                                     <div className="space-y-2">
-                                        {["City", "Mountain", "Park", "Water"].map((view) => (
+                                        {['City', 'Mountain', 'Park', 'Water'].map((view) => (
                                             <label key={view} className="flex items-center space-x-2">
                                                 <input
                                                     type="checkbox"
@@ -466,30 +493,41 @@ const HomeForSale = () => {
                                     </div>
                                 </div>
                             </div>
-
-
-                            {/* Footer Buttons */}
                             <div className="flex gap-3 pt-4">
-                                <button  onClick={() => setIsOpen(false)} className="bg-gray-200 px-2 py-2 w-full md:w-[140px] rounded-md text-sm font-semibold">Reset all filters</button>
-                                <button  onClick={() => setIsOpen(false)} className="bg-[#890038] text-white w-full md:w-[140px] px-2 py-2 rounded-md text-sm font-semibold">Apply</button>
+                                <button onClick={() => setIsOpen(false)} className="bg-gray-200 px-2 py-2 w-full md:w-[140px] rounded-md text-sm font-semibold">
+                                    Reset all filters
+                                </button>
+                                <button onClick={() => setIsOpen(false)} className="bg-[#890038] text-white w-full md:w-[140px] px-2 py-2 rounded-md text-sm font-semibold">
+                                    Apply
+                                </button>
                             </div>
                         </div>
                     )}
                 </div>
 
-                {/* Save Search */}
                 <button className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-auto text-sm bg-white hover:bg-gray-100">
                     Save search
                 </button>
             </div>
 
-            {/* Map and Cards with lower z-index */}
             <div className="relative z-0">
-                <Map />
-                <Cards />
+                {isLoading ? (
+                    (
+                        <div className="flex flex-col items-center justify-center py-8 text-center">
+                            <FaSpinner className="animate-spin text-[#8A1538] mb-2" size={32} />
+                            <p className="text-lg font-medium text-gray-700">Loading properties...</p>
+                        </div>
+                    )
+                ) : error ? (
+                    <div className="text-red-500">{error}</div>
+                ) : (
+                    <>
+                        <Map properties={properties} />
+                        <Cards properties={properties} />
+                    </>
+                )}
             </div>
 
-            {/* Back to Top Button */}
             <button
                 onClick={scrollToTop}
                 className="fixed bottom-4 right-4 z-50 w-12 h-12 bg-[#8A1538] rounded-full flex items-center justify-center hover:bg-[#6B102B] transition-colors"
