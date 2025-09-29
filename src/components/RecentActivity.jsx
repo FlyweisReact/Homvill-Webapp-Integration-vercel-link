@@ -1666,7 +1666,7 @@ const RecentActivity = () => {
                 <div className="absolute bottom-1 right-1 sm:bottom-2 sm:right-2 bg-[#1A1A1A]/20 p-1.5 sm:p-2 rounded-full">
                   <button
                     onClick={() => navigate('/boost')}
-                    className="flex items-center bg-[#FFE5EC] text-[#7A0E2E] px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[16px] sm:text-[19px] font-medium shadow-sm hover:bg-[#ffdbe4] transition"
+                    className="flex items-center  text-[#7A0E2E] px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[16px] sm:text-[19px] font-medium shadow-sm hover:bg-[#ffdbe4] transition"
                   >
                     <img src={iv} className="mr-1 sm:mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                     Boost
