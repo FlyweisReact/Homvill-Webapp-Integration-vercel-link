@@ -1,7 +1,8 @@
-import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { SlidersHorizontal } from 'lucide-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { IoCloseCircle } from "react-icons/io5";
+import { IoCloseCircle } from 'react-icons/io5';
 import rect from '../assets/rect.jpg';
 import rect2 from '../assets/rect2.jpg';
 import rect3 from '../assets/rect3.jpg';
@@ -14,11 +15,11 @@ import vect from '../assets/Vector (67).svg';
 import vect2 from '../assets/Vector (68).svg';
 import previous from '../assets/previous.svg';
 import next from '../assets/next.svg';
+
 import arrow from '../assets/arrow.svg';
 import heart from '../assets/heart.svg';
-// import placeholderImage from '../assets/placeholder.jpg';
 
-const PropertyHeader = ({ properties }) => {
+const PropertyHeader = ({ properties = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
@@ -27,6 +28,7 @@ const PropertyHeader = ({ properties }) => {
 
   // Map API properties to component format
   const listings = properties.map((property, index) => ({
+    id: property._id,
     rating: 3.8, // Static as not provided in API
     name: `${property.Owner_Fist_name} ${property.Owner_Last_name}`,
     size: `${property.Property_finished_Sq_ft} sq ft`,
@@ -37,7 +39,7 @@ const PropertyHeader = ({ properties }) => {
     deal: property.Property_Listing_Price < property.Property_cost ? 'Great Deal' : 'Fair Deal',
     image: property.Property_photos?.[0]?.image
       ? `${process.env.REACT_APP_BASE_URL}/${property.Property_photos[0].image}`
-      : fallbackImages[index % fallbackImages.length], // Cycle through fallback images
+      : fallbackImages[index % fallbackImages.length],
   }));
 
   // Pagination: 2 items per page for 2-column grid
@@ -105,12 +107,11 @@ const PropertyHeader = ({ properties }) => {
                     src={listing.image}
                     alt={listing.name}
                     className="w-[263px] h-[195px] p-3 object-cover rounded-3xl"
-                    // onError={(e) => (e.target.src = placeholderImage)}
                   />
                   <div className="absolute top-4 right-4 rounded-full p-1.5 shadow flex gap-2">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center shadow">
+                    <Link to={`/property/${listing.id}`} className="w-9 h-9 rounded-full flex items-center justify-center shadow">
                       <img src={arrow} alt="Share" className="w-5 h-5" />
-                    </div>
+                    </Link>
                     <div className="w-9 h-9 rounded-full flex items-center justify-center shadow">
                       <img src={heart} alt="Heart" className="w-5 h-5" />
                     </div>

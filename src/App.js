@@ -80,8 +80,8 @@ const Messages = lazy(() => import('./components/Messages'));
 const Applications = lazy(() => import('./components/Applications'));
 const Property2 = lazy(() => import('./components/Property2'));
 const Boost = lazy(() => import('./components/Boost'));
+const PropertyDetail = lazy(() => import('./components/Buy/PropertyDetail'));
 
-// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   return isAuthenticated ? children : <Navigate to="/signin" replace />;
@@ -135,7 +135,10 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/terms" element={<Terms />} />
-        {/* Protected Routes */}
+        <Route
+          path="/property/:id"
+          element={<ProtectedRoute><PropertyDetail /></ProtectedRoute>}
+        />
         <Route
           path="/furniture"
           element={<ProtectedRoute><Furniture /></ProtectedRoute>}
@@ -229,7 +232,7 @@ const App = () => {
           element={<ProtectedRoute><Contract /></ProtectedRoute>}
         />
         <Route
-          path="/aboutbuild/:id" // Updated to dynamic route
+          path="/aboutbuild/:id"
           element={<ProtectedRoute><AboutCont /></ProtectedRoute>}
         />
         <Route
