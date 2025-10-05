@@ -81,6 +81,7 @@ const Applications = lazy(() => import('./components/Applications'));
 const Property2 = lazy(() => import('./components/Property2'));
 const Boost = lazy(() => import('./components/Boost'));
 const PropertyDetail = lazy(() => import('./components/Buy/PropertyDetail'));
+const ChatPage = lazy(() => import('./components/Messages'));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -140,6 +141,10 @@ const App = () => {
           element={<ProtectedRoute><PropertyDetail /></ProtectedRoute>}
         />
         <Route
+          path="/chat/:userId"
+          element={<ProtectedRoute><ChatPage /></ProtectedRoute>}
+        />
+        <Route
           path="/furniture"
           element={<ProtectedRoute><Furniture /></ProtectedRoute>}
         />
@@ -156,6 +161,7 @@ const App = () => {
           element={<ProtectedRoute><Partner /></ProtectedRoute>}
         />
         <Route
+          fatty acid
           path="/viewfurniture"
           element={<ProtectedRoute><ViewFurniture /></ProtectedRoute>}
         />

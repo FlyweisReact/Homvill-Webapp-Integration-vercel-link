@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../Navbar';
 import { useNavigate, Link } from 'react-router-dom';
-
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import qr from '../assets/qr.svg';
 import bg from '../assets/signup.svg';
 import Footer from '../Footer';
@@ -16,6 +16,7 @@ const Signup = () => {
   const { data: countries } = useGetCountriesQuery();
   const { data: states } = useGetStatesQuery();
   const { data: cities } = useGetCitiesQuery();
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     Name: '',
@@ -39,15 +40,30 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      setError('Email and password are required');
+      return;
+    }
+
     try {
+      // Call Firebase Authentication
+      const auth = getAuth();
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+
+      // Call custom signup API
       const response = await signup(formData).unwrap();
       if (response.success) {
+        if (response.token) {
+          sessionStorage.setItem('authToken', response.token);
+        }
+        sessionStorage.setItem('loginEmail', formData.email); // Keep for compatibility
         navigate('/signin');
       } else {
-        alert(response.message || 'Signup failed');
+        throw new Error(response.message || 'Signup failed');
       }
     } catch (error) {
-      alert(error?.data?.message || 'An error occurred during signup');
+      console.error("Signup error:", error);
+      setError(error?.data?.message || `Signup failed: ${error.message}`);
     }
   };
 
@@ -58,56 +74,50 @@ const Signup = () => {
     <>
       <Navbar />
       <div className="px-4 sm:px-8 w-full flex flex-col md:flex-row items-stretch min-h-screen">
-         {/* Left Section */}
-                <div className="md:w-1/2  p-6 flex flex-col lg:justify-start">
-                    {/* <div className="absolute inset-0 z-0"> */}
-                    {/* <div className="absolute top-0 left-[-100px] w-[300px] h-[300px] bg-[#fcdde0] rounded-full blur-[100px] opacity-70"></div> */}
-                    {/* <div className="absolute top-[100px] right-[-120px] w-[300px] h-[300px] bg-[#e6e1ff] rounded-full blur-[100px] opacity-60"></div> */}
-                    {/* <div className="absolute bottom-[-100px] left-[150px] w-[300px] h-[300px] bg-white rounded-full blur-[150px] opacity-50"></div> */}
-                    {/* </div> */}
-                    <button
-                        onClick={() => navigate(-1)}
-                        style={{ fontFamily: 'Poppins' }}
-                        className="text-[18px] text-gray-600 mb-6 text-left z-10"
-                    >
-                        ← Back
-                    </button>
-                    <h1
-                        style={{ fontFamily: 'Poppins' }}
-                        className="text-3xl md:text-[42px]  font-bold leading-[1.2] text-gray-900 mb-3 z-10"
-                    >
-                        Buy, sell or rent your dream homes
-                    </h1>
-                    <p
-                        style={{ fontFamily: 'Poppins' }}
-                        className="text-[#000000] mb-8 z-10"
-                    >
-                        Lorem Ipsum is simply dummy text
-                    </p>
-                    <h2
-                        style={{ fontFamily: 'Poppins' }}
-                        className="text-[25px] font-medium text-gray-900 mb-3 z-10"
-                    >
-                        Get an App
-                    </h2>
-                    <div className="relative w-full">
-                        <img
-                            src={bg}
-                            alt="House"
-                            className="rounded-xl w-full md:w-[680px] h-auto"
-                        />
-                        <div className="absolute top-[-45px] right-0 md:top-[-85px] md:right-[214px] p-2 rounded-md flex items-center justify-center">
-                            <img
-                                src={qr}
-                                alt="QR Code"
-                                className="w-auto h-[150px] md:h-[263px] object-contain"
-                            />
-                        </div>
-                    </div>
-                </div>
-
+        <div className="md:w-1/2 p-6 flex flex-col lg:justify-start">
+          <button
+            onClick={() => navigate(-1)}
+            style={{ fontFamily: 'Poppins' }}
+            className="text-[18px] text-gray-600 mb-6 text-left z-10"
+          >
+            ← Back
+          </button>
+          <h1
+            style={{ fontFamily: 'Poppins' }}
+            className="text-3xl md:text-[42px] font-bold leading-[1.2] text-gray-900 mb-3 z-10"
+          >
+            Buy, sell or rent your dream homes
+          </h1>
+          <p
+            style={{ fontFamily: 'Poppins' }}
+            className="text-[#000000] mb-8 z-10"
+          >
+            Lorem Ipsum is simply dummy text
+          </p>
+          <h2
+            style={{ fontFamily: 'Poppins' }}
+            className="text-[25px] font-medium text-gray-900 mb-3 z-10"
+          >
+            Get an App
+          </h2>
+          <div className="relative w-full">
+            <img
+              src={bg}
+              alt="House"
+              className="rounded-xl w-full md:w-[680px] h-auto"
+            />
+            <div className="absolute top-[-45px] right-0 md:top-[-85px] md:right-[214px] p-2 rounded-md flex items-center justify-center">
+              <img
+                src={qr}
+                alt="QR Code"
+                className="w-auto h-[150px] md:h-[263px] object-contain"
+              />
+            </div>
+          </div>
+        </div>
         <div className="md:w-1/2 flex flex-col justify-center items-center px-4 sm:px-6 py-10">
           <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+            {error && <div className="text-red-500 text-center">{error}</div>}
             <div className="max-h-[60vh] md:max-h-[70vh] overflow-y-auto pr-4 space-y-4">
               <label style={{ fontFamily: 'Poppins' }} className="text-[#2C2E38] block">
                 First Name

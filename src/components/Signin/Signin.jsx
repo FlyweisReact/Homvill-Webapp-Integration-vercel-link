@@ -1,4 +1,3 @@
-// src/components/Signin/Signin.js (updated HomeAuth for email entry, assuming this is Signin)
 import React, { useState } from 'react';
 import Navbar from '../Navbar';
 import { useNavigate, Link } from 'react-router-dom';
@@ -11,7 +10,10 @@ const Signin = () => {
   const [email, setEmail] = useState('');
 
   const handleContinue = () => {
-    // Store email in session or pass via state/navigation
+    if (!email) {
+      alert('Please enter an email address');
+      return;
+    }
     sessionStorage.setItem('loginEmail', email);
     navigate('/password');
   };
@@ -20,7 +22,6 @@ const Signin = () => {
     <>
       <Navbar />
       <div className="px-8 w-full flex flex-col md:flex-row items-stretch">
-        {/* Left Section */}
         <div className="md:w-1/2 p-6 flex flex-col justify-center">
           <button 
             onClick={() => navigate(-1)}
@@ -62,11 +63,10 @@ const Signin = () => {
             </div>
           </div>
         </div>
-
-        {/* Right Section */}
         <div className="md:w-1/2 flex flex-col justify-center items-center px-6 py-10">
           <div className="w-full lg:max-w-sm space-y-8">
-            <label style={{ fontFamily: 'Poppins' }} className='text-[#2C2E38]'>Enter your email address
+            <label style={{ fontFamily: 'Poppins' }} className='text-[#2C2E38]'>
+              Enter your email address
               <input
                 type="email"
                 placeholder="Enter your email here"

@@ -1,7 +1,7 @@
-// src/components/Signin/Password.js
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import qr from '../assets/qr.svg';
 import bg from '../assets/pass.svg';
 import Footer from '../Footer';
@@ -42,12 +42,28 @@ const Password = () => {
   }, [error, dispatch]);
 
   const handleLogin = async () => {
-    if (!email || !password) return;
+    if (!email || !password) {
+      dispatch({ type: 'auth/setError', payload: 'Email and password are required' });
+      return;
+    }
+
     try {
-      await login({ email, password }).unwrap();
+      // Call custom login API
+      const loginResponse = await login({ email, password }).unwrap();
+      if (loginResponse.token) {
+        sessionStorage.setItem('authToken', loginResponse.token);
+      } else {
+        throw new Error(loginResponse.message || 'Login failed');
+      }
+
+      // Call Firebase Authentication
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+      sessionStorage.setItem('loginEmail', email); // Keep for compatibility
       // Navigation handled by isAuthenticated useEffect
     } catch (err) {
-      // Error handled in authSlice
+      console.error("Login error:", err);
+      dispatch({ type: 'auth/setError', payload: `Login failed: ${err.message}` });
     }
   };
 

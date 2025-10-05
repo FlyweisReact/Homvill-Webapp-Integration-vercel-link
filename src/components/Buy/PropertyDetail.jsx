@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Heart, Share2, ChevronLeft, ChevronRight, MapPin, Bed, Bath, Car, Home, Utensils, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, ChevronLeft, ChevronRight, MapPin, Bed, Bath, Car, Home, Utensils, ChevronDown, MessageCircle } from 'lucide-react';
 import Navbar from '../Navbar';
 import Navbar2 from '../Navbar2';
 import { useGetAllPropertiesQuery, useGetPropertyByIdQuery } from '../../store/api/propertyApiSlice';
@@ -52,7 +52,9 @@ const PropertyDetail = () => {
         owner: {
             name: `${propertyData.data.Owner_Fist_name} ${propertyData.data.Owner_Last_name}`,
             title: propertyData.data.sub_Role.charAt(0).toUpperCase() + propertyData.data.sub_Role.slice(1),
-            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
+            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
+            email: propertyData.data.Owner_email,
+            userId: propertyData.data.CreateBy.user_id
         },
         highlights: [
             ...(propertyData.data.Appliances.map(item => ({ icon: "🛠️", label: item }))),
@@ -92,7 +94,9 @@ const PropertyDetail = () => {
         owner: {
             name: "Desirae Stanton",
             title: "Property Owner",
-            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
+            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
+            email: "desirae@example.com",
+            userId: 1
         },
         highlights: [
             { icon: "🏢", label: "Elevator" },
@@ -141,7 +145,7 @@ const PropertyDetail = () => {
     // Map nearby homes data
     const nearbyHomes = propertiesData?.success && propertiesData.data?.length > 0 
         ? propertiesData.data
-            .filter(home => home.Status && home.Properties_id !== parseInt(id)) // Exclude current property
+            .filter(home => home.Status && home.Properties_id !== parseInt(id))
             .map(home => ({
                 id: home.Properties_id,
                 price: home.Property_Listing_Price,
@@ -206,6 +210,16 @@ const PropertyDetail = () => {
         if (sectionRefs[tab] && sectionRefs[tab].current) {
             sectionRefs[tab].current.scrollIntoView({ behavior: 'smooth' });
         }
+    };
+
+    const handleSendMessage = () => {
+        navigate(`/chat/${property.owner.userId}`, {
+            state: {
+                propertyId: property.id,
+                ownerName: property.owner.name,
+                ownerEmail: property.owner.email
+            }
+        });
     };
 
     const [activeImages, setActiveImages] = useState(
@@ -418,8 +432,12 @@ const PropertyDetail = () => {
                                     </div>
                                 </div>
                                 <div className="flex space-x-3">
-                                    <button className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors">
-                                        Schedule Tour
+                                    <button 
+                                        onClick={handleSendMessage}
+                                        className="bg-gray-900 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors flex items-center space-x-2"
+                                    >
+                                        <MessageCircle className="w-5 h-5" />
+                                        <span>Send a Message</span>
                                     </button>
                                     <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors">
                                         Start an Offer
