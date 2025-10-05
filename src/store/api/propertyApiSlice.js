@@ -55,6 +55,12 @@ export const propertyApiSlice = createApi({
     getFavoritePropertyById: builder.query({
       query: (id) => `/api/your-favorite-properties/getbyid/${id}`,
     }),
+    getPropertyById: builder.query({
+      query: (id) => `/api/properties/getbyid/${id}`,
+    }),
+    getAllProperties: builder.query({
+      query: () => '/api/properties/getall',
+    }),
   }),
 });
 
@@ -73,4 +79,6 @@ export const {
   useGetManageTourByIdQuery,
   useGetAllFavoritePropertiesQuery,
   useGetFavoritePropertyByIdQuery,
+  useGetPropertyByIdQuery,
+  useGetAllPropertiesQuery
 } = propertyApiSlice;

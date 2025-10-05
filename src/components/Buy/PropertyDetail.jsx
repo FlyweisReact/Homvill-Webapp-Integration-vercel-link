@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Heart, Share2, ChevronLeft, ChevronRight, MapPin, Bed, Bath, Car, Home, Calendar, Eye, Bookmark, ChevronDown, Utensils } from 'lucide-react';
+import { ArrowLeft, Heart, Share2, ChevronLeft, ChevronRight, MapPin, Bed, Bath, Car, Home, Utensils, ChevronDown } from 'lucide-react';
 import Navbar from '../Navbar';
 import Navbar2 from '../Navbar2';
+import { useGetAllPropertiesQuery, useGetPropertyByIdQuery } from '../../store/api/propertyApiSlice';
+import { useGetAllFAQsQuery } from '../../store/api/legalApiSlice';
 
 const PropertyDetail = () => {
     const { id } = useParams();
@@ -10,11 +12,72 @@ const PropertyDetail = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [activeTab, setActiveTab] = useState(null);
     const [expandedFAQ, setExpandedFAQ] = useState(null);
-    const isAuthenticated = true; // Mock authentication state
+    const isAuthenticated = true;
     const nearbyHomesRef = useRef(null);
 
-    // Dummy property data
-    const property = {
+    // Fetch property data
+    const { data: propertyData, isLoading: isPropertyLoading, error: propertyError } = useGetPropertyByIdQuery(id);
+    
+    // Fetch FAQs
+    const { data: faqsData, isLoading: isFaqsLoading, isError: isFaqsError } = useGetAllFAQsQuery();
+    
+    // Fetch all properties for nearby homes
+    const { data: propertiesData, isLoading: isPropertiesLoading } = useGetAllPropertiesQuery();
+
+    // Fallback images
+    const fallbackImages = [
+        "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1571471/pexels-photo-1571471.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1571457/pexels-photo-1571457.jpeg?auto=compress&cs=tinysrgb&w=800",
+        "https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=800"
+    ];
+
+    // Map API data to property structure
+    const property = propertyData?.success ? {
+        id: propertyData.data.Properties_id,
+        price: propertyData.data.Property_Listing_Price,
+        monthlyPayment: Math.round(propertyData.data.Property_Listing_Price / 135),
+        address: `${propertyData.data.Property_Address}, ${propertyData.data.Property_city}, ${propertyData.data.Property_state} ${propertyData.data.Property_zip}`,
+        propertyType: propertyData.data.Properties_Category_id.name,
+        yearBuilt: propertyData.data.Property_year_build,
+        size: parseInt(propertyData.data.Property_finished_Sq_ft),
+        bedrooms: propertyData.data.Property_Bed_rooms,
+        bathrooms: propertyData.data.Property_Full_Baths + propertyData.data.Property_OneTwo_Baths,
+        garage: propertyData.data.parking.includes('Garage') ? 1 : 0,
+        images: propertyData.data.Property_photos?.length > 0 
+            ? propertyData.data.Property_photos.map(photo => photo.image)
+            : fallbackImages,
+        owner: {
+            name: `${propertyData.data.Owner_Fist_name} ${propertyData.data.Owner_Last_name}`,
+            title: propertyData.data.sub_Role.charAt(0).toUpperCase() + propertyData.data.sub_Role.slice(1),
+            avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
+        },
+        highlights: [
+            ...(propertyData.data.Appliances.map(item => ({ icon: "🛠️", label: item }))),
+            ...(propertyData.data.floors.map(item => ({ icon: "🏠", label: item }))),
+            ...(propertyData.data.others.map(item => ({ icon: "🔧", label: item }))),
+            ...(propertyData.data.parking.map(item => ({ icon: "🚗", label: item })))
+        ],
+        description: propertyData.data.Property_Listing_Description,
+        stats: {
+            daysOnMarket: Math.floor((new Date() - new Date(propertyData.data.CreateAt)) / (1000 * 60 * 60 * 24)),
+            views: 305,
+            saves: 13
+        },
+        features: {
+            bedrooms: [
+                { name: "Master Bedroom", area: parseInt(propertyData.data.Property_finished_Sq_ft) / propertyData.data.Property_Bed_rooms, dimensions: "N/A" },
+                ...(propertyData.data.Property_Bed_rooms > 1 ? [{ name: "Additional Bedroom", area: parseInt(propertyData.data.Property_finished_Sq_ft) / propertyData.data.Property_Bed_rooms, dimensions: "N/A" }] : [])
+            ],
+            bathrooms: [
+                ...(propertyData.data.Property_Full_Baths > 0 ? [{ name: "Full Bathroom", type: "Full bathroom" }] : []),
+                ...(propertyData.data.Property_OneTwo_Baths > 0 ? [{ name: "Half Bathroom", type: "1/2 bathroom" }] : [])
+            ],
+            diningroom: propertyData.data.Rooms.includes("Kitchen") ? 1 : 0
+        }
+    } : {
         id: 1,
         price: 200000,
         monthlyPayment: 4451,
@@ -25,14 +88,7 @@ const PropertyDetail = () => {
         bedrooms: 6,
         bathrooms: 3,
         garage: 2,
-        images: [
-            "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-            "https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800",
-            "https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800",
-            "https://images.pexels.com/photos/1571471/pexels-photo-1571471.jpeg?auto=compress&cs=tinysrgb&w=800",
-            "https://images.pexels.com/photos/1571457/pexels-photo-1571457.jpeg?auto=compress&cs=tinysrgb&w=800",
-            "https://images.pexels.com/photos/1571463/pexels-photo-1571463.jpeg?auto=compress&cs=tinysrgb&w=800"
-        ],
+        images: fallbackImages,
         owner: {
             name: "Desirae Stanton",
             title: "Property Owner",
@@ -47,7 +103,7 @@ const PropertyDetail = () => {
             { icon: "🌳", label: "Garden" },
             { icon: "🚗", label: "Garage" }
         ],
-        description: "Presenting a modern transitional masterpiece, gracefully positioned on the south side of Colee Hammock. A thoughtfully designed residence features expansive windows that flood the interiors with natural light, perfectly framing the lush St Florida landscape and towering oak trees. 5 bedrooms, 5.5 baths, office/study, automatic generator, elevator, wine cellar & bar. Relaxed & sophisticated living at every turn. Private outdoor sparkling pool. Ideally located just moments from parks, shops, the beach, and the vibrant Las Olas Boulevard, with its renowned restaurants and entertainment options, you'll experience the best of both worlds - close enough to the action, yet far enough to unwind in tranquility. Generator & 2 Car garage. Full plans and specifications available.",
+        description: "Presenting a modern transitional masterpiece...",
         stats: {
             daysOnMarket: 16,
             views: 305,
@@ -66,17 +122,65 @@ const PropertyDetail = () => {
         }
     };
 
+    // Map FAQs data
+    const faqs = faqsData?.success && faqsData.data?.length > 0 
+        ? faqsData.data.filter(faq => faq.Status).map(faq => ({
+            id: faq.faq_id,
+            title: faq.Title,
+            description: faq.Description
+        }))
+        : [
+            { id: 1, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." },
+            { id: 2, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." },
+            { id: 3, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." },
+            { id: 4, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." },
+            { id: 5, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." },
+            { id: 6, title: "Lorem Ipsum is simply dummy text", description: "This is the answer to the frequently asked question." }
+        ];
+
+    // Map nearby homes data
+    const nearbyHomes = propertiesData?.success && propertiesData.data?.length > 0 
+        ? propertiesData.data
+            .filter(home => home.Status && home.Properties_id !== parseInt(id)) // Exclude current property
+            .map(home => ({
+                id: home.Properties_id,
+                price: home.Property_Listing_Price,
+                address: `${home.Property_Address}, ${home.Property_city}, ${home.Property_state} ${home.Property_zip}`,
+                beds: home.Property_Bed_rooms,
+                sqft: parseInt(home.Property_finished_Sq_ft),
+                baths: home.Property_Full_Baths + home.Property_OneTwo_Baths,
+                images: home.Property_photos?.length > 0 
+                    ? home.Property_photos.map(photo => photo.image)
+                    : fallbackImages,
+                isNew: Math.floor((new Date() - new Date(home.CreateAt)) / (1000 * 60 * 60 * 24)) < 7,
+                newLabel: "New"
+            }))
+        : [
+            {
+                id: 1,
+                price: 200000,
+                address: "807 Madison Dr Chicago IL 60490",
+                beds: 4,
+                sqft: 2506,
+                baths: 2,
+                images: fallbackImages,
+                isNew: true,
+                newLabel: "New 10h ago"
+            },
+            {
+                id: 2,
+                price: 200000,
+                address: "123 Palm Ave Miami FL 33010",
+                beds: 3,
+                sqft: 2200,
+                baths: 2,
+                images: fallbackImages,
+                isNew: false
+            }
+        ];
+
     const tabs = [
         'House Photos', 'Policies', 'Home Highlights', 'Market Value', 'Video Tour', 'Commute', 'Home Features', 'FAQs'
-    ];
-
-    const faqs = [
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
     ];
 
     const sectionRefs = {
@@ -104,40 +208,6 @@ const PropertyDetail = () => {
         }
     };
 
-    // Dummy Nearby Homes 
-    const nearbyHomes = [
-        {
-            id: 1,
-            price: 200000,
-            address: "807 Madison Dr Chicago IL 60490",
-            beds: 4,
-            sqft: 2506,
-            baths: 2,
-            images: [
-                "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800",
-                "https://images.pexels.com/photos/1571453/pexels-photo-1571453.jpeg?auto=compress&cs=tinysrgb&w=800",
-                "https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?auto=compress&cs=tinysrgb&w=800",
-                "https://images.pexels.com/photos/1571471/pexels-photo-1571471.jpeg?auto=compress&cs=tinysrgb&w=800",
-            ],
-            isNew: true,
-            newLabel: "New 10h ago",
-        },
-        {
-            id: 2,
-            price: 200000,
-            address: "123 Palm Ave Miami FL 33010",
-            beds: 3,
-            sqft: 2200,
-            baths: 2,
-            images: [
-                "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800",
-                "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800",
-            ],
-            isNew: false,
-        },
-    ];
-
-    // Keep track of active images for each home
     const [activeImages, setActiveImages] = useState(
         nearbyHomes.map(() => 0)
     );
@@ -174,11 +244,26 @@ const PropertyDetail = () => {
         }
     };
 
+    if (isPropertyLoading || isFaqsLoading || isPropertiesLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+            </div>
+        );
+    }
+
+    if (propertyError || isFaqsError) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="text-red-600">Error loading data. Using fallback data.</div>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gray-50">
             {isAuthenticated ? <Navbar2 /> : <Navbar />}
 
-            {/* Navigation Tabs */}
             <div className="bg-white border-b top-[80px] z-40">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex items-center space-x-8 overflow-x-auto">
@@ -203,10 +288,8 @@ const PropertyDetail = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 py-6">
-                {/* Image Gallery */}
                 <div className="relative mb-8">
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 h-[400px] lg:h-[500px]">
-                        {/* Main Image */}
                         <div className="lg:col-span-2 relative overflow-hidden rounded-lg">
                             <img
                                 src={property.images[currentImageIndex]}
@@ -226,9 +309,7 @@ const PropertyDetail = () => {
                                 <ChevronRight className="w-5 h-5" />
                             </button>
                         </div>
-
-                        {/* Thumbnail Grid */}
-                        <div className="lg:col-span-2 grid grid-cols-2 gap-4 ">
+                        <div className="lg:col-span-2 grid grid-cols-2 gap-4">
                             {property.images.slice(1, 5).map((image, index) => (
                                 <div
                                     key={index}
@@ -244,8 +325,6 @@ const PropertyDetail = () => {
                             ))}
                         </div>
                     </div>
-
-                    {/* Action Buttons on Image */}
                     <div className="absolute bottom-4 left-4 flex space-x-2">
                         <button className="bg-white/90 hover:bg-white px-4 py-2 rounded-lg flex items-center space-x-2 shadow-lg">
                             <span className="text-purple-600">🏠</span>
@@ -261,11 +340,8 @@ const PropertyDetail = () => {
                         </button>
                     </div>
                 </div>
-
-                {/* Property Info */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div className="lg:col-span-2">
-                        {/* Price and Actions */}
                         <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
@@ -289,8 +365,6 @@ const PropertyDetail = () => {
                                     </button>
                                 </div>
                             </div>
-
-                            {/* Property Details Grid */}
                             <div className="grid grid-cols-2 md:grid-cols-6 gap-4 text-sm">
                                 <div>
                                     <div className="text-gray-500">Property Type</div>
@@ -330,8 +404,6 @@ const PropertyDetail = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Owner Info */}
                         <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-4">
@@ -355,8 +427,6 @@ const PropertyDetail = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* Home Highlights */}
                         <div ref={sectionRefs['Home Highlights']} className="bg-white rounded-lg p-6 mb-6 shadow-sm">
                             <h2 className="text-2xl font-bold mb-6">Home Highlights</h2>
                             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
@@ -367,26 +437,17 @@ const PropertyDetail = () => {
                                     </div>
                                 ))}
                             </div>
-
                             <div className="mt-6 text-gray-700 leading-relaxed">
                                 {property.description}
                             </div>
-
-
                         </div>
-
-                        {/* Features */}
                         <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
                             <h2 className="text-lg font-semibold mb-4">Features of this property</h2>
-
                             <div className="bg-pink-100 rounded-lg p-4">
-                                {/* Interior title */}
                                 <div className="bg-white rounded-md px-4 py-2 mb-4 font-medium">
                                     Interior
                                 </div>
-
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Bedrooms */}
                                     <div>
                                         <div className="bg-white rounded-md px-4 py-2 mb-3 flex items-center space-x-2 font-medium">
                                             <Bed className="w-5 h-5" />
@@ -405,8 +466,6 @@ const PropertyDetail = () => {
                                             ))}
                                         </ul>
                                     </div>
-
-                                    {/* Bathrooms */}
                                     <div>
                                         <div className="bg-white rounded-md px-4 py-2 mb-3 flex items-center space-x-2 font-medium">
                                             <Bath className="w-5 h-5" />
@@ -425,8 +484,6 @@ const PropertyDetail = () => {
                                         </ul>
                                     </div>
                                 </div>
-
-                                {/* Dining Room */}
                                 <div className="mt-4">
                                     <div className="bg-white rounded-md px-4 py-2 mb-3 flex items-center space-x-2 font-medium">
                                         <Utensils className="w-5 h-5" />
@@ -438,8 +495,6 @@ const PropertyDetail = () => {
                                 </div>
                             </div>
                         </div>
-
-                        {/* FAQ Section */}
                         <div ref={sectionRefs['FAQs']} className="bg-white rounded-lg p-6 shadow-sm">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
@@ -447,19 +502,19 @@ const PropertyDetail = () => {
                                 </div>
                                 <div className="space-y-4">
                                     {faqs.map((faq, index) => (
-                                        <div key={index} className="border border-gray-200 rounded-lg">
+                                        <div key={faq.id} className="border border-gray-200 rounded-lg">
                                             <button
                                                 onClick={() => toggleFAQ(index)}
                                                 className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-gray-50"
                                             >
-                                                <span className="text-sm font-medium">{faq}</span>
+                                                <span className="text-sm font-medium">{faq.title}</span>
                                                 <ChevronDown
                                                     className={`w-4 h-4 transition-transform ${expandedFAQ === index ? 'rotate-180' : ''}`}
                                                 />
                                             </button>
                                             {expandedFAQ === index && (
                                                 <div className="px-4 pb-3 text-sm text-gray-600">
-                                                    This is the answer to the frequently asked question. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                                    {faq.description}
                                                 </div>
                                             )}
                                         </div>
@@ -469,21 +524,21 @@ const PropertyDetail = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* Nearby Homes Section */}
                 <div className="mt-8">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-bold">Explore Nearby Homes</h2>
                         <div className="flex space-x-2">
                             <button
                                 onClick={scrollLeft}
-                                className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
+                                className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg disabled:opacity-50"
+                                disabled={nearbyHomes.length <= 3}
                             >
                                 <ChevronLeft className="w-5 h-5" />
                             </button>
                             <button
                                 onClick={scrollRight}
-                                className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg"
+                                className="bg-white/80 hover:bg-white rounded-full p-2 shadow-lg disabled:opacity-50"
+                                disabled={nearbyHomes.length <= 3}
                             >
                                 <ChevronRight className="w-5 h-5" />
                             </button>
@@ -491,35 +546,29 @@ const PropertyDetail = () => {
                     </div>
                     <div
                         ref={nearbyHomesRef}
-                        className="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+                        className="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 snap-x snap-mandatory"
+                        style={{ scrollSnapType: 'x mandatory' }}
                     >
                         {nearbyHomes.map((home, index) => (
                             <div
                                 key={home.id}
                                 onClick={() => navigate(`/property/${home.id}`)}
-                                className="relative bg-white rounded-2xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex-shrink-0 w-80"
+                                className="relative bg-white rounded-2xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden flex-shrink-0 w-80 snap-center"
                             >
-                                {/* Image Section */}
                                 <div className="relative h-64 w-full">
                                     <img
                                         src={home.images[activeImages[index]]}
                                         alt={`Nearby home ${home.id}`}
                                         className="w-full h-full object-cover"
                                     />
-
-                                    {/* Wishlist */}
                                     <button className="absolute top-3 left-3 bg-white/80 p-2 rounded-full shadow">
                                         <Heart className="w-5 h-5 text-gray-700" />
                                     </button>
-
-                                    {/* New Badge */}
                                     {home.isNew && (
                                         <span className="absolute top-3 right-3 bg-[#870A28] text-white text-xs px-3 py-1 rounded-full shadow">
                                             {home.newLabel}
                                         </span>
                                     )}
-
-                                    {/* Arrows */}
                                     <button
                                         onClick={(e) => prevImages(index, e)}
                                         className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow"
@@ -532,8 +581,6 @@ const PropertyDetail = () => {
                                     >
                                         <ChevronRight className="w-5 h-5 text-gray-700" />
                                     </button>
-
-                                    {/* Dots */}
                                     <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-2">
                                         {home.images.map((_, imgIndex) => (
                                             <div
@@ -542,14 +589,10 @@ const PropertyDetail = () => {
                                             ></div>
                                         ))}
                                     </div>
-
-                                    {/* Slide Count */}
                                     <span className="absolute bottom-3 right-3 text-xs bg-black/70 text-white px-2 py-1 rounded">
                                         {activeImages[index] + 1}/{home.images.length}
                                     </span>
                                 </div>
-
-                                {/* Info Section */}
                                 <div className="p-5">
                                     <h3 className="text-xl font-bold">
                                         ${home.price.toLocaleString()}
@@ -558,8 +601,6 @@ const PropertyDetail = () => {
                                     <p className="text-xs text-gray-500 mt-1">
                                         Click to see how much refund you get from company
                                     </p>
-
-                                    {/* Icons */}
                                     <div className="flex items-center gap-6 mt-4 text-gray-700 text-sm">
                                         <div className="flex items-center gap-1">
                                             <Bed className="w-4 h-4" /> {home.beds} bed
