@@ -51,6 +51,7 @@ import slider from '../assets/slider.svg'
 const Home = () => {
     const [activeTab, setActiveTab] = useState("Buy");
     const [showBanner, setShowBanner] = useState(true);
+    const [location, setLocation] = useState('');
     const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
     const dispatch = useDispatch();
 
@@ -136,6 +137,36 @@ const navigate = useNavigate();
 
         return () => observer.disconnect();
     }, []);
+
+    const handleSearch = () => {
+      if (!location.trim()) return; // Optional: prevent navigation if empty
+      let route;
+      switch (activeTab) {
+        case 'Buy':
+          route = '/homeforsale';
+          break;
+        case 'Sell':
+          route = '/review';
+          break;
+        case 'Rent':
+          route = '/rent';
+          break;
+        case 'Contractor':
+          route = isAuthenticated ? '/contract' : '/signin';
+          break;
+        case 'Furniture':
+          route = isAuthenticated ? '/furniture' : '/signin';
+          break;
+        default:
+          return;
+      }
+      if (['Buy', 'Rent'].includes(activeTab)) {
+        navigate(`${route}?location=${encodeURIComponent(location)}`);
+      } else {
+        navigate(route);
+      }
+    };
+
     return (
         <>
             {/* <Navbar />
@@ -214,8 +245,10 @@ const navigate = useNavigate();
                                 type="text"
                                 placeholder="Enter your location"
                                 className="w-full px-3 py-2 text-sm outline-none text-gray-700 placeholder-gray-400"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
                             />
-                            <button className="bg-red-800 p-2 mt-2 sm:mt-0 sm:ml-2 rounded-md flex justify-center items-center">
+                            <button onClick={handleSearch} className="bg-red-800 p-2 mt-2 sm:mt-0 sm:ml-2 rounded-md flex justify-center items-center">
                                 <svg
                                     className="w-5 h-5 text-white"
                                     fill="none"

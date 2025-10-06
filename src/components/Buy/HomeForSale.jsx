@@ -9,6 +9,7 @@ import Cards from './Cards';
 import vect from '../assets/Vector (69).svg';
 import { useSearchPropertiesQuery } from '../../store/api/buyaHomeApiSlice';
 import { debounce } from 'lodash'; // Ensure lodash is installed: npm install lodash
+import { useLocation } from 'react-router-dom';
 
 const HomeForSale = () => {
   const [saleDropdownOpen, setSaleDropdownOpen] = useState(false);
@@ -28,6 +29,9 @@ const HomeForSale = () => {
   const [isSearching, setIsSearching] = useState(false); // Search loading state
   const [isFiltering, setIsFiltering] = useState(false); // Filter loading state
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const locationHook = useLocation();
+  const queryParamsHook = new URLSearchParams(locationHook.search);
+  const initialLocation = queryParamsHook.get('location') || '';
 
   // Debounced search handler
   const debouncedSearch = debounce((value) => {
@@ -41,6 +45,14 @@ const HomeForSale = () => {
     setTempSearchQuery(value); // Update temporary input state immediately
     debouncedSearch(value); // Trigger debounced search
   };
+
+  // Set initial location from query param on mount
+  useEffect(() => {
+    if (initialLocation) {
+      setTempSearchQuery(initialLocation);
+      setSearchQuery(initialLocation);
+    }
+  }, [initialLocation]);
 
   // Map selected option to Properties_Category_id
   const categoryMap = {
