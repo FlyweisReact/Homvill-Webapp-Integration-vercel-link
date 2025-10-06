@@ -31,7 +31,19 @@ export const userApiSlice = createApi({
                 body: { currentPassword, newPassword },
             }),
         }),
+        deactivateAccount: builder.mutation({
+            query: ({ user_id }) => ({
+                url: '/api/user/deactivate',
+                method: 'PATCH',
+                body: { user_id },
+            }),
+        }),
     }),
 });
 
-export const { useGetUserByAuthQuery, useUpdateUserMutation, useChangePasswordMutation } = userApiSlice;
+export const { 
+    useGetUserByAuthQuery, 
+    useUpdateUserMutation, 
+    useChangePasswordMutation, 
+    useDeactivateAccountMutation 
+} = userApiSlice;

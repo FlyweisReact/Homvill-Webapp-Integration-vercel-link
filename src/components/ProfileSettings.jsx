@@ -744,7 +744,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Footer from './Footer';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, logout } from '../store/slices/authSlice';
-import { useGetUserByAuthQuery, useUpdateUserMutation, useChangePasswordMutation } from '../store/api/userApiSlice';
+import { useGetUserByAuthQuery, useUpdateUserMutation, useChangePasswordMutation, useDeactivateAccountMutation } from '../store/api/userApiSlice';
 
 const ProfileSettings = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -767,6 +767,7 @@ const ProfileSettings = () => {
     const [newPassword, setNewPassword] = useState(''); // New password
     const [rePassword, setRePassword] = useState(''); // Re-entered password
     const [passwordError, setPasswordError] = useState(''); // Password validation or API errors
+    const [deactivationError, setDeactivationError] = useState(''); // Deactivation API errors
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -775,6 +776,7 @@ const ProfileSettings = () => {
     const { data: user, isLoading, isError, error, refetch } = useGetUserByAuthQuery();
     const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
     const [changePassword, { isLoading: isUpdatingPassword }] = useChangePasswordMutation();
+    const [deactivateAccount, { isLoading: isDeactivating }] = useDeactivateAccountMutation();
 
     // Fallback data
     const defaultUser = {
@@ -915,11 +917,22 @@ const ProfileSettings = () => {
         }
     };
 
-    // Handle logout
-    const handleLogout = () => {
-        setIsOpen5(false);
-        dispatch(logout());
-        navigate('/');
+    // Handle Deactivate Account
+    const handleDeactivateAccount = async () => {
+        setDeactivationError('');
+        setUpdatingField('Deactivate');
+        try {
+            await deactivateAccount({
+                user_id: userData.user_id,
+            }).unwrap();
+            setIsOpen5(false);
+            dispatch(logout());
+            navigate('/');
+        } catch (err) {
+            setDeactivationError(err?.data?.message || 'Failed to deactivate account.');
+        } finally {
+            setUpdatingField(null);
+        }
     };
 
     const reasons = [
@@ -991,7 +1004,7 @@ const ProfileSettings = () => {
                                     <button
                                         onClick={() => handleEditClick('Name')}
                                         className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded mt-1 w-full sm:w-auto"
-                                        disabled={fetchingItem === 'Name' || isUpdating || isUpdatingPassword}
+                                        disabled={fetchingItem === 'Name' || isUpdating || isUpdatingPassword || isDeactivating}
                                     >
                                         {fetchingItem === 'Name' ? (
                                             <>
@@ -1044,7 +1057,7 @@ const ProfileSettings = () => {
                                                     <button
                                                         onClick={handleSaveName}
                                                         className="bg-[#870A28] text-white font-medium px-4 sm:px-5 py-2 rounded text-sm sm:text-base"
-                                                        disabled={isUpdating || isUpdatingPassword}
+                                                        disabled={isUpdating || isUpdatingPassword || isDeactivating}
                                                     >
                                                         {isUpdating && updatingField === 'Name' ? (
                                                             <>
@@ -1076,7 +1089,7 @@ const ProfileSettings = () => {
                                     <button
                                         onClick={() => handleEditClick('UserName')}
                                         className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded mt-1 w-full sm:w-auto"
-                                        disabled={fetchingItem === 'UserName' || isUpdating || isUpdatingPassword}
+                                        disabled={fetchingItem === 'UserName' || isUpdating || isUpdatingPassword || isDeactivating}
                                     >
                                         {fetchingItem === 'UserName' ? (
                                             <>
@@ -1143,7 +1156,7 @@ const ProfileSettings = () => {
                                     <button
                                         onClick={() => handleEditClick('Photo')}
                                         className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded w-full sm:w-auto"
-                                        disabled={fetchingItem === 'Photo' || isUpdating || isUpdatingPassword}
+                                        disabled={fetchingItem === 'Photo' || isUpdating || isUpdatingPassword || isDeactivating}
                                     >
                                         {fetchingItem === 'Photo' ? (
                                             <>
@@ -1230,7 +1243,7 @@ const ProfileSettings = () => {
                                         <button
                                             onClick={() => handleEditClick('Email')}
                                             className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded mt-1 w-full sm:w-auto"
-                                            disabled={fetchingItem === 'Email' || isUpdating || isUpdatingPassword}
+                                            disabled={fetchingItem === 'Email' || isUpdating || isUpdatingPassword || isDeactivating}
                                         >
                                             {fetchingItem === 'Email' ? (
                                                 <>
@@ -1292,7 +1305,7 @@ const ProfileSettings = () => {
                                                         <button
                                                             onClick={handleSaveEmailPhone}
                                                             className="bg-[#870A28] text-white font-medium px-4 sm:px-5 py-2 rounded text-sm sm:text-base"
-                                                            disabled={isUpdating || isUpdatingPassword}
+                                                            disabled={isUpdating || isUpdatingPassword || isDeactivating}
                                                         >
                                                             {isUpdating && updatingField === 'Email' ? (
                                                                 <>
@@ -1321,7 +1334,7 @@ const ProfileSettings = () => {
                                         <button
                                             onClick={() => handleEditClick('Password')}
                                             className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded w-full sm:w-auto"
-                                            disabled={fetchingItem === 'Password' || isUpdating || isUpdatingPassword}
+                                            disabled={fetchingItem === 'Password' || isUpdating || isUpdatingPassword || isDeactivating}
                                         >
                                             {fetchingItem === 'Password' ? (
                                                 <>
@@ -1421,7 +1434,7 @@ const ProfileSettings = () => {
                                                         <button
                                                             onClick={handleSavePassword}
                                                             className="bg-[#870A28] text-white font-medium px-4 sm:px-5 py-2 rounded text-sm sm:text-base"
-                                                            disabled={isUpdating || isUpdatingPassword}
+                                                            disabled={isUpdating || isUpdatingPassword || isDeactivating}
                                                         >
                                                             {isUpdatingPassword && updatingField === 'Password' ? (
                                                                 <>
@@ -1450,7 +1463,7 @@ const ProfileSettings = () => {
                                         <button
                                             onClick={() => handleEditClick('Two-Step')}
                                             className="text-base sm:text-lg md:text-[24px] text-white bg-[#870A28] px-3 sm:px-4 py-1 rounded w-full sm:w-auto"
-                                            disabled={fetchingItem === 'Two-Step' || isUpdating || isUpdatingPassword}
+                                            disabled={fetchingItem === 'Two-Step' || isUpdating || isUpdatingPassword || isDeactivating}
                                         >
                                             {fetchingItem === 'Two-Step' ? (
                                                 <>
@@ -1635,7 +1648,7 @@ const ProfileSettings = () => {
                                     <button
                                         onClick={() => handleEditClick('Deactivate')}
                                         className="text-base sm:text-lg md:text-[20px] text-white bg-[#870A28] px-3 sm:px-4 py-1 sm:py-2 rounded w-full sm:w-auto"
-                                        disabled={fetchingItem === 'Deactivate' || isUpdating || isUpdatingPassword}
+                                        disabled={fetchingItem === 'Deactivate' || isUpdating || isUpdatingPassword || isDeactivating}
                                     >
                                         {fetchingItem === 'Deactivate' ? (
                                             <>
@@ -1694,6 +1707,9 @@ const ProfileSettings = () => {
                                                     ×
                                                 </button>
                                                 <h2 className="text-base sm:text-lg text-start font-semibold mb-4 sm:mb-5">Deactivate Account</h2>
+                                                {deactivationError && (
+                                                    <p className="text-red-600 text-xs sm:text-sm text-center mb-4">{deactivationError}</p>
+                                                )}
                                                 <div className="space-y-4 text-start mb-4 sm:mb-6">
                                                     {reasons.map((reason, index) => (
                                                         <label key={index} className="flex font-normal items-start gap-3 cursor-pointer">
@@ -1729,10 +1745,18 @@ const ProfileSettings = () => {
                                                         Cancel
                                                     </button>
                                                     <button
-                                                        onClick={handleLogout}
+                                                        onClick={handleDeactivateAccount}
                                                         className="bg-[#870A28] text-white font-medium px-4 sm:px-6 py-2 rounded text-sm sm:text-base"
+                                                        disabled={isUpdating || isUpdatingPassword || isDeactivating}
                                                     >
-                                                        Deactivate my account
+                                                        {isDeactivating && updatingField === 'Deactivate' ? (
+                                                            <>
+                                                                <FaSpinner className="animate-spin mr-2 inline w-4 h-4" />
+                                                                Deactivating...
+                                                            </>
+                                                        ) : (
+                                                            'Deactivate my account'
+                                                        )}
                                                     </button>
                                                 </div>
                                             </div>
