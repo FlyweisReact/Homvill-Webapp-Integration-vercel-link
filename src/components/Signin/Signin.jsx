@@ -88,9 +88,9 @@ const Signin = () => {
               className="text-[16px] text-[#2C2E38] text-center"
             >
               By signing in you agree to our{' '}
-              <span className="text-[#8A1538] font-medium cursor-pointer">Terms and Conditions</span>{' '}
+              <span className="text-[#8A1538] font-medium cursor-pointer" onClick={()=>navigate('/terms')}>Terms and Conditions</span>{' '}
               and{' '}
-              <span className="text-[#8A1538] font-medium cursor-pointer">Privacy Policy</span>
+              <span className="text-[#8A1538] font-medium cursor-pointer" onClick={()=>navigate('/privacy')}>Privacy Policy</span>
             </p>
             <p 
               style={{ fontFamily: 'Poppins' }} 
@@ -98,7 +98,7 @@ const Signin = () => {
             >
               Don’t have an account? <span className="text-[#8A1538] font-medium cursor-pointer"><Link to={'/signup'}>Sign Up</Link></span> here
             </p>
-            <div 
+            {/* <div 
               style={{ fontFamily: 'Poppins' }} 
               className="space-y-3"
             >
@@ -114,7 +114,7 @@ const Signin = () => {
                 <img src="https://img.icons8.com/color/20/google-logo.png" alt="Google" />
                 Continue with Google
               </button>
-            </div>
+            </div> */}
             <div className="flex justify-center gap-4 mt-12">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"

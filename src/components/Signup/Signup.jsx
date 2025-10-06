@@ -320,9 +320,9 @@ const Signup = () => {
               className="text-[16px] text-[#2C2E38] text-center"
             >
               By signing up you agree to our{' '}
-              <span className="text-[#8A1538] font-medium cursor-pointer">Terms and Conditions</span>{' '}
+              <span className="text-[#8A1538] font-medium cursor-pointer" onClick={()=>navigate('/terms')}>Terms and Conditions</span>{' '}
               and{' '}
-              <span className="text-[#8A1538] font-medium cursor-pointer">Privacy Policy</span>
+              <span className="text-[#8A1538] font-medium cursor-pointer" onClick={()=>navigate('/privacy')}>Privacy Policy</span>
             </p>
             <p
               style={{ fontFamily: 'Poppins' }}
