@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from './store/slices/authSlice';
 import { FaSpinner } from 'react-icons/fa';
+import { Toaster } from 'react-hot-toast';
 
 const Home = lazy(() => import('./components/Home/Home'));
 const HomeForSale = lazy(() => import('./components/Buy/HomeForSale'));
@@ -104,6 +105,7 @@ const App = () => {
         </div>
       }
     >
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/homeforsale" element={<HomeForSale />} />
@@ -161,7 +163,6 @@ const App = () => {
           element={<ProtectedRoute><Partner /></ProtectedRoute>}
         />
         <Route
-          fatty acid
           path="/viewfurniture"
           element={<ProtectedRoute><ViewFurniture /></ProtectedRoute>}
         />

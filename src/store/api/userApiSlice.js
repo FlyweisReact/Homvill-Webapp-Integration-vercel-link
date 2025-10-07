@@ -25,10 +25,10 @@ export const userApiSlice = createApi({
             }),
         }),
         changePassword: builder.mutation({
-            query: ({ currentPassword, newPassword }) => ({
+            query: ({ currentPassword, newPassword,confirmPassword }) => ({
                 url: '/api/user/change-password',
-                method: 'POST',
-                body: { currentPassword, newPassword },
+                method: 'PUT',
+                body: { currentPassword, newPassword,confirmPassword },
             }),
         }),
         deactivateAccount: builder.mutation({
