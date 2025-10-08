@@ -1,3 +1,4 @@
+// Updated propertyApiSlice with create mutation
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const propertyApiSlice = createApi({
@@ -12,6 +13,7 @@ export const propertyApiSlice = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Property'], // For invalidation if needed
   endpoints: (builder) => ({
     getAllSavedHomes: builder.query({
       query: () => '/api/properties-saved-homes/getall',
@@ -61,6 +63,13 @@ export const propertyApiSlice = createApi({
     getAllProperties: builder.query({
       query: () => '/api/properties/getall',
     }),
+    createProperty: builder.mutation({
+      query: (data) => ({
+        url: '/api/properties/create',
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -80,5 +89,6 @@ export const {
   useGetAllFavoritePropertiesQuery,
   useGetFavoritePropertyByIdQuery,
   useGetPropertyByIdQuery,
-  useGetAllPropertiesQuery
+  useGetAllPropertiesQuery,
+  useCreatePropertyMutation,
 } = propertyApiSlice;

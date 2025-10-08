@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// Updated ReviewDetail (review screen, no changes needed besides navigation)
+import React from "react";
 import sideImage from "../assets/right8.svg";
 import Navbar2 from "../Navbar2";
 import homes from '../assets/homes.svg';
@@ -11,27 +12,10 @@ import dine3 from '../assets/dine3.png';
 import personal from '../assets/personal.png';
 import stop from '../assets/STOP.png';
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux"; // To show actual data
 
 const ReviewDetail = () => {
-  const [reasons, setReasons] = useState([]);
-
-  const options = [
-    "Upgrading my home",
-    "Selling secondary home",
-    "Relocating",
-    "Downsizing my home",
-    "Retiring",
-    "Other",
-  ];
-
-  const toggleReason = (value) => {
-    setReasons((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
+  const formData = useSelector((state) => state.sellHome);
   const navigate = useNavigate();
 
   return (
@@ -81,8 +65,8 @@ const ReviewDetail = () => {
                 </svg>
               </div>
               <div className="ml-14 sm:ml-16 lg:ml-20 mt-2 space-y-1">
-                <p className="text-black mulish-font"><span className="font-medium text-[#00000080]">Offer on:</span> 807 Madison Dr Chicago IL 60490</p>
-                <p className="text-black mulish-font"><span className="font-medium text-[#00000080]">For sale:</span> $550,000</p>
+                <p className="text-black mulish-font"><span className="font-medium text-[#00000080]">Offer on:</span> {formData.Property_Address}, {formData.Property_city} {formData.Property_state} {formData.Property_zip}</p>
+                <p className="text-black mulish-font"><span className="font-medium text-[#00000080]">For sale:</span> ${formData.Property_Listing_Price}</p>
                 <p className="text-black mulish-font"><span className="font-medium text-[#00000080]">Home Facts:</span> House Selling</p>
               </div>
             </div>
@@ -106,7 +90,7 @@ const ReviewDetail = () => {
                   <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[30px] mulish-font font-semibold">Home Features</h2>
                 </div>
                 <svg
-                  onClick={() => navigate('/details')}
+                  onClick={() => navigate('/homefeature')}
                   className="w-4 h-4 sm:w-5 sm:h-5 text-[#8A1538] cursor-pointer"
                   fill="none"
                   stroke="currentColor"
@@ -123,22 +107,22 @@ const ReviewDetail = () => {
               </div>
               <div className="ml-14 sm:ml-16 lg:ml-20 mt-2 space-y-1">
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Appliances:</span> Dryer, Trash Compactor, Freezer, Washer.
+                  <span className="font-medium text-[#00000080]">Appliances:</span> {formData.Appliances.join(', ')}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Floors:</span> Carpet, Softwood, Laminate, Hardwood.
+                  <span className="font-medium text-[#00000080]">Floors:</span> {formData.floors.join(', ')}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Rooms:</span> Breakfast, Workshop, Pantry, Library, Office.
+                  <span className="font-medium text-[#00000080]">Rooms:</span> {formData.Rooms.join(', ')}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Views:</span> Mountain, City, Park, Water.
+                  <span className="font-medium text-[#00000080]">Views:</span> {formData.views.join(', ')}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Parking:</span> Off Street, Garage Attached.
+                  <span className="font-medium text-[#00000080]">Parking:</span> {formData.parking.join(', ')}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Others:</span> Central AC, Deck, Fire Place, Pool.
+                  <span className="font-medium text-[#00000080]">Others:</span> {formData.others.join(', ')}
                 </p>
               </div>
             </div>
@@ -162,7 +146,7 @@ const ReviewDetail = () => {
                   <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[30px] mulish-font font-semibold">Home Description</h2>
                 </div>
                 <svg
-                  onClick={() => navigate('/details')}
+                  onClick={() => navigate('/description')}
                   className="w-4 h-4 sm:w-5 sm:h-5 text-[#8A1538] cursor-pointer"
                   fill="none"
                   stroke="currentColor"
@@ -178,7 +162,7 @@ const ReviewDetail = () => {
                 </svg>
               </div>
               <p className="text-black mt-2 ml-14 sm:ml-16 lg:ml-20 mulish-font">
-                <span className="font-medium text-[#00000080]">Note:</span> I remodeled my kitchen, upgraded the HVAC system, added new roofing, and installed hardwood floors.
+                <span className="font-medium text-[#00000080]">Description:</span> {formData.Property_Listing_Description}
               </p>
             </div>
 
@@ -201,7 +185,7 @@ const ReviewDetail = () => {
                   <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[30px] mulish-font ml-2 font-semibold">Price & Payment</h2>
                 </div>
                 <svg
-                  onClick={() => navigate('/details')}
+                  onClick={() => navigate('/listing')}
                   className="w-4 h-4 sm:w-5 sm:h-5 text-[#8A1538] cursor-pointer"
                   fill="none"
                   stroke="currentColor"
@@ -218,13 +202,7 @@ const ReviewDetail = () => {
               </div>
               <div className="ml-14 sm:ml-16 lg:ml-20 mt-2 space-y-1">
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Down Payment:</span> 20%
-                </p>
-                <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Offer Amount:</span> TBD
-                </p>
-                <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">OL Refund:</span> TBD
+                  <span className="font-medium text-[#00000080]">Listing Price:</span> ${formData.Property_Listing_Price}
                 </p>
               </div>
             </div>
@@ -253,7 +231,7 @@ const ReviewDetail = () => {
                   <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[30px] mulish-font ml-2 font-semibold">Photos & Videos</h2>
                 </div>
                 <svg
-                  onClick={() => navigate('/details')}
+                  onClick={() => navigate('/photos')}
                   className="w-4 h-4 sm:w-5 sm:h-5 text-[#8A1538] cursor-pointer"
                   fill="none"
                   stroke="currentColor"
@@ -328,19 +306,13 @@ const ReviewDetail = () => {
               </div>
               <div className="ml-14 sm:ml-16 lg:ml-20 mt-2 space-y-1">
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Your Full Name:</span> Stefan Sarkin
+                  <span className="font-medium text-[#00000080]">Your Full Name:</span> {formData.Owner_Fist_name} {formData.Owner_Last_name}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Your Email:</span> sarkin@gmail.com
+                  <span className="font-medium text-[#00000080]">Your Email:</span> {formData.Owner_email}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Your Phone:</span> +1 310 500 0042
-                </p>
-                <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Cobuyer Email:</span> cobuyer@gmail.com
-                </p>
-                <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Company Name:</span> Open Listings
+                  <span className="font-medium text-[#00000080]">Your Phone:</span> {formData.Owner_phone_no}
                 </p>
               </div>
             </div>
@@ -364,7 +336,7 @@ const ReviewDetail = () => {
                   <h2 className="text-lg sm:text-xl md:text-2xl lg:text-[30px] mulish-font ml-2 font-semibold">Open House</h2>
                 </div>
                 <svg
-                  onClick={() => navigate('/details')}
+                  onClick={() => navigate('/open2')}
                   className="w-4 h-4 sm:w-5 sm:h-5 text-[#8A1538] cursor-pointer"
                   fill="none"
                   stroke="currentColor"
@@ -381,13 +353,13 @@ const ReviewDetail = () => {
               </div>
               <div className="ml-14 sm:ml-16 lg:ml-20 mt-2 space-y-1">
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Select Start date:</span> 12-04-24
+                  <span className="font-medium text-[#00000080]">Select Start date:</span> {formData.open_house_Start_date}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Select End date:</span> 12-04-26
+                  <span className="font-medium text-[#00000080]">Select End date:</span> {formData.open_house_End_date}
                 </p>
                 <p className="text-black mulish-font">
-                  <span className="font-medium text-[#00000080]">Timings:</span> 9:00 AM TO 11:00 AM
+                  <span className="font-medium text-[#00000080]">Timings:</span> {formData.open_house_Time}
                 </p>
               </div>
             </div>
@@ -403,8 +375,7 @@ const ReviewDetail = () => {
             </button>
             <button
               onClick={() => navigate('/save')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] `}
-              // disabled={!isFormValid()}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

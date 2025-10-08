@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+// Updated Open2 with time input and Redux
+import React, { useState, useEffect } from "react";
 import sideImage from "../assets/right9.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { FaArrowsAltH } from 'react-icons/fa'; // horizontal arrow icon
 import group from "../assets/group1.svg"
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Open2 = () => {
+  const dispatch = useDispatch();
+  const formDataFromStore = useSelector((state) => state.sellHome);
+  const [startDate, setStartDate] = useState(formDataFromStore.open_house_Start_date || '');
+  const [endDate, setEndDate] = useState(formDataFromStore.open_house_End_date || '');
+  const [time, setTime] = useState(formDataFromStore.open_house_Time || '');
   const navigate = useNavigate();
 
+  const handleNext = () => {
+    dispatch(updateFormData({
+      open_house_Start_date: startDate,
+      open_house_End_date: endDate,
+      open_house_Time: time,
+    }));
+    navigate('/reviewdetail');
+  };
 
   return (
     <>
@@ -25,21 +41,32 @@ const Open2 = () => {
             <div>
               <label className="block text-[20px] font-medium mb-1">Select a Start Date</label>
               <input
-                type="text"
-                placeholder="DD/MM/YYYY"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
                 className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
               />
             </div>
             <div>
               <label className="block text-[20px] font-medium mb-1">Select a End date</label>
               <input
-                type="text"
-                placeholder="DD/MM/YYYY"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
                 className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
               />
             </div>
 
 
+          </div>
+          <div>
+            <label className="block text-[20px] font-medium mb-1">Open House Time</label>
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+            />
           </div>
           {/* Icon Divider */}
           <div className="relative flex items-center">
@@ -56,9 +83,8 @@ const Open2 = () => {
               Back
             </button>
             <button
-              onClick={() => navigate('/reviewdetail')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] `}
-              // disabled={!isFormValid()}
+              onClick={handleNext}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

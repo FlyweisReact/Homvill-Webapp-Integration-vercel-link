@@ -1,29 +1,28 @@
-import React, { useState } from "react";
+// Updated Save with API integration and error handling
+import React from "react";
 import sideImage from "../assets/right3.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { useNavigate } from "react-router-dom";
 import { Pencil, MessageSquare, LineChart } from 'lucide-react'; // Icon set
+import { useDispatch, useSelector } from "react-redux";
+import { resetForm } from "../../store/slices/sellHomeSlice"; // Adjust path
+import { useCreatePropertyMutation } from "../../store/api/propertyApiSlice";
 
 const Save = () => {
-  const [reasons, setReasons] = useState([]);
-
-  const options = [
-    "Upgrading my home",
-    "Selling secondary home",
-    "Relocating",
-    "Downsizing my home",
-    "Retiring",
-    "Other",
-  ];
-
-  const toggleReason = (value) => {
-    setReasons((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
+  const formData = useSelector((state) => state.sellHome);
+  const [createProperty, { isLoading, isError, error }] = useCreatePropertyMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleSave = async () => {
+    try {
+      await createProperty(formData).unwrap();
+      dispatch(resetForm());
+      navigate('/selldash');
+    } catch (err) {
+      console.error('Failed to create property:', err);
+    }
+  };
 
   return (
     <>
@@ -62,22 +61,12 @@ const Save = () => {
               </div>
             </div>
 
-            <button onClick={() => {
-              navigate('/selldash');
-            }} className="w-full mt-24 bg-[#8A1538] text-white py-2 rounded-md text-[20px] mulish-font font-medium">
-              Save
+            {isError && <p className="text-red-500 mt-4">{error?.data?.message || 'An error occurred'}</p>}
+
+            <button onClick={handleSave} disabled={isLoading} className="w-full mt-24 bg-[#8A1538] text-white py-2 rounded-md text-[20px] mulish-font font-medium">
+              {isLoading ? 'Saving...' : 'Save'}
             </button>
           </div>
-
-          {/* Buttons */}
-          {/* <div className="flex flex-col sm:flex-row justify-between text-[20px] mulish-font gap-4 sm:gap-20">
-                        <button onClick={() => navigate(-1)} className="w-full border border-[#8A1538] text-[#8A1538] py-2 rounded-md font-semibold hover:bg-gray-100">
-                            Back
-                        </button>
-                        <button onClick={() => navigate('/homefeature')} className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]">
-                            Next
-                        </button>
-                    </div> */}
         </div>
 
         {/* Right Sticky Image Section */}

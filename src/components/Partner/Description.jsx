@@ -1,30 +1,23 @@
-import React, { useState } from "react";
+// Updated Description with Redux, append improvements
+import React, { useState, useEffect } from "react";
 import sideImage from "../assets/right5.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { useNavigate } from "react-router-dom";
 import { FaLightbulb } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Description = () => {
-  const [reasons, setReasons] = useState([]);
-
-  const options = [
-    "Upgrading my home",
-    "Selling secondary home",
-    "Relocating",
-    "Downsizing my home",
-    "Retiring",
-    "Other",
-  ];
-
-  const toggleReason = (value) => {
-    setReasons((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
-  };
+  const dispatch = useDispatch();
+  const formDataFromStore = useSelector((state) => state.sellHome);
+  const [description, setDescription] = useState(formDataFromStore.Property_Listing_Description || '');
   const navigate = useNavigate();
 
+  const handleNext = () => {
+    const fullDesc = `${description} ${formDataFromStore.improvements ? `\nImprovements: ${formDataFromStore.improvements}` : ''}`;
+    dispatch(updateFormData({ Property_Listing_Description: fullDesc }));
+    navigate('/photos');
+  };
 
   return (
     <>
@@ -40,13 +33,12 @@ const Description = () => {
 
 
           <div className=" space-y-3">
-            {/* Main Heading */}
-
-
             {/* Textarea */}
             <div>
               <label className="block text-[20px] font-semibold mulish-font text-gray-800 ">Listing Description</label>
               <textarea style={{ fontFamily: 'Poppins' }}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-3 mt-2 text-sm text-gray-600 resize-none h-24 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="You’ll love this spacious colonial nestled in the heart of Birmingham’s rolling..."
               ></textarea>
@@ -70,9 +62,8 @@ const Description = () => {
               Back
             </button>
             <button
-              onClick={() => navigate('/photos')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] `}
-              // disabled={!isFormValid()}
+              onClick={handleNext}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

@@ -10,8 +10,9 @@ import { notificationActivityApiSlice } from './api/notificationActivityApiSlice
 import { userApiSlice } from './api/userApiSlice';
 import { cartApiSlice } from './api/cartApiSlice';
 import { contractorsApiSlice } from './api/contractorsApiSlice';
-import { buyaHomeApiSlice } from './api/buyaHomeApiSlice'; // Import the new slice
+import { buyaHomeApiSlice } from './api/buyaHomeApiSlice';
 import authReducer from './slices/authSlice';
+import sellHomeReducer from './slices/sellHomeSlice'; // Import the new sellHomeSlice
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -23,14 +24,15 @@ const rootReducer = combineReducers({
   [userApiSlice.reducerPath]: userApiSlice.reducer,
   [cartApiSlice.reducerPath]: cartApiSlice.reducer,
   [contractorsApiSlice.reducerPath]: contractorsApiSlice.reducer,
-  [buyaHomeApiSlice.reducerPath]: buyaHomeApiSlice.reducer, // Add buyaHomeApiSlice
+  [buyaHomeApiSlice.reducerPath]: buyaHomeApiSlice.reducer,
   auth: authReducer,
+  sellHome: sellHomeReducer, // Add sellHomeReducer
 });
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  whitelist: ['auth'],
+  whitelist: ['auth', 'sellHome'], // Include sellHome in persistence
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -52,7 +54,7 @@ export const store = configureStore({
       userApiSlice.middleware,
       cartApiSlice.middleware,
       contractorsApiSlice.middleware,
-      buyaHomeApiSlice.middleware // Add buyaHomeApiSlice middleware
+      buyaHomeApiSlice.middleware
     ),
   devTools: process.env.NODE_ENV !== 'production',
 });

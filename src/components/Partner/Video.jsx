@@ -1,13 +1,29 @@
+// Updated Video with Redux
 import React, { useState } from "react";
 import sideImage from "../assets/right7.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { FaYoutube, FaTelegramPlane, FaFacebookF, FaVimeoV } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
-// import Upload from "../assets/upload.svg";
+import { useDispatch } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Video = () => {
+  const dispatch = useDispatch();
+  const [links, setLinks] = useState([]);
+  const [link, setLink] = useState('');
   const navigate = useNavigate();
 
+  const addLink = () => {
+    if (link.trim()) {
+      setLinks((prev) => [...prev, link]);
+      setLink('');
+    }
+  };
+
+  const handleNext = () => {
+    dispatch(updateFormData({ Video_tour_link: links.length ? links : ["http://google.com", "http://india.in"] })); // Dummy if empty
+    navigate('/buyer');
+  };
 
   return (
     <>
@@ -35,11 +51,13 @@ const Video = () => {
             <input
               type="text"
               placeholder="Past your link"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
 
             {/* Button */}
-            <button style={{ fontFamily: 'Poppins' }} className="text-[#1D1D1D] w-full py-2 shadow-md border border-[#00000080] rounded-md flex justify-center items-center font-semibold hover:bg-gray-100 transition">
+            <button style={{ fontFamily: 'Poppins' }} onClick={addLink} className="text-[#1D1D1D] w-full py-2 shadow-md border border-[#00000080] rounded-md flex justify-center items-center font-semibold hover:bg-gray-100 transition">
               + Link Video
             </button>
 
@@ -58,9 +76,8 @@ const Video = () => {
               Back
             </button>
             <button
-              onClick={() => navigate('/buyer')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] `}
-            // disabled={!isFormValid()}
+              onClick={handleNext}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

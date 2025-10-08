@@ -1,23 +1,33 @@
-import React, { useState } from "react";
+// Updated Detail component with address fields and Redux integration
+import React, { useState, useEffect } from "react";
 import sideImage from "../assets/right3.svg";
 import Navbar2 from "../Navbar2";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Detail = () => {
+  const dispatch = useDispatch();
+  const formDataFromStore = useSelector((state) => state.sellHome);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-    email: '',
-    yearBuilt: '',
-    lotSize: '',
-    finishedSqFt: '',
-    bedrooms: '',
-    fullBaths: '',
-    halfBaths: '',
+    firstName: formDataFromStore.Owner_Fist_name || '',
+    lastName: formDataFromStore.Owner_Last_name || '',
+    phoneNumber: formDataFromStore.Owner_phone_no || '',
+    email: formDataFromStore.Owner_email || '',
+    yearBuilt: formDataFromStore.Property_year_build || '',
+    lotSize: formDataFromStore.Property_Plot_size || '',
+    finishedSqFt: formDataFromStore.Property_finished_Sq_ft || '',
+    bedrooms: formDataFromStore.Property_Bed_rooms || '',
+    fullBaths: formDataFromStore.Property_Full_Baths || '',
+    halfBaths: formDataFromStore.Property_OneTwo_Baths || '',
+    address: formDataFromStore.Property_Address || '',
+    city: formDataFromStore.Property_city || '',
+    state: formDataFromStore.Property_state || '',
+    zip: formDataFromStore.Property_zip || '',
+    country: formDataFromStore.Property_country || 'USA',
   });
-  const [reasons, setReasons] = useState([]);
-  const [timeline, setTimeline] = useState('');
+  const [reasons, setReasons] = useState(formDataFromStore.Property_Reason_Selling || []);
+  const [timeline, setTimeline] = useState(formDataFromStore.Property_Why_sell || '');
 
   const options = [
     "Upgrading my home",
@@ -59,12 +69,47 @@ const Detail = () => {
       formData.bedrooms.trim() &&
       formData.fullBaths.trim() &&
       formData.halfBaths.trim() &&
+      formData.address.trim() &&
+      formData.city.trim() &&
+      formData.state.trim() &&
+      formData.zip.trim() &&
+      formData.country.trim() &&
       reasons.length > 0 &&
       timeline
     );
   };
 
   const navigate = useNavigate();
+
+  const handleNext = () => {
+    if (isFormValid()) {
+      dispatch(updateFormData({
+        Owner_Fist_name: formData.firstName,
+        Owner_Last_name: formData.lastName,
+        Owner_phone_no: formData.phoneNumber,
+        Owner_email: formData.email,
+        Property_year_build: formData.yearBuilt,
+        Property_Plot_size: formData.lotSize,
+        Property_finished_Sq_ft: formData.finishedSqFt,
+        Property_Bed_rooms: formData.bedrooms,
+        Property_Full_Baths: formData.fullBaths,
+        Property_OneTwo_Baths: formData.halfBaths,
+        Property_Address: formData.address,
+        Property_city: formData.city,
+        Property_state: formData.state,
+        Property_zip: formData.zip,
+        Property_country: formData.country,
+        Property_Reason_Selling: reasons,
+        Property_Why_sell: timeline,
+      }));
+      navigate('/homefeature');
+    }
+  };
+
+  useEffect(() => {
+    // Pre-fill from store if available
+    setFormData((prev) => ({ ...prev, address: formDataFromStore.Property_Address || prev.address }));
+  }, [formDataFromStore.Property_Address]);
 
   return (
     <>
@@ -240,6 +285,66 @@ const Detail = () => {
             </div>
           </div>
 
+          <h2 className="text-2xl md:text-[40px] mulish-font text-[#1D1D1D] font-bold mb-6 mt-4 text-center sm:text-left">Address Details</h2>
+
+          <div style={{ fontFamily: 'Poppins' }} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label className="block text-[20px] font-medium mb-1">Address</label>
+              <input
+                type="text"
+                name="address"
+                placeholder="Enter address"
+                className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+                value={formData.address}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label className="block text-[20px] font-medium mb-1">City</label>
+              <input
+                type="text"
+                name="city"
+                placeholder="Enter city"
+                className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+                value={formData.city}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label className="block text-[20px] font-medium mb-1">State</label>
+              <input
+                type="text"
+                name="state"
+                placeholder="Enter state"
+                className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+                value={formData.state}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label className="block text-[20px] font-medium mb-1">Zip Code</label>
+              <input
+                type="text"
+                name="zip"
+                placeholder="Enter zip"
+                className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+                value={formData.zip}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label className="block text-[20px] font-medium mb-1">Country</label>
+              <input
+                type="text"
+                name="country"
+                placeholder="Enter country"
+                className="w-full border rounded-md px-4 py-2 focus:outline-none focus:ring focus:ring-[#8A1538] bg-gray-100 text-sm sm:text-base"
+                value={formData.country}
+                onChange={handleInputChange}
+              />
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row justify-between text-[20px] mulish-font gap-4 sm:gap-20">
             <button 
               onClick={() => navigate('/review')} 
@@ -248,7 +353,7 @@ const Detail = () => {
               Back
             </button>
             <button 
-              onClick={() => navigate('/homefeature')} 
+              onClick={handleNext}
               className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={!isFormValid()}
             >

@@ -1,13 +1,25 @@
+// Updated Photos with dummy and Redux
 import React, { useState } from "react";
 import sideImage from "../assets/right6.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { useNavigate } from "react-router-dom";
-// import Upload from "../assets/upload.svg";
 import { FiUploadCloud } from 'react-icons/fi';
-
+import { useDispatch } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Photos = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  // For now, dummy photos
+  const handleNext = () => {
+    const dummyPhotos = [
+      { Title: "Front View", image: "front-view.jpg" },
+      { Title: "Living Room", image: "living-room.jpg" },
+    ];
+    dispatch(updateFormData({ Property_photos: dummyPhotos }));
+    navigate('/video');
+  };
+
   const UploadBox = ({ big = false }) => (
     <div
       className={`flex flex-col items-center justify-center border-2 border-dashed border-[#8A1538] rounded-md p-4 
@@ -64,9 +76,8 @@ const Photos = () => {
               Back
             </button>
             <button
-              onClick={() => navigate('/video')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] `}
-            // disabled={!isFormValid()}
+              onClick={handleNext}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

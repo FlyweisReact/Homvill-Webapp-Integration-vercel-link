@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+// Updated Listing with editable price and Redux
+import React, { useState, useEffect } from "react";
 import sideImage from "../assets/right4.svg"; // Replace with your actual path
 import Navbar2 from "../Navbar2";
 import { FaArrowsAltH } from 'react-icons/fa'; // horizontal arrow icon
 import group from "../assets/group.svg"
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Listing = () => {
+  const dispatch = useDispatch();
+  const formDataFromStore = useSelector((state) => state.sellHome);
+  const [listingPrice, setListingPrice] = useState(formDataFromStore.Property_Listing_Price || 110000);
   const navigate = useNavigate();
 
+  const handleNext = () => {
+    dispatch(updateFormData({
+      Property_Listing_Price: listingPrice,
+      Property_cost: listingPrice, // Set same as per assumption
+      Property_Listing_plot_size: formDataFromStore.Property_Plot_size, // Copy from earlier
+    }));
+    navigate('/description');
+  };
 
   return (
     <>
@@ -21,14 +35,12 @@ const Listing = () => {
           </p>
 
           <div className=" space-y-6">
-            {/* Heading */}
-
             {/* Input */}
             <input
-              type="text"
-              value="$110,000"
+              type="number"
+              value={listingPrice}
+              onChange={(e) => setListingPrice(Number(e.target.value))}
               className="w-full text-[#8A1538] mulish-font text-[36px] shadow-md font-bold border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#8A1538]"
-              readOnly
             />
 
             {/* Icon Divider */}
@@ -60,9 +72,8 @@ const Listing = () => {
               Back
             </button>
             <button
-              onClick={() => navigate('/description')}
-              className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] }`}
-              // disabled={!isFormValid()}
+              onClick={handleNext}
+              className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
             >
               Next
             </button>

@@ -57,33 +57,24 @@
 
 // export default AddDetailsForm;
 
-import React, { useState } from "react";
+// Updated Improvement with Redux
+import React, { useState, useEffect } from "react";
 import sideImage from "../assets/improve.svg"; // Adjust the path as needed
 import Navbar2 from "../Navbar2";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFormData } from "../../store/slices/sellHomeSlice"; // Adjust path
 
 const Improvement = () => {
-  const [formData, setFormdata] = useState(0);
+  const dispatch = useDispatch();
+  const formDataFromStore = useSelector((state) => state.sellHome);
+  const [improvements, setImprovements] = useState(formDataFromStore.improvements || '');
   const navigate = useNavigate();
 
-  const improvementOptions = [
-    "New Roof",
-    "Updated Bathroom",
-    "New Windows",
-    "HVAC System",
-    "Solar Panels",
-    "Other",
-  ];
-
-  const toggleImprovement = (value) => {
-    setImprovements((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
+  const handleNext = () => {
+    dispatch(updateFormData({ improvements }));
+    navigate('/listing');
   };
-
-  // const isFormValid = () => formdata.length > 0;
 
   return (
     <>
@@ -105,7 +96,8 @@ const Improvement = () => {
 
             {/* Textarea */}
             <textarea
-            
+              value={improvements}
+              onChange={(e) => setImprovements(e.target.value)}
               rows={5}
               className="w-full p-4 bg-[#F9F9F9] border border-gray-200 rounded-md placeholder-gray-400 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#8A1538]"
               placeholder="E.g. I remodeled my kitchen, upgraded the HVAC system, added new roofing, and installed hardwood floors."
@@ -120,9 +112,8 @@ const Improvement = () => {
                 Back
               </button>
               <button
-                onClick={() => navigate('/listing')}
-                className={`w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e] }`}
-                // disabled={!isFormValid()}
+                onClick={handleNext}
+                className="w-full bg-[#8A1538] mulish-font text-white py-2 rounded-md font-semibold hover:bg-[#72152e]"
               >
                 Next
               </button>

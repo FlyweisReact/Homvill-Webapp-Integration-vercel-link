@@ -11,8 +11,9 @@ import left from '../assets/left1.jpg';
 import PropertiesSlider from './PropertiesSlider';
 import Navbar from '../Navbar';
 import Navbar2 from '../Navbar2';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/authSlice';
+import { updateFormData } from '../../store/slices/sellHomeSlice'; // Adjust path
 import { useNavigate } from 'react-router-dom';
 
 const Review = () => {
@@ -34,11 +35,13 @@ const Review = () => {
     }
   ];
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState('');
 
   const handleSearch = () => {
     if (searchInput.trim()) {
+      dispatch(updateFormData({ Property_Address: searchInput }));
       navigate('/details');
     }
   };
