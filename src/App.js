@@ -1,3 +1,4 @@
+// Updated App.js with new routes
 import React, { useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -64,7 +65,6 @@ const Faq = lazy(() => import('./components/Faq'));
 const Career = lazy(() => import('./components/Career'));
 const Favoites = lazy(() => import('./components/Favoites'));
 const SellDash = lazy(() => import('./components/SellDash'));
-const ListForRent = lazy(() => import('./components/ListforRent/ListForRent'));
 const Postforsale = lazy(() => import('./components/Postforsale'));
 const LenderLoan = lazy(() => import('./components/Partner/LenderLoan'));
 const Remodeling = lazy(() => import('./components/Partner/Remodeling'));
@@ -83,6 +83,18 @@ const Property2 = lazy(() => import('./components/Property2'));
 const Boost = lazy(() => import('./components/Boost'));
 const PropertyDetail = lazy(() => import('./components/Buy/PropertyDetail'));
 const ChatPage = lazy(() => import('./components/Messages'));
+const ListForRent = lazy(() => import('./components/ListforRent/RentReview')); // Updated to RentReview
+const RentDetail = lazy(() => import('./components/ListforRent/RentDetail'));
+const RentHomefeature = lazy(() => import('./components/ListforRent/RentHomefeature'));
+const RentImprovement = lazy(() => import('./components/ListforRent/RentImprovement'));
+const RentListing = lazy(() => import('./components/ListforRent/RentListing'));
+const RentDescription = lazy(() => import('./components/ListforRent/RentDescription'));
+const RentPhotos = lazy(() => import('./components/ListforRent/RentPhotos'));
+const RentVideo = lazy(() => import('./components/ListforRent/RentVideo'));
+const RentBuyer = lazy(() => import('./components/ListforRent/RentBuyer'));
+const RentOpen2 = lazy(() => import('./components/ListforRent/RentOpen2'));
+const RentReviewDetail = lazy(() => import('./components/ListforRent/RentReviewDetail'));
+const RentSave = lazy(() => import('./components/ListforRent/RentSave'));
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -265,6 +277,50 @@ const App = () => {
         <Route
           path="/listrent"
           element={<ProtectedRoute><ListForRent /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentdetails"
+          element={<ProtectedRoute><RentDetail /></ProtectedRoute>}
+        />
+        <Route
+          path="/renthomfeature"
+          element={<ProtectedRoute><RentHomefeature /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentimprovement"
+          element={<ProtectedRoute><RentImprovement /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentlisting"
+          element={<ProtectedRoute><RentListing /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentdescription"
+          element={<ProtectedRoute><RentDescription /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentphotos"
+          element={<ProtectedRoute><RentPhotos /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentvideo"
+          element={<ProtectedRoute><RentVideo /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentbuyer"
+          element={<ProtectedRoute><RentBuyer /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentopen"
+          element={<ProtectedRoute><RentOpen2 /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentreviewdetail"
+          element={<ProtectedRoute><RentReviewDetail /></ProtectedRoute>}
+        />
+        <Route
+          path="/rentsave"
+          element={<ProtectedRoute><RentSave /></ProtectedRoute>}
         />
         <Route
           path="/lenderloan"

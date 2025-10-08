@@ -16,14 +16,7 @@ import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 const Review = () => {
-  const navigate = useNavigate();
-  const [searchInput, setSearchInput] = useState('');
 
-  const handleSearch = () => {
-    if (searchInput.trim()) {
-      navigate('/details');
-    }
-  };
 
   const cards = [
     {
@@ -70,13 +63,11 @@ const Review = () => {
               type="text"
               placeholder="Enter your property address you want to sell"
               className="flex-1 px-4 py-3 text-sm sm:text-base text-gray-700 outline-none"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+
 
             />
             <button
-              onClick={handleSearch}
-              disabled={!searchInput.trim()}
+
               className="bg-[#8A1538] hover:bg-[#72152e] text-white p-3 mr-2 rounded-lg">
               <FaSearch />
             </button>

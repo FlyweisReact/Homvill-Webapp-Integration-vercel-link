@@ -1,3 +1,4 @@
+// Updated store.js with rentHomeSlice
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore, PURGE } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
@@ -12,7 +13,8 @@ import { cartApiSlice } from './api/cartApiSlice';
 import { contractorsApiSlice } from './api/contractorsApiSlice';
 import { buyaHomeApiSlice } from './api/buyaHomeApiSlice';
 import authReducer from './slices/authSlice';
-import sellHomeReducer from './slices/sellHomeSlice'; // Import the new sellHomeSlice
+import sellHomeReducer from './slices/sellHomeSlice';
+import rentHomeReducer from './slices/rentHomeSlice'; // Import the new rentHomeSlice
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -26,13 +28,14 @@ const rootReducer = combineReducers({
   [contractorsApiSlice.reducerPath]: contractorsApiSlice.reducer,
   [buyaHomeApiSlice.reducerPath]: buyaHomeApiSlice.reducer,
   auth: authReducer,
-  sellHome: sellHomeReducer, // Add sellHomeReducer
+  sellHome: sellHomeReducer,
+  rentHome: rentHomeReducer, // Add rentHomeReducer
 });
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  whitelist: ['auth', 'sellHome'], // Include sellHome in persistence
+  whitelist: ['auth', 'sellHome', 'rentHome'], // Include rentHome in persistence
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
