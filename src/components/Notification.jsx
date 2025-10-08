@@ -196,7 +196,9 @@ import { IoClose } from "react-icons/io5";
 import Navbar2 from "./Navbar2";
 import bgImage from './assets/bgn.svg';
 import Footer from "./Footer";
-import { useGetAllNotificationActivitiesQuery, useUpdateNotificationActivityMutation } from "../store/api/notificationActivityApiSlice";
+import { useGetAllNotificationActivitiesQuery, useUpdateNotificationActivityMutation, useToggleNotificationActivationMutation } from "../store/api/notificationActivityApiSlice";
+import { useGetUserByAuthQuery } from "../store/api/userApiSlice";
+import toast, { Toaster } from 'react-hot-toast';
 
 // Static fallback data
 const staticSettingsData = [
@@ -247,10 +249,13 @@ export default function NotificationSettings() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [mobileEnabled, setMobileEnabled] = useState(false);
-  const [updatingField, setUpdatingField] = useState(null); // Track which field is updating (Email, Mobile, Save)
-  const [fetchingItem, setFetchingItem] = useState(null); // Track which item is fetching on Edit click
-  const { data: notifications, isLoading, isError, error, refetch } = useGetAllNotificationActivitiesQuery({ page: 1, limit: 10 });
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
+  const [updatingField, setUpdatingField] = useState(null);
+  const [fetchingItem, setFetchingItem] = useState(null);
+  const { data: notifications, isLoading: isNotificationsLoading, isError: isNotificationsError, error: notificationsError, refetch: refetchNotifications } = useGetAllNotificationActivitiesQuery({ page: 1, limit: 10 });
+  const { data: user, isLoading: isUserLoading, isError: isUserError, error: userError, refetch: refetchUser } = useGetUserByAuthQuery();
   const [updateNotificationActivity, { isLoading: isUpdating }] = useUpdateNotificationActivityMutation();
+  const [toggleNotificationActivation, { isLoading: isToggling }] = useToggleNotificationActivationMutation();
 
   // Transform API data to match settingsData structure
   const transformApiData = (apiData) => {
@@ -258,10 +263,10 @@ export default function NotificationSettings() {
     const data = apiData.data[0];
     const computeMethods = (email, mobile) => email && mobile ? "Email, Phone" : email ? "Email" : mobile ? "Phone" : "";
     return [
-      { 
-        title: "Search", 
-        items: [{ label: "Home recommendations", Email: data.Search.Email, Mobile: data.Search.Mobile, methods: computeMethods(data.Search.Email, data.Search.Mobile) }], 
-        methods: "Email, Phone" 
+      {
+        title: "Search",
+        items: [{ label: "Home recommendations", Email: data.Search.Email, Mobile: data.Search.Mobile, methods: computeMethods(data.Search.Email, data.Search.Mobile) }],
+        methods: "Email, Phone",
       },
       {
         title: "Favorites",
@@ -300,29 +305,106 @@ export default function NotificationSettings() {
     ];
   };
 
-  const settingsData = isLoading || isError ? staticSettingsData : transformApiData(notifications);
+  const settingsData = isNotificationsLoading || isNotificationsError ? staticSettingsData : transformApiData(notifications);
+
+  // Initialize global notification toggle state from user data
+  useEffect(() => {
+    if (user) {
+      setIsNotificationEnabled(user?.isNotification);
+      if (!user.isNotification) {
+        toast.error("Notifications are turned off. Enable notifications to modify settings.", {
+          duration: 4000,
+          position: 'top-right',
+        });
+      }
+    }
+  }, [user]);
+
+  // Handle global notification toggle
+  const handleGlobalToggle = async () => {
+    if (!user?.user_id) {
+      toast.error("User ID not found. Please try again.", {
+        duration: 4000,
+        position: 'top-right',
+      });
+      return;
+    }
+    setUpdatingField("Toggle");
+    try {
+      await toggleNotificationActivation({
+        user_id: user?.user_id,
+        isNotification: !isNotificationEnabled,
+      }).unwrap();
+      setIsNotificationEnabled(!isNotificationEnabled);
+      await refetchUser();
+      await refetchNotifications();
+      toast.success(`Notifications turned ${!isNotificationEnabled ? 'on' : 'off'} successfully!`, {
+        duration: 3000,
+        position: 'top-right',
+      });
+      if (!isNotificationEnabled) {
+        toast.error("Notifications are turned off. Enable notifications to modify settings.", {
+          duration: 4000,
+          position: 'top-right',
+        });
+      }
+    } catch (err) {
+      toast.error("Failed to toggle notifications: " + (err?.data?.message || 'An error occurred'), {
+        duration: 4000,
+        position: 'top-right',
+      });
+    } finally {
+      setUpdatingField(null);
+    }
+  };
 
   // Handle Edit button click with refetch
   const handleEditClick = async (section, itemIndex = 0) => {
+    if (!isNotificationEnabled) {
+      toast.error("Cannot edit settings: Notifications are turned off.", {
+        duration: 4000,
+        position: 'top-right',
+      });
+      return;
+    }
     const itemKey = `${section.title}${section.multiEdit ? `-${section.items[itemIndex].label}` : ""}`;
     setFetchingItem(itemKey);
-    await refetch(); // Refetch to get the latest data
-    const updatedSettings = transformApiData(notifications); // Use latest data
-    const selected = updatedSettings.find(s => s.title === section.title);
-    if (selected) {
-      setSelectedSection(selected);
-      setSelectedItem(selected.items[itemIndex]);
-      setEmailEnabled(selected.items[itemIndex].Email);
-      setMobileEnabled(selected.items[itemIndex].Mobile);
-      setShowModal(true);
+    try {
+      await refetchNotifications();
+      const updatedSettings = transformApiData(notifications);
+      const selected = updatedSettings.find(s => s.title === section.title);
+      if (selected) {
+        setSelectedSection(selected);
+        setSelectedItem(selected.items[itemIndex]);
+        setEmailEnabled(selected.items[itemIndex].Email);
+        setMobileEnabled(selected.items[itemIndex].Mobile);
+        setShowModal(true);
+        toast.success(`Editing ${selected.items[itemIndex].label} settings`, {
+          duration: 3000,
+          position: 'top-right',
+        });
+      }
+    } catch (err) {
+      toast.error("Failed to load notification settings: " + (err?.data?.message || 'An error occurred'), {
+        duration: 4000,
+        position: 'top-right',
+      });
+    } finally {
+      setFetchingItem(null);
     }
-    setFetchingItem(null);
   };
 
   // Handle toggle changes for Email and Mobile
   const handleToggleChange = async (field, value) => {
+    if (!isNotificationEnabled) {
+      toast.error("Cannot update settings: Notifications are turned off.", {
+        duration: 4000,
+        position: 'top-right',
+      });
+      return;
+    }
     if (!selectedSection || !selectedItem) return;
-    setUpdatingField(field); // Track which field (Email or Mobile) is updating
+    setUpdatingField(field);
     const keyMap = {
       "Search": "Search",
       "Favorites-Property updates": "Favorites_property_updates",
@@ -338,7 +420,10 @@ export default function NotificationSettings() {
 
     const apiKey = keyMap[`${selectedSection.title}${selectedSection.multiEdit ? `-${selectedItem.label}` : ""}`];
     if (!apiKey) {
-      console.error("Invalid API key for section:", selectedSection.title, selectedItem.label);
+      toast.error("Invalid notification setting selected.", {
+        duration: 4000,
+        position: 'top-right',
+      });
       setUpdatingField(null);
       return;
     }
@@ -355,9 +440,16 @@ export default function NotificationSettings() {
       }).unwrap();
       if (field === "Email") setEmailEnabled(value);
       if (field === "Mobile") setMobileEnabled(value);
-      await refetch(); // Refetch to update settingsData with latest data
+      await refetchNotifications();
+      toast.success(`${field} notification for ${selectedItem.label} turned ${value ? 'on' : 'off'}!`, {
+        duration: 3000,
+        position: 'top-right',
+      });
     } catch (err) {
-      console.error("Failed to update notification settings:", err);
+      toast.error("Failed to update notification settings: " + (err?.data?.message || 'An error occurred'), {
+        duration: 4000,
+        position: 'top-right',
+      });
     } finally {
       setUpdatingField(null);
     }
@@ -365,8 +457,15 @@ export default function NotificationSettings() {
 
   // Handle Save in modal
   const handleSave = async () => {
+    if (!isNotificationEnabled) {
+      toast.error("Cannot save settings: Notifications are turned off.", {
+        duration: 4000,
+        position: 'top-right',
+      });
+      return;
+    }
     if (!selectedSection || !selectedItem) return;
-    setUpdatingField("Save"); // Track Save button update
+    setUpdatingField("Save");
     const keyMap = {
       "Search": "Search",
       "Favorites-Property updates": "Favorites_property_updates",
@@ -382,7 +481,10 @@ export default function NotificationSettings() {
 
     const apiKey = keyMap[`${selectedSection.title}${selectedSection.multiEdit ? `-${selectedItem.label}` : ""}`];
     if (!apiKey) {
-      console.error("Invalid API key for section:", selectedSection.title, selectedItem.label);
+      toast.error("Invalid notification setting selected.", {
+        duration: 4000,
+        position: 'top-right',
+      });
       setUpdatingField(null);
       return;
     }
@@ -393,16 +495,23 @@ export default function NotificationSettings() {
         [apiKey]: { Email: emailEnabled, Mobile: mobileEnabled },
       }).unwrap();
       setShowModal(false);
-      await refetch(); // Refetch to update settingsData with latest data
+      await refetchNotifications();
+      toast.success(`Notification settings for ${selectedItem.label} saved successfully!`, {
+        duration: 3000,
+        position: 'top-right',
+      });
     } catch (err) {
-      console.error("Failed to update notification settings:", err);
+      toast.error("Failed to save notification settings: " + (err?.data?.message || 'An error occurred'), {
+        duration: 4000,
+        position: 'top-right',
+      });
     } finally {
       setUpdatingField(null);
     }
   };
 
   const renderSettings = () => {
-    if (isLoading) {
+    if (isNotificationsLoading || isUserLoading) {
       return (
         <div className="flex justify-center items-center py-8">
           <FaSpinner className="animate-spin text-[#8A1538] w-8 h-8" />
@@ -410,10 +519,10 @@ export default function NotificationSettings() {
         </div>
       );
     }
-    if (isError) {
+    if (isNotificationsError || isUserError) {
       return (
         <div className="text-center text-red-600 py-8">
-          <p>Error loading settings: {error?.data?.message || 'An error occurred'}</p>
+          <p>Error loading settings: {(notificationsError || userError)?.data?.message || 'An error occurred'}</p>
           <p>Displaying fallback data.</p>
         </div>
       );
@@ -442,7 +551,7 @@ export default function NotificationSettings() {
                 <button
                   onClick={() => handleEditClick(section, idx)}
                   className="mt-2 sm:mt-0 h-9 sm:h-[36px] px-3 sm:px-4 bg-[#8A1538] text-white text-base sm:text-lg md:text-[20px] rounded-md flex items-center gap-2"
-                  disabled={isUpdating || fetchingItem !== null}
+                  disabled={isUpdating || fetchingItem !== null || !isNotificationEnabled}
                 >
                   { (fetchingItem === `${section.title}-${item.label}` || (isUpdating && updatingField === "Save" && selectedSection?.title === section.title && selectedItem?.label === item.label)) ? (
                     <>
@@ -476,7 +585,7 @@ export default function NotificationSettings() {
               <button
                 onClick={() => handleEditClick(section)}
                 className="mt-2 sm:mt-0 h-9 sm:h-[40px] px-3 sm:px-5 bg-[#8A1538] text-white text-base sm:text-lg md:text-[20px] rounded-md flex items-center gap-2"
-                disabled={isUpdating || fetchingItem !== null}
+                disabled={isUpdating || fetchingItem !== null || !isNotificationEnabled}
               >
                 { (fetchingItem === section.title || (isUpdating && updatingField === "Save" && selectedSection?.title === section.title)) ? (
                   <>
@@ -498,6 +607,7 @@ export default function NotificationSettings() {
 
   return (
     <>
+      <Toaster />
       <Navbar2 />
       <div
         className="bg-cover bg-center text-white py-4 px-4 sm:py-6 sm:px-6 md:py-8 md:px-8 lg:py-10 lg:px-24"
@@ -526,9 +636,18 @@ export default function NotificationSettings() {
             </p>
           </div>
           <label className="inline-flex relative items-center cursor-pointer mt-2 sm:mt-0">
-            <input type="checkbox" checked readOnly className="sr-only peer" />
+            <input
+              type="checkbox"
+              checked={isNotificationEnabled}
+              onChange={handleGlobalToggle}
+              className="sr-only peer"
+              disabled={isToggling || isUpdating || isUserLoading}
+            />
             <div className="w-12 h-6 sm:w-14 sm:h-7 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all duration-300 peer-focus:ring-2 peer-focus:ring-green-300" />
             <div className="absolute left-1 top-1 w-4 h-4 sm:w-5 sm:h-5 bg-white rounded-full peer-checked:translate-x-6 sm:peer-checked:translate-x-7 transition-transform duration-300" />
+            {isToggling && updatingField === "Toggle" && (
+              <FaSpinner className="ml-2 animate-spin text-green-500 w-4 h-4" />
+            )}
           </label>
         </div>
 
@@ -566,7 +685,7 @@ export default function NotificationSettings() {
                         checked={emailEnabled}
                         onChange={() => handleToggleChange("Email", !emailEnabled)}
                         className="sr-only peer"
-                        disabled={isUpdating}
+                        disabled={isUpdating || !isNotificationEnabled}
                       />
                       <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all duration-300" />
                       <div className="absolute left-1 top-1 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full peer-checked:translate-x-4 sm:peer-checked:translate-x-full transition-transform duration-300" />
@@ -589,7 +708,7 @@ export default function NotificationSettings() {
                         checked={mobileEnabled}
                         onChange={() => handleToggleChange("Mobile", !mobileEnabled)}
                         className="sr-only peer"
-                        disabled={isUpdating}
+                        disabled={isUpdating || !isNotificationEnabled}
                       />
                       <div className="w-10 h-5 sm:w-11 sm:h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-all duration-300" />
                       <div className="absolute left-1 top-1 w-3 h-3 sm:w-4 sm:h-4 bg-white rounded-full peer-checked:translate-x-4 sm:peer-checked:translate-x-full transition-transform duration-300" />
@@ -610,7 +729,7 @@ export default function NotificationSettings() {
                 <button
                   className="px-4 sm:px-6 py-1 sm:py-2 bg-[#8A1538] text-white rounded-md text-sm sm:text-base font-semibold"
                   onClick={handleSave}
-                  disabled={isUpdating}
+                  disabled={isUpdating || !isNotificationEnabled}
                 >
                   {isUpdating && updatingField === "Save" ? (
                     <>

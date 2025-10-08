@@ -33,6 +33,13 @@ export const notificationActivityApiSlice = createApi({
                 body,
             }),
         }),
+        toggleNotificationActivation: builder.mutation({
+            query: ({ user_id, isNotification }) => ({
+                url: '/api/user/notification_activate',
+                method: 'PATCH',
+                body: { user_id, isNotification },
+            }),
+        }),
     }),
 });
 
@@ -41,4 +48,5 @@ export const {
     useGetNotificationActivityByIdQuery,
     useUpdateNotificationActivityMutation,
     useUpdateAllNotificationActivitiesMutation,
+    useToggleNotificationActivationMutation,
 } = notificationActivityApiSlice;

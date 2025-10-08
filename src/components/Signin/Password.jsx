@@ -159,7 +159,7 @@ const Password = () => {
                 Privacy Policy
               </span>
             </p>
-            <div
+            {/* <div
               style={{ fontFamily: 'Poppins' }}
               className="space-y-3"
             >
@@ -184,7 +184,7 @@ const Password = () => {
                 />
                 Continue with Google
               </button>
-            </div>
+            </div> */}
             <div className="flex justify-center gap-4 mt-12">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
