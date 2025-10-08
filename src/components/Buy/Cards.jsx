@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SlidersHorizontal } from 'lucide-react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { IoCloseCircle } from 'react-icons/io5';
@@ -22,7 +22,7 @@ import heart from '../assets/heart.svg';
 const PropertyHeader = ({ properties = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
-
+  const navigate = useNavigate();
   // Static fallback images for cycling through properties
   const fallbackImages = [rect, rect2, rect3, villa6, villa7, villa8];
 
@@ -127,7 +127,7 @@ const PropertyHeader = ({ properties = [] }) => {
                     <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
                   </div>
                 </div>
-                <div className="p-3 flex-1 flex flex-col justify-between">
+                <div className="p-3 flex-1 flex flex-col justify-between cursor-pointer" onClick={()=>navigate(`/property/${listing.id}`)}>
                   <p className="text-[#3E4958] text-[18px] uppercase font-bold">Furnished Apartment</p>
                   <div className="flex items-center mt-1">
                     <span className="text-yellow-500 mr-1 text-sm">★</span>

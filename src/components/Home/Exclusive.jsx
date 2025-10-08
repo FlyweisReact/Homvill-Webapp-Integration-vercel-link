@@ -12,39 +12,40 @@ import bath from '../assets/bath.svg';
 import square from '../assets/Icon (13).svg';
 import { selectAuthToken } from '../../store/slices/authSlice';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const FeaturedCategories = () => {
     const [favorites, setFavorites] = useState({});
     const [properties, setProperties] = useState([]);
-           const token = useSelector(selectAuthToken); // Changed from isLoggedIn
+    const token = useSelector(selectAuthToken); // Changed from isLoggedIn
 
     // Fetch API
-  useEffect(() => {
-    const fetchProperties = async () => {
-        try {
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
 
-            const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/properties/getall`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`, // attach token
-                },
-            });
+                const res = await fetch(`${process.env.REACT_APP_BASE_URL}/api/properties/getall`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`, // attach token
+                    },
+                });
 
-            const data = await res.json();
+                const data = await res.json();
 
-            if (data.success) {
-                setProperties(data.data || []);
-            } else {
-                console.error("API Error:", data.message);
+                if (data.success) {
+                    setProperties(data.data || []);
+                } else {
+                    console.error("API Error:", data.message);
+                }
+            } catch (error) {
+                console.error("Error fetching properties:", error);
             }
-        } catch (error) {
-            console.error("Error fetching properties:", error);
-        }
-    };
+        };
 
-    fetchProperties();
-}, []);
+        fetchProperties();
+    }, []);
 
 
     const toggleFavorite = (index) => {
@@ -121,7 +122,10 @@ const FeaturedCategories = () => {
                                     </div>
                                     {/* Arrow Icon */}
                                     <div className="absolute top-2 right-14 bg-[#1A1A1A]/20 p-2 rounded-full">
-                                        <img src={arrow} alt="Arrow Icon" className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                                        <Link to={`/property/${item?.Properties_id}`} >
+
+                                            <img src={arrow} alt="Arrow Icon" className="w-5 h-5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                                        </Link>
                                     </div>
                                 </div>
 
@@ -160,11 +164,10 @@ const FeaturedCategories = () => {
                                     {/* Status Label */}
                                     <div style={{ fontFamily: 'Poppins' }} className="mt-4 sm:mt-3 md:mt-4 flex items-center gap-2 flex-wrap">
                                         <span
-                                            className={`text-[13px] sm:text-[12px] md:text-[14px] font-medium px-4 sm:px-3 md:px-4 py-2 sm:py-1.5 md:py-2 rounded-full ${
-                                                item.Properties_Status_id?.Pro_Status === 'RENT'
+                                            className={`text-[13px] sm:text-[12px] md:text-[14px] font-medium px-4 sm:px-3 md:px-4 py-2 sm:py-1.5 md:py-2 rounded-full ${item.Properties_Status_id?.Pro_Status === 'RENT'
                                                     ? 'bg-[#00C6DB] text-black'
                                                     : 'bg-[#1F4B43] text-white'
-                                            }`}
+                                                }`}
                                         >
                                             {item.Properties_Status_id?.Pro_Status}
                                         </span>
@@ -182,7 +185,7 @@ const FeaturedCategories = () => {
             </div>
 
             {/* Keep your styles untouched */}
- <style jsx>{`
+            <style jsx>{`
                 /* Hide the default Swiper scrollbar for this instance */
                 .featured-swiper .swiper-scrollbar:not(.custom-featured-scrollbar) {
                     display: none !important;
