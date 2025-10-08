@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import bgImage from '../assets/bg12.svg'
 import { FaSearch } from "react-icons/fa";
 import { useAuth } from '../Authprovider/AuthContext';
@@ -14,7 +14,17 @@ import Navbar from '../Navbar'
 import Navbar2 from '../Navbar2'
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 const Review = () => {
+  const navigate = useNavigate();
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearch = () => {
+    if (searchInput.trim()) {
+      navigate('/details');
+    }
+  };
+
   const cards = [
     {
       img: woman,
@@ -32,11 +42,11 @@ const Review = () => {
       desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
     }
   ];
-    const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
+  const isAuthenticated = useSelector(selectIsAuthenticated); // Changed from isLoggedIn
   return (
     <>
       {/* <Navbar /> */}
-       {isAuthenticated ? <Navbar2 /> : <Navbar />}
+      {isAuthenticated ? <Navbar2 /> : <Navbar />}
       <div
         className="w-full h-[260px] bg-cover bg-center flex items-center px-6 sm:px-24"
         style={{
@@ -60,8 +70,14 @@ const Review = () => {
               type="text"
               placeholder="Enter your property address you want to sell"
               className="flex-1 px-4 py-3 text-sm sm:text-base text-gray-700 outline-none"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+
             />
-            <button className="bg-[#8A1538] hover:bg-[#72152e] text-white p-3 mr-2 rounded-lg">
+            <button
+              onClick={handleSearch}
+              disabled={!searchInput.trim()}
+              className="bg-[#8A1538] hover:bg-[#72152e] text-white p-3 mr-2 rounded-lg">
               <FaSearch />
             </button>
           </div>
@@ -133,7 +149,7 @@ const Review = () => {
         </div>
       </div> */}
       <div style={{ fontFamily: 'Poppins' }} className="w-full bg-[#F7F7F7] px-4 md:px-8 lg:px-20 py-8 lg:py-12 space-y-12">
-       
+
         <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-10">
           <div className="w-full lg:w-1/2 text-center lg:text-left">
             <h3 className="text-xl sm:text-2xl lg:text-[32px] text-[#000000] font-semibold mb-3">
@@ -170,7 +186,7 @@ const Review = () => {
           </div>
         </div>
       </div>
- <Footer/>
+      <Footer />
 
     </>
   )
